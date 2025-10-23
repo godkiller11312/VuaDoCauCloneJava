@@ -1,0 +1,9 @@
+:root { --teal:#22b8a7; }
+.bg-soft {
+  background: radial-gradient(1200px 600px at 10% 0%, #eaf6ff 0, rgba(255,255,255,.9) 60%),
+              radial-gradient(1200px 600px at 90% 100%, #eafff9 0, rgba(255,255,255,.9) 60%);
+}
+.btn-teal { background: var(--teal); color:#fff; }
+.btn-teal:hover { filter: brightness(.95); color:#fff; }
+.badge.bg-soft-gray { background:#eef2ff; }
+.thumb { background:#f6f7ff; }
