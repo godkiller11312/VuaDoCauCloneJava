@@ -96,9 +96,9 @@
               <div class="card h-100 shadow-sm rounded-4 border-0">
                 <div class="ratio ratio-1x1 rounded-top-4 d-flex align-items-center justify-content-center thumb">
                   <img class="p-4"
-                       src="${cxt}/assets/images/${p.image != null ? p.image : 'no-image.png'}"
+                       src="${cxt}/asset/images/${p.image != null ? p.image : 'no-image.png'}"
                        alt="${p.name}"
-                       onerror="this.src='${cxt}/assets/images/no-image.png'">
+                       onerror="this.src='${cxt}/asset/images/no-image.png'">
                 </div>
                 <!-- card-body giống products.jsp -->
                 <div class="card-body">
