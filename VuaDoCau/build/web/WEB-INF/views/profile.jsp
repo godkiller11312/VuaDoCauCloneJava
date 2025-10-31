@@ -14,9 +14,12 @@
   </style>
 </head>
 <body class="bg-soft">
+<c:set var="cxt" value="${pageContext.request.contextPath}" />
+
 <nav class="navbar navbar-expand-lg bg-white shadow-sm">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="${pageContext.request.contextPath}/home">VuaĐồCâu</a>
+    <a class="navbar-brand fw-bold" href="${cxt}/home">VuaĐồCâu</a>
+    <a class="btn btn-outline-secondary ms-auto" href="${cxt}/products">Sản phẩm</a>
   </div>
 </nav>
 
@@ -29,7 +32,7 @@
         <div class="card-body">
           <p><strong>Họ tên:</strong> ${user.name}</p>
           <p><strong>Email:</strong> ${user.email}</p>
-          <a href="${pageContext.request.contextPath}/cart" class="btn btn-outline-secondary">Giỏ hàng</a>
+          <a href="${cxt}/cart" class="btn btn-outline-secondary">Giỏ hàng</a>
         </div>
       </div>
     </div>
@@ -60,8 +63,7 @@
                   <td><span class="badge bg-secondary">${o.status}</span></td>
                   <td class="text-end"><fmt:formatNumber value="${o.total}" type="number" groupingUsed="true"/> đ</td>
                   <td class="text-end">
-                    <a class="btn btn-sm btn-outline-primary"
-                       href="${pageContext.request.contextPath}/order?id=${o.id}">Xem</a>
+                    <a class="btn btn-sm btn-outline-primary" href="${cxt}/order?id=${o.id}">Xem</a>
                   </td>
                 </tr>
               </c:forEach>
@@ -75,5 +77,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<jsp:include page="/WEB-INF/views/partials/mini-cart.jsp" />
+
 </body>
 </html>

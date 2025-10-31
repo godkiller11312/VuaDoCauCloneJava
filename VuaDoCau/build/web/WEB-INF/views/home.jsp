@@ -22,25 +22,25 @@
   </style>
 </head>
 <body class="bg-soft">
+<c:set var="cxt" value="${pageContext.request.contextPath}" />
+
 <nav class="navbar navbar-expand-lg bg-white shadow-sm">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="${pageContext.request.contextPath}/home">VuaĐồCâu</a>
+    <a class="navbar-brand fw-bold" href="${cxt}/home">VuaĐồCâu</a>
 
     <ul class="navbar-nav me-3">
-      <li class="nav-item"><a class="nav-link active" href="${pageContext.request.contextPath}/home">Trang chủ</a></li>
+      <li class="nav-item"><a class="nav-link active" href="${cxt}/home">Trang chủ</a></li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Danh mục</a>
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="${pageContext.request.contextPath}/products?g=all">Tất cả sản phẩm</a></li>
+          <li><a class="dropdown-item" href="${cxt}/products?g=all">Tất cả sản phẩm</a></li>
           <c:forEach items="${sections.keySet()}" var="cat">
-            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/products?cat=${cat.id}">${cat.name}</a></li>
+            <li><a class="dropdown-item" href="${cxt}/products?cat=${cat.id}">${cat.name}</a></li>
           </c:forEach>
         </ul>
       </li>
     </ul>
 
-    <!-- RIGHT: search + account -->
-    <c:set var="cxt" value="${pageContext.request.contextPath}" />
     <form class="d-flex ms-auto me-2" method="get" action="${cxt}/products">
       <input class="form-control me-2" type="search" name="q" placeholder="Tìm sản phẩm...">
       <button class="btn btn-teal">Tìm</button>
@@ -100,7 +100,6 @@
                        alt="${p.name}"
                        onerror="this.src='${cxt}/asset/images/no-image.png'">
                 </div>
-                <!-- card-body giống products.jsp -->
                 <div class="card-body">
                   <span class="badge bg-light text-dark mb-2">${p.categoryName}</span>
                   <h6 class="card-title">${p.name}</h6>
@@ -112,8 +111,7 @@
                     <fmt:formatNumber value="${p.price}" type="number" groupingUsed="true"/> đ
                   </div>
                   <div class="mt-3 d-grid">
-                    <a class="btn btn-teal rounded-pill"
-   href="${cxt}/cart?action=add&id=${p.id}">Thêm vào giỏ</a>
+                    <a class="btn btn-teal rounded-pill" href="${cxt}/cart?action=add&id=${p.id}">Thêm vào giỏ</a>
                   </div>
                 </div>
               </div>
@@ -128,6 +126,11 @@
 <footer class="border-top mt-5">
   <div class="container py-4 text-muted small">© 2025 Vua Đồ Câu</div>
 </footer>
+
+<!-- Bootstrap bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Mini-cart floating button + offcanvas -->
+<jsp:include page="/WEB-INF/views/partials/mini-cart.jsp" />
+
 </body>
 </html>

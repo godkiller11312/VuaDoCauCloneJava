@@ -119,5 +119,9 @@
   <div class="container py-4 text-muted small">© 2025 Vua Đồ Câu</div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Mini-cart floating button + offcanvas -->
+<jsp:include page="/WEB-INF/views/partials/mini-cart.jsp" />
 </body>
 </html>
