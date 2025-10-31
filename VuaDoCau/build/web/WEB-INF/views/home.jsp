@@ -23,6 +23,8 @@
 </head>
 <body class="bg-soft">
 <c:set var="cxt" value="${pageContext.request.contextPath}" />
+<c:set var="auth" value="${sessionScope.authUser}" />
+<c:set var="isAdmin" value="${not empty auth and auth.roleId == 1}" />
 
 <nav class="navbar navbar-expand-lg bg-white shadow-sm">
   <div class="container">
@@ -30,6 +32,7 @@
 
     <ul class="navbar-nav me-3">
       <li class="nav-item"><a class="nav-link active" href="${cxt}/home">Trang chủ</a></li>
+
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Danh mục</a>
         <ul class="dropdown-menu">
@@ -39,6 +42,20 @@
           </c:forEach>
         </ul>
       </li>
+
+      <!-- Chỉ ADMIN thấy mục Quản trị -->
+      <c:if test="${isAdmin}">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-danger" href="#" data-bs-toggle="dropdown">Quản trị</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="${cxt}/admin/products">Quản lý sản phẩm</a></li>
+            <li><a class="dropdown-item" href="${cxt}/admin/categories">Quản lý danh mục</a></li>
+            <li><a class="dropdown-item" href="${cxt}/admin/orders">Đơn hàng</a></li>
+            <li><hr class="dropdown-divider"/></li>
+            <li><span class="dropdown-item text-muted">Bạn đang đăng nhập ADMIN</span></li>
+          </ul>
+        </li>
+      </c:if>
     </ul>
 
     <form class="d-flex ms-auto me-2" method="get" action="${cxt}/products">
@@ -113,6 +130,16 @@
                   <div class="mt-3 d-grid">
                     <a class="btn btn-teal rounded-pill" href="${cxt}/cart?action=add&id=${p.id}">Thêm vào giỏ</a>
                   </div>
+
+                  <!-- Hành động chỉ dành cho ADMIN -->
+                  <c:if test="${isAdmin}">
+                    <div class="d-flex gap-2 mt-2">
+                      <a class="btn btn-outline-secondary btn-sm" href="${cxt}/admin/products/edit?id=${p.id}">Sửa</a>
+                      <a class="btn btn-outline-danger btn-sm"
+                         href="${cxt}/admin/products/delete?id=${p.id}"
+                         onclick="return confirm('Xóa sản phẩm này?')">Xóa</a>
+                    </div>
+                  </c:if>
                 </div>
               </div>
             </div>
@@ -131,6 +158,5 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Mini-cart floating button + offcanvas -->
 <jsp:include page="/WEB-INF/views/partials/mini-cart.jsp" />
-
 </body>
 </html>
