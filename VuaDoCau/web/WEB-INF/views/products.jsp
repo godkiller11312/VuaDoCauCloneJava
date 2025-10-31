@@ -18,29 +18,45 @@
     .btn-teal{ background:var(--teal); color:#fff }
     .btn-teal:hover{ filter:brightness(.95); color:#fff }
     .thumb{ background:#f6f7ff }
+    .card-title{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+    .navbar .nav-link { padding-left:.75rem; padding-right:.75rem }
   </style>
 </head>
 <body class="bg-soft">
+
+<c:set var="cxt" value="${pageContext.request.contextPath}" />
+<c:set var="auth" value="${sessionScope.authUser}" />
+<c:set var="isAdmin" value="${not empty auth and auth.roleId == 1}" />
+
 <nav class="navbar navbar-expand-lg bg-white shadow-sm">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="${pageContext.request.contextPath}/home">VuaĐồCâu</a>
+    <a class="navbar-brand fw-bold" href="${cxt}/home">VuaĐồCâu</a>
 
-    <ul class="navbar-nav me-3">
-      <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/home">Trang chủ</a></li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Danh mục</a>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item ${g=='all'?'active':''}" href="${pageContext.request.contextPath}/products?g=all">Tất cả sản phẩm</a></li>
-          <li><a class="dropdown-item ${g=='can'?'active':''}" href="${pageContext.request.contextPath}/products?g=can">Cần câu</a></li>
-          <li><a class="dropdown-item ${g=='may'?'active':''}" href="${pageContext.request.contextPath}/products?g=may">Máy câu</a></li>
-          <li><a class="dropdown-item ${g=='khac'?'active':''}" href="${pageContext.request.contextPath}/products?g=khac">Dây / Mồi / Phụ kiện</a></li>
-        </ul>
-      </li>
+    <ul class="navbar-nav me-3 align-items-center">
+      <!-- User thường -->
+      <c:if test="${!isAdmin}">
+        <li class="nav-item"><a class="nav-link" href="${cxt}/home">Trang chủ</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Danh mục</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="${cxt}/products?g=all">Tất cả sản phẩm</a></li>
+            <li><a class="dropdown-item" href="${cxt}/products?g=can">Cần câu</a></li>
+            <li><a class="dropdown-item" href="${cxt}/products?g=may">Máy câu</a></li>
+            <li><a class="dropdown-item" href="${cxt}/products?g=khac">Dây / Mồi / Phụ kiện</a></li>
+          </ul>
+        </li>
+      </c:if>
+
+      <!-- Admin: link ngang, màu đỏ; không có 'Quản lý danh mục' -->
+      <c:if test="${isAdmin}">
+        <li class="nav-item"><span class="nav-link text-danger fw-bold">Quản trị:</span></li>
+        <li class="nav-item"><a class="nav-link text-danger fw-semibold" href="${cxt}/admin/products">Quản Lý Sản phẩm</a></li>
+        <li class="nav-item"><a class="nav-link text-danger fw-semibold" href="${cxt}/admin/orders">Quản Lý Đơn hàng</a></li>
+      </c:if>
     </ul>
 
     <!-- RIGHT: search + account -->
-    <c:set var="cxt" value="${pageContext.request.contextPath}" />
-    <form class="d-flex ms-auto me-2" method="get" action="${cxt}/products">
+    <form class="d-flex ms-auto me-2 flex-grow-1" style="max-width:520px" method="get" action="${cxt}/products">
       <input class="form-control me-2" type="search" name="q" value="${q}" placeholder="Tìm sản phẩm...">
       <button class="btn btn-teal">Tìm</button>
     </form>
@@ -52,12 +68,15 @@
             ${sessionScope.authUser.email}
           </button>
           <ul class="dropdown-menu dropdown-menu-end shadow">
-            <li>
-              <a class="dropdown-item d-flex justify-content-between align-items-center" href="${cxt}/cart">
-                Giỏ hàng
-                <span class="badge text-bg-primary">${empty sessionScope.cartCount ? 0 : sessionScope.cartCount}</span>
-              </a>
-            </li>
+            <!-- Ẩn Giỏ hàng với Admin -->
+            <c:if test="${!isAdmin}">
+              <li>
+                <a class="dropdown-item d-flex justify-content-between align-items-center" href="${cxt}/cart">
+                  Giỏ hàng
+                  <span class="badge text-bg-primary">${empty sessionScope.cartCount ? 0 : sessionScope.cartCount}</span>
+                </a>
+              </li>
+            </c:if>
             <li><a class="dropdown-item" href="${cxt}/profile">Hồ sơ cá nhân</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item text-danger" href="${cxt}/logout">Đăng xuất</a></li>
@@ -103,8 +122,7 @@
                   <fmt:formatNumber value="${p.price}" type="number" groupingUsed="true"/> đ
                 </div>
                 <div class="mt-3 d-grid">
-                  <a class="btn btn-teal rounded-pill"
-   href="${cxt}/cart?action=add&id=${p.id}">Thêm vào giỏ</a>
+                  <a class="btn btn-teal rounded-pill" href="${cxt}/cart?action=add&id=${p.id}">Thêm vào giỏ</a>
                 </div>
               </div>
             </div>
@@ -118,9 +136,10 @@
 <footer class="border-top mt-5">
   <div class="container py-4 text-muted small">© 2025 Vua Đồ Câu</div>
 </footer>
+
+<!-- Bootstrap bundle (Popper included) - chỉ nhúng 1 lần -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Bootstrap bundle -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 <!-- Mini-cart floating button + offcanvas -->
 <jsp:include page="/WEB-INF/views/partials/mini-cart.jsp" />
 </body>

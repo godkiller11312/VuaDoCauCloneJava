@@ -39,10 +39,11 @@
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Danh mục</a>
       <ul class="dropdown-menu">
+        
         <li><a class="dropdown-item" href="${cxt}/products?g=all">Tất cả sản phẩm</a></li>
-        <c:forEach items="${sections.keySet()}" var="cat">
-          <li><a class="dropdown-item" href="${cxt}/products?cat=${cat.id}">${cat.name}</a></li>
-        </c:forEach>
+<li><a class="dropdown-item" href="${cxt}/products?g=can">Cần câu</a></li>
+<li><a class="dropdown-item" href="${cxt}/products?g=may">Máy câu</a></li>
+<li><a class="dropdown-item" href="${cxt}/products?g=khac">Dây, Mồi, Phụ kiện</a></li>
       </ul>
     </li>
   </c:if>
