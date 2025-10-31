@@ -103,7 +103,8 @@
                   <fmt:formatNumber value="${p.price}" type="number" groupingUsed="true"/> đ
                 </div>
                 <div class="mt-3 d-grid">
-                  <a class="btn btn-teal rounded-pill" href="#">Thêm vào giỏ</a>
+                  <a class="btn btn-teal rounded-pill"
+   href="${cxt}/cart?action=add&id=${p.id}">Thêm vào giỏ</a>
                 </div>
               </div>
             </div>
