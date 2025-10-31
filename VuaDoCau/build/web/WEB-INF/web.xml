@@ -5,53 +5,7 @@
                              http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
-  <!-- WELCOME -->
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
-
-  <!-- ===================== -->
-  <!--  AUTH (require login) -->
-  <!-- ===================== -->
-  <filter>
-    <filter-name>AuthFilter</filter-name>
-    <filter-class>com.vuadocau.security.AuthFilter</filter-class>
-  </filter>
-
-  <!-- Các khu vực cần đăng nhập -->
-  <filter-mapping>
-    <filter-name>AuthFilter</filter-name>
-    <url-pattern>/cart/*</url-pattern>
-  </filter-mapping>
-  <filter-mapping>
-    <filter-name>AuthFilter</filter-name>
-    <url-pattern>/order/*</url-pattern>
-  </filter-mapping>
-  <filter-mapping>
-    <filter-name>AuthFilter</filter-name>
-    <url-pattern>/profile/*</url-pattern>
-  </filter-mapping>
-  <filter-mapping>
-    <filter-name>AuthFilter</filter-name>
-    <url-pattern>/checkout/*</url-pattern>
-  </filter-mapping>
-
-  <!-- ===================== -->
-  <!--  ROLE (require ADMIN) -->
-  <!-- ===================== -->
-  <filter>
-    <filter-name>RoleFilter</filter-name>
-    <filter-class>com.vuadocau.security.RoleFilter</filter-class>
-    <init-param>
-      <param-name>requiredRole</param-name>
-      <param-value>ADMIN</param-value>
-    </init-param>
-  </filter>
-
-  <!-- Đặt toàn bộ trang quản trị dưới /admin/* để kiểm soát gọn gàng -->
-  <filter-mapping>
-    <filter-name>RoleFilter</filter-name>
-    <url-pattern>/admin/*</url-pattern>
-  </filter-mapping>
-
 </web-app>

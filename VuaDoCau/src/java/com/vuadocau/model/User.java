@@ -5,7 +5,6 @@ public class User {
     private String name;
     private String email;
     private int roleId;      // 1=ADMIN, 2=USER
-    private String role;     // "ADMIN" | "USER"
     private boolean active;
 
     public int getId() { return id; }
@@ -22,7 +21,4 @@ public class User {
 
     public boolean isActive() { return active; }
     public void setActive(boolean active) { this.active = active; }
-        public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
-    public boolean isAdmin() { return roleId == 1 || "ADMIN".equalsIgnoreCase(role); }
 }

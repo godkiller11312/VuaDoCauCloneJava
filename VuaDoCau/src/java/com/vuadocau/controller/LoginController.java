@@ -40,17 +40,7 @@ public class LoginController extends HttpServlet {
             return;
         }
 
-      req.getSession().setAttribute("authUser", u);
-
-String back = (String) req.getSession().getAttribute("redirectAfterLogin");
-req.getSession().removeAttribute("redirectAfterLogin");
-
-if (u.isAdmin()) {
-    // admin: vào trang admin
-    ((HttpServletResponse) resp).sendRedirect(req.getContextPath() + "/admin");
-} else {
-    ((HttpServletResponse) resp).sendRedirect(
-        back != null ? back : req.getContextPath() + "/home");
-}
+        req.getSession().setAttribute("authUser", u);
+        resp.sendRedirect(req.getContextPath() + "/home");
     }
 }
