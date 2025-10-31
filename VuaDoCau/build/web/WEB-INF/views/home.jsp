@@ -19,6 +19,8 @@
     .btn-teal:hover{ filter:brightness(.95); color:#fff }
     .thumb{ background:#f6f7ff }
     .card-title{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+    /* Giữ navbar gọn khi ít mục */
+    .navbar .nav-link{ padding-left:.75rem; padding-right:.75rem }
   </style>
 </head>
 <body class="bg-soft">
@@ -30,35 +32,34 @@
   <div class="container">
     <a class="navbar-brand fw-bold" href="${cxt}/home">VuaĐồCâu</a>
 
-    <ul class="navbar-nav me-3">
-      <li class="nav-item"><a class="nav-link active" href="${cxt}/home">Trang chủ</a></li>
+    <ul class="navbar-nav me-3 align-items-center">
+  <!-- Người dùng thường -->
+  <c:if test="${!isAdmin}">
+    <li class="nav-item"><a class="nav-link active" href="${cxt}/home">Trang chủ</a></li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Danh mục</a>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="${cxt}/products?g=all">Tất cả sản phẩm</a></li>
+        <c:forEach items="${sections.keySet()}" var="cat">
+          <li><a class="dropdown-item" href="${cxt}/products?cat=${cat.id}">${cat.name}</a></li>
+        </c:forEach>
+      </ul>
+    </li>
+  </c:if>
 
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Danh mục</a>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="${cxt}/products?g=all">Tất cả sản phẩm</a></li>
-          <c:forEach items="${sections.keySet()}" var="cat">
-            <li><a class="dropdown-item" href="${cxt}/products?cat=${cat.id}">${cat.name}</a></li>
-          </c:forEach>
-        </ul>
-      </li>
+  <!-- ADMIN: trình bày ngang, không dropdown, KHÔNG có "Quản lý danh mục" -->
+<c:if test="${isAdmin}">
+ 
+    <li class="nav-item">
+      <a class="nav-link text-danger fw-semibold" href="${cxt}/admin/products">Quản Lý Sản phẩm</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-danger fw-semibold" href="${cxt}/admin/orders">Quản Lý Đơn hàng</a>
+    </li>
+</c:if>
+</ul>
 
-      <!-- Chỉ ADMIN thấy mục Quản trị -->
-      <c:if test="${isAdmin}">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-danger" href="#" data-bs-toggle="dropdown">Quản trị</a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="${cxt}/admin/products">Quản lý sản phẩm</a></li>
-            <li><a class="dropdown-item" href="${cxt}/admin/categories">Quản lý danh mục</a></li>
-            <li><a class="dropdown-item" href="${cxt}/admin/orders">Đơn hàng</a></li>
-            <li><hr class="dropdown-divider"/></li>
-            <li><span class="dropdown-item text-muted">Bạn đang đăng nhập ADMIN</span></li>
-          </ul>
-        </li>
-      </c:if>
-    </ul>
-
-    <form class="d-flex ms-auto me-2" method="get" action="${cxt}/products">
+    <form class="d-flex ms-auto me-2 flex-grow-1" style="max-width:520px" method="get" action="${cxt}/products">
       <input class="form-control me-2" type="search" name="q" placeholder="Tìm sản phẩm...">
       <button class="btn btn-teal">Tìm</button>
     </form>
@@ -70,12 +71,14 @@
             ${sessionScope.authUser.email}
           </button>
           <ul class="dropdown-menu dropdown-menu-end shadow">
+           <c:if test="${!isAdmin}">
             <li>
               <a class="dropdown-item d-flex justify-content-between align-items-center" href="${cxt}/cart">
                 Giỏ hàng
                 <span class="badge text-bg-primary">${empty sessionScope.cartCount ? 0 : sessionScope.cartCount}</span>
               </a>
             </li>
+          </c:if>
             <li><a class="dropdown-item" href="${cxt}/profile">Hồ sơ cá nhân</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item text-danger" href="${cxt}/logout">Đăng xuất</a></li>
@@ -130,16 +133,7 @@
                   <div class="mt-3 d-grid">
                     <a class="btn btn-teal rounded-pill" href="${cxt}/cart?action=add&id=${p.id}">Thêm vào giỏ</a>
                   </div>
-
-                  <!-- Hành động chỉ dành cho ADMIN -->
-                  <c:if test="${isAdmin}">
-                    <div class="d-flex gap-2 mt-2">
-                      <a class="btn btn-outline-secondary btn-sm" href="${cxt}/admin/products/edit?id=${p.id}">Sửa</a>
-                      <a class="btn btn-outline-danger btn-sm"
-                         href="${cxt}/admin/products/delete?id=${p.id}"
-                         onclick="return confirm('Xóa sản phẩm này?')">Xóa</a>
-                    </div>
-                  </c:if>
+                  <!-- KHÔNG có nút Sửa/Xóa để giữ layout gọn -->
                 </div>
               </div>
             </div>
@@ -154,9 +148,7 @@
   <div class="container py-4 text-muted small">© 2025 Vua Đồ Câu</div>
 </footer>
 
-<!-- Bootstrap bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Mini-cart floating button + offcanvas -->
 <jsp:include page="/WEB-INF/views/partials/mini-cart.jsp" />
 </body>
 </html>
