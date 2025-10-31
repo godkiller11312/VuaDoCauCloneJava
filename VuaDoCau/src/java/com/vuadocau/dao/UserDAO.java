@@ -34,25 +34,27 @@ public class UserDAO {
         return false;
     }
 
-    public User login(String email, String plainPassword) {
-        String sql = "SELECT MaND, TenND, Email, RoleID, TrangThai " +
-                     "FROM nguoidung WHERE Email=? AND MatKhau=?";
-        try (Connection con = Db.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, email);
-            ps.setString(2, PasswordUtil.sha256(plainPassword));
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    User u = new User();
-                    u.setId(rs.getInt("MaND"));
-                    u.setName(rs.getString("TenND"));
-                    u.setEmail(rs.getString("Email"));
-                    u.setRoleId(rs.getInt("RoleID"));
-                    u.setActive(rs.getInt("TrangThai") == 1);
-                    return u;
-                }
+  public User login(String email, String plainPassword) {
+    String sql = "SELECT n.MaND, n.TenND, n.Email, n.RoleID, n.TrangThai, r.RoleName " +
+                 "FROM nguoidung n JOIN roles r ON n.RoleID = r.RoleID " +
+                 "WHERE n.Email=? AND n.MatKhau=?";
+    try (Connection con = Db.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, email);
+        ps.setString(2, PasswordUtil.sha256(plainPassword));
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                User u = new User();
+                u.setId(rs.getInt("MaND"));
+                u.setName(rs.getString("TenND"));
+                u.setEmail(rs.getString("Email"));
+                u.setRoleId(rs.getInt("RoleID"));
+                u.setRole(rs.getString("RoleName")); // "ADMIN"/"USER"
+                u.setActive(rs.getInt("TrangThai") == 1);
+                return u;
             }
-        } catch (Exception e) { e.printStackTrace(); }
-        return null;
-    }
+        }
+    } catch (Exception e) { e.printStackTrace(); }
+    return null;
+}
 }
