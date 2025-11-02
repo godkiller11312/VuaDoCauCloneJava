@@ -17,7 +17,9 @@
     }
     .btn-teal{ background:var(--teal); color:#fff }
     .btn-teal:hover{ filter:brightness(.95); color:#fff }
-    .navbar .nav-link { padding-left:.75rem; padding-right:.75rem }
+    .nav-admin .navbar-nav{flex-direction:row;margin-left:0!important}
+.nav-admin .navbar-brand{margin-right:.75rem}
+.nav-admin .nav-link{padding-left:.75rem;padding-right:.75rem}
   </style>
 </head>
 <body class="bg-soft">
@@ -26,69 +28,73 @@
 <c:set var="auth" value="${sessionScope.authUser}" />
 <c:set var="isAdmin" value="${not empty auth and auth.roleId == 1}" />
 
-<nav class="navbar navbar-expand-lg bg-white shadow-sm">
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg bg-white shadow-sm nav-admin">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="${cxt}/home">VuaĐồCâu</a>
+    <div class="d-flex align-items-center w-100">
 
-    <ul class="navbar-nav me-3 align-items-center">
-      <!-- Người dùng thường -->
+      <!-- Logo -->
+      <a class="navbar-brand fw-bold me-2" href="${cxt}/home">VuaĐồCâu</a>
+
+      <!-- Menu trái -->
+      <ul class="navbar-nav flex-row gap-3 align-items-center">
+        <!-- ADMIN: chỉ 2 mục quản trị, không có search -->
+        <c:if test="${isAdmin}">
+          <li class="nav-item">
+            <a class="nav-link text-danger fw-semibold" href="${cxt}/admin/products">Quản Lý Sản phẩm</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-danger fw-semibold" href="${cxt}/admin/orders">Quản Lý Đơn hàng</a>
+          </li>
+        </c:if>
+
+        <!-- USER: menu thông thường -->
+        <c:if test="${!isAdmin}">
+          <li class="nav-item"><a class="nav-link" href="${cxt}/home">Trang chủ</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Danh mục</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="${cxt}/products?g=all">Tất cả sản phẩm</a></li>
+              <li><a class="dropdown-item" href="${cxt}/products?g=can">Cần câu</a></li>
+              <li><a class="dropdown-item" href="${cxt}/products?g=may">Máy câu</a></li>
+              <li><a class="dropdown-item" href="${cxt}/products?g=khac">Dây, Mồi, Phụ kiện</a></li>
+            </ul>
+          </li>
+        </c:if>
+      </ul>
+
+      <!-- Đẩy dropdown sang phải -->
+      <div class="flex-grow-1"></div>
+
+      <!-- Search CHỈ hiện với user (admin không có search) -->
       <c:if test="${!isAdmin}">
-        <li class="nav-item"><a class="nav-link" href="${cxt}/home">Trang chủ</a></li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Danh mục</a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="${cxt}/products?g=all">Tất cả sản phẩm</a></li>
-            <li><a class="dropdown-item" href="${cxt}/products?g=can">Cần câu</a></li>
-            <li><a class="dropdown-item" href="${cxt}/products?g=may">Máy câu</a></li>
-            <li><a class="dropdown-item" href="${cxt}/products?g=khac">Dây, Mồi, Phụ kiện</a></li>
-          </ul>
-        </li>
+        <form class="d-none d-lg-flex me-2" style="max-width:520px" method="get" action="${cxt}/products">
+          <input class="form-control me-2" type="search" name="q" placeholder="Tìm sản phẩm...">
+          <button class="btn btn-teal">Tìm</button>
+        </form>
       </c:if>
 
-      <!-- ADMIN -->
-      <c:if test="${isAdmin}">
-       
-        <li class="nav-item"><a class="nav-link text-danger fw-semibold" href="${cxt}/admin/products">Quản Lý Sản phẩm</a></li>
-        <li class="nav-item"><a class="nav-link text-danger fw-semibold" href="${cxt}/admin/orders">Quản Lý Đơn hàng</a></li>
-      </c:if>
-    </ul>
+      <!-- Dropdown tài khoản -->
+      <div class="dropdown">
+        <button class="btn btn-outline-secondary rounded-pill dropdown-toggle px-3" type="button" data-bs-toggle="dropdown">
+          ${sessionScope.authUser.email}
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end shadow">
+          <c:if test="${!isAdmin}">
+            <li>
+              <a class="dropdown-item d-flex justify-content-between align-items-center" href="${cxt}/cart">
+                Giỏ hàng
+                <span class="badge text-bg-primary">${empty sessionScope.cartCount ? 0 : sessionScope.cartCount}</span>
+              </a>
+            </li>
+          </c:if>
+          <li><a class="dropdown-item" href="${cxt}/profile">Hồ sơ cá nhân</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item text-danger" href="${cxt}/logout">Đăng xuất</a></li>
+        </ul>
+      </div>
 
-    <!-- Search -->
-    <form class="d-flex ms-auto me-2 flex-grow-1" style="max-width:520px" method="get" action="${cxt}/products">
-      <input class="form-control me-2" type="search" name="q" placeholder="Tìm sản phẩm...">
-      <button class="btn btn-teal">Tìm</button>
-    </form>
-
-    <!-- Tài khoản -->
-    <c:choose>
-      <c:when test="${not empty sessionScope.authUser}">
-        <div class="dropdown">
-          <button class="btn btn-outline-secondary rounded-pill dropdown-toggle px-3" type="button" data-bs-toggle="dropdown">
-            ${sessionScope.authUser.email}
-          </button>
-          <ul class="dropdown-menu dropdown-menu-end shadow">
-            <!-- Ẩn giỏ hàng với admin -->
-            <c:if test="${!isAdmin}">
-              <li>
-                <a class="dropdown-item d-flex justify-content-between align-items-center" href="${cxt}/cart">
-                  Giỏ hàng
-                  <span class="badge text-bg-primary">${empty sessionScope.cartCount ? 0 : sessionScope.cartCount}</span>
-                </a>
-              </li>
-            </c:if>
-            <li><a class="dropdown-item" href="${cxt}/profile">Hồ sơ cá nhân</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item text-danger" href="${cxt}/logout">Đăng xuất</a></li>
-          </ul>
-        </div>
-      </c:when>
-      <c:otherwise>
-        <div class="ms-2 d-flex gap-2">
-          <a class="btn btn-outline-success" href="${cxt}/login">Đăng nhập</a>
-          <a class="btn btn-success" href="${cxt}/register">Đăng ký</a>
-        </div>
-      </c:otherwise>
-    </c:choose>
+    </div>
   </div>
 </nav>
 
@@ -152,7 +158,11 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<jsp:include page="/WEB-INF/views/partials/mini-cart.jsp" />
+
+<!-- Ẩn mini-cart với admin -->
+<c:if test="${!isAdmin}">
+  <jsp:include page="/WEB-INF/views/partials/mini-cart.jsp" />
+</c:if>
 
 </body>
 </html>

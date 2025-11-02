@@ -16,34 +16,84 @@
         radial-gradient(1200px 600px at 10% 0%, #eaf6ff 0, rgba(255,255,255,.9) 60%),
         radial-gradient(1200px 600px at 90% 100%, #eafff9 0, rgba(255,255,255,.9) 60%);
     }
-    .navbar .nav-link{ padding-left:.75rem; padding-right:.75rem }
+    /* Navbar admin sát logo, không có search */
+    .nav-admin .navbar-nav{flex-direction:row;margin-left:0!important}
+    .nav-admin .navbar-brand{margin-right:.75rem}
+    .nav-admin .nav-link{padding-left:.75rem;padding-right:.75rem}
     .thumb{ width:48px;height:48px;object-fit:cover;border-radius:8px;background:#f6f7ff }
   </style>
 </head>
 <body class="bg-soft">
 <c:set var="cxt" value="${pageContext.request.contextPath}" />
+<c:set var="auth" value="${sessionScope.authUser}" />
+<c:set var="isAdmin" value="${not empty auth and auth.roleId == 1}" />
 
-<nav class="navbar navbar-expand-lg bg-white shadow-sm">
+<!-- NAVBAR: KHÔNG có ô tìm kiếm cho admin -->
+<nav class="navbar navbar-expand-lg bg-white shadow-sm nav-admin">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="${cxt}/home">VuaĐồCâu</a>
-    <ul class="navbar-nav me-3 align-items-center">
-      <li class="nav-item"><a class="nav-link text-danger fw-semibold" href="${cxt}/admin/products">Quản Lý Sản phẩm</a></li>
-      <li class="nav-item"><a class="nav-link text-danger fw-semibold" href="${cxt}/admin/orders">Quản Lý Đơn hàng</a></li>
-    </ul>
-    <form class="d-flex ms-auto me-2 flex-grow-1" style="max-width:520px" method="get" action="${cxt}/products">
-      <input class="form-control me-2" type="search" name="q" placeholder="Tìm sản phẩm...">
-      <button class="btn btn-success" style="background:var(--teal);border-color:var(--teal)">Tìm</button>
-    </form>
+    <div class="d-flex align-items-center w-100">
 
-    <div class="dropdown">
-      <button class="btn btn-outline-secondary rounded-pill dropdown-toggle px-3" type="button" data-bs-toggle="dropdown">
-        ${sessionScope.authUser.email}
-      </button>
-      <ul class="dropdown-menu dropdown-menu-end shadow">
-        <li><a class="dropdown-item" href="${cxt}/profile">Hồ sơ cá nhân</a></li>
-        <li><hr class="dropdown-divider"></li>
-        <li><a class="dropdown-item text-danger" href="${cxt}/logout">Đăng xuất</a></li>
+      <!-- Logo -->
+      <a class="navbar-brand fw-bold me-2" href="${cxt}/home">VuaĐồCâu</a>
+
+      <!-- Menu trái -->
+      <ul class="navbar-nav flex-row gap-3 align-items-center">
+        <!-- ADMIN: chỉ 2 mục quản trị -->
+        <c:if test="${isAdmin}">
+          <li class="nav-item">
+            <a class="nav-link text-danger fw-semibold" href="${cxt}/admin/products">Quản Lý Sản phẩm</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-danger fw-semibold" href="${cxt}/admin/orders">Quản Lý Đơn hàng</a>
+          </li>
+        </c:if>
+
+        <!-- USER: menu thông thường (trường hợp mở trang này khi không phải admin) -->
+        <c:if test="${!isAdmin}">
+          <li class="nav-item"><a class="nav-link" href="${cxt}/home">Trang chủ</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Danh mục</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="${cxt}/products?g=all">Tất cả sản phẩm</a></li>
+              <li><a class="dropdown-item" href="${cxt}/products?g=can">Cần câu</a></li>
+              <li><a class="dropdown-item" href="${cxt}/products?g=may">Máy câu</a></li>
+              <li><a class="dropdown-item" href="${cxt}/products?g=khac">Dây, Mồi, Phụ kiện</a></li>
+            </ul>
+          </li>
+        </c:if>
       </ul>
+
+      <!-- Đẩy dropdown sang phải -->
+      <div class="flex-grow-1"></div>
+
+      <!-- Search CHỈ hiện với user (admin không có search) -->
+      <c:if test="${!isAdmin}">
+        <form class="d-none d-lg-flex me-2" style="max-width:520px" method="get" action="${cxt}/products">
+          <input class="form-control me-2" type="search" name="q" placeholder="Tìm sản phẩm...">
+          <button class="btn btn-teal">Tìm</button>
+        </form>
+      </c:if>
+
+      <!-- Dropdown tài khoản -->
+      <div class="dropdown">
+        <button class="btn btn-outline-secondary rounded-pill dropdown-toggle px-3" type="button" data-bs-toggle="dropdown">
+          ${sessionScope.authUser.email}
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end shadow">
+          <c:if test="${!isAdmin}">
+            <li>
+              <a class="dropdown-item d-flex justify-content-between align-items-center" href="${cxt}/cart">
+                Giỏ hàng
+                <span class="badge text-bg-primary">${empty sessionScope.cartCount ? 0 : sessionScope.cartCount}</span>
+              </a>
+            </li>
+          </c:if>
+          <li><a class="dropdown-item" href="${cxt}/profile">Hồ sơ cá nhân</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item text-danger" href="${cxt}/logout">Đăng xuất</a></li>
+        </ul>
+      </div>
+
     </div>
   </div>
 </nav>
@@ -51,7 +101,8 @@
 <div class="container py-4">
   <div class="d-flex align-items-center mb-3">
     <h3 class="fw-bold me-auto">Quản Lý Sản phẩm</h3>
-    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalForm"
+    <button class="btn btn-success" style="background:var(--teal);border-color:var(--teal)"
+            data-bs-toggle="modal" data-bs-target="#modalForm"
             onclick="openCreate()">+ Thêm sản phẩm</button>
   </div>
 
@@ -64,20 +115,18 @@
     <c:remove var="flash_error" scope="session"/>
   </c:if>
 
-  <!-- Bộ lọc -->
+  <!-- Bộ lọc trong trang -->
   <form class="row g-2 mb-3" method="get" action="${cxt}/admin/products">
     <div class="col-md-4">
       <input class="form-control" type="text" name="q" value="${q}" placeholder="Tìm theo tên sản phẩm">
     </div>
     <div class="col-md-3">
- <select class="form-select" name="cat">
-  <option value="">Tất cả danh mục</option>
-  <c:forEach var="c" items="${categories}">
-    <c:if test="${c.name != 'Mồi câu' && c.name != 'Phụ kiện'}">
-      <option value="${c.id}" ${cat==c.id ? 'selected' : ''}>${c.name}</option>
-    </c:if>
-  </c:forEach>
-</select>
+      <select class="form-select" name="cat">
+        <option value="">Tất cả danh mục</option>
+        <c:forEach var="c" items="${categories}">
+          <option value="${c.id}" ${cat==c.id ? 'selected' : ''}>${c.name}</option>
+        </c:forEach>
+      </select>
     </div>
     <div class="col-md-2">
       <button class="btn btn-outline-primary w-100">Lọc</button>
@@ -111,7 +160,6 @@
           <td class="text-center"><fmt:formatNumber value="${p.rating}" type="number" maxFractionDigits="1"/></td>
           <td class="text-center">${p.purchased}</td>
           <td class="text-end">
-            <!-- Dùng data-* để tránh lỗi escape -->
             <button class="btn btn-sm btn-outline-secondary"
                     data-bs-toggle="modal" data-bs-target="#modalForm"
                     data-id="${p.id}"
@@ -226,7 +274,6 @@ function openCreate(){
   document.getElementById('f-purchased').value = 0;
 }
 
-// nhận từ data-* để tránh lỗi escape EL
 function openEditFrom(btn){
   const d = btn.dataset;
   document.getElementById('modalTitle').textContent = 'Sửa sản phẩm #' + d.id;
