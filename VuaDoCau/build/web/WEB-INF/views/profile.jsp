@@ -47,7 +47,7 @@
 
       <!-- ADMIN -->
       <c:if test="${isAdmin}">
-        <li class="nav-item"><span class="nav-link text-danger fw-bold">Quản trị:</span></li>
+       
         <li class="nav-item"><a class="nav-link text-danger fw-semibold" href="${cxt}/admin/products">Quản Lý Sản phẩm</a></li>
         <li class="nav-item"><a class="nav-link text-danger fw-semibold" href="${cxt}/admin/orders">Quản Lý Đơn hàng</a></li>
       </c:if>

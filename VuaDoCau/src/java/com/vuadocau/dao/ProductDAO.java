@@ -101,4 +101,50 @@ public class ProductDAO {
         p.setPurchased(rs.getInt("Purchased"));
         return p;
     }
+    public boolean insert(Product p) {
+    String sql = "INSERT INTO sanpham(TenSP, MaDM, MaTH, Gia, Anh, MoTa, TonKho, Rating, Purchased, TrangThai, NgayTao) " +
+                 "VALUES (?,?,?,?,?,?,?,?,1,1,NOW())";
+    try (Connection con = Db.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, p.getName());
+        ps.setInt(2, p.getCategoryId());
+        if (p.getBrandId() == null) ps.setNull(3, Types.INTEGER);
+        else ps.setInt(3, p.getBrandId());
+        ps.setBigDecimal(4, p.getPrice());
+        ps.setString(5, p.getImage());
+        ps.setString(6, p.getDescription());
+        ps.setInt(7, p.getStock());
+        ps.setDouble(8, p.getRating());
+        ps.setInt(9, p.getPurchased());
+        return ps.executeUpdate() > 0;
+    } catch (Exception e) { throw new RuntimeException("Insert product failed", e); }
+}
+
+public boolean update(Product p) {
+    String sql = "UPDATE sanpham SET TenSP=?, MaDM=?, MaTH=?, Gia=?, Anh=?, MoTa=?, TonKho=?, Rating=?, Purchased=? WHERE MaSP=?";
+    try (Connection con = Db.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, p.getName());
+        ps.setInt(2, p.getCategoryId());
+        if (p.getBrandId() == null) ps.setNull(3, Types.INTEGER);
+        else ps.setInt(3, p.getBrandId());
+        ps.setBigDecimal(4, p.getPrice());
+        ps.setString(5, p.getImage());
+        ps.setString(6, p.getDescription());
+        ps.setInt(7, p.getStock());
+        ps.setDouble(8, p.getRating());
+        ps.setInt(9, p.getPurchased());
+        ps.setInt(10, p.getId());
+        return ps.executeUpdate() > 0;
+    } catch (Exception e) { throw new RuntimeException("Update product failed", e); }
+}
+
+public boolean delete(int id) {
+    String sql = "DELETE FROM sanpham WHERE MaSP=?";
+    try (Connection con = Db.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, id);
+        return ps.executeUpdate() > 0;
+    } catch (Exception e) { throw new RuntimeException("Delete product failed", e); }
+}
 }
