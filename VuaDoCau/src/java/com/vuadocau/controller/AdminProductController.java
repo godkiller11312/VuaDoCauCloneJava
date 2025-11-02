@@ -26,7 +26,8 @@ public class AdminProductController extends HttpServlet {
         return (o instanceof User) && ((User) o).getRoleId() == 1;
     }
 
-    @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         if (!isAdmin(req)) {
@@ -57,7 +58,8 @@ public class AdminProductController extends HttpServlet {
         req.getRequestDispatcher("/WEB-INF/views/admin/products.jsp").forward(req, resp);
     }
 
-    @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         if (!isAdmin(req)) {
@@ -98,7 +100,9 @@ public class AdminProductController extends HttpServlet {
         String brandId = req.getParameter("brandId");
         p.setBrandId((brandId == null || brandId.isBlank()) ? null : Integer.valueOf(brandId));
 
-        String price = req.getParameter("price").replace(".", "").replace(",", "");
+        // Chuẩn hoá giá: bỏ dấu . , nếu có
+        String price = req.getParameter("price");
+        price = (price == null ? "0" : price.replace(".", "").replace(",", ""));
         p.setPrice(new BigDecimal(price));
 
         p.setImage(req.getParameter("image"));

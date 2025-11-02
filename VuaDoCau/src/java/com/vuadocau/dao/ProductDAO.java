@@ -16,8 +16,6 @@ public class ProductDAO {
         "LEFT JOIN danhmuc dm ON dm.MaDM = sp.MaDM " +
         "LEFT JOIN thuonghieu th ON th.MaTH = sp.MaTH ";
 
-    /* ========================= Public APIs ========================= */
-
     public List<Product> findAll() {
         String sql = BASE_SELECT + " ORDER BY sp.MaSP DESC";
         return query(sql, ps -> {});
@@ -50,7 +48,6 @@ public class ProductDAO {
         });
     }
 
-    /** ===> Thêm mới: lấy 1 sản phẩm theo ID (dùng cho CartController) */
     public Product findById(int id) {
         String sql = BASE_SELECT + " WHERE sp.MaSP = ?";
         try (Connection con = Db.getConnection();
@@ -61,6 +58,72 @@ public class ProductDAO {
             }
         } catch (Exception e) {
             throw new RuntimeException("findById failed: " + id, e);
+        }
+    }
+
+    /* ========================= CUD ========================= */
+
+    public boolean insert(Product p) {
+        final String sql =
+            "INSERT INTO sanpham " +
+            "(TenSP, MaDM, MaTH, Gia, Anh, MoTa, TonKho, Rating, Purchased, TrangThai, NgayTao) " +
+            "VALUES (?,?,?,?,?,?,?,?,?,1,NOW())";
+        try (Connection con = Db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            int i = 1;
+            ps.setString(i++, p.getName());
+            ps.setInt(i++, p.getCategoryId());
+            if (p.getBrandId() == null) ps.setNull(i++, Types.INTEGER);
+            else                         ps.setInt(i++, p.getBrandId());
+            ps.setBigDecimal(i++, p.getPrice());
+            ps.setString(i++, p.getImage());
+            ps.setString(i++, p.getDescription());
+            ps.setInt(i++, p.getStock());
+            ps.setDouble(i++, p.getRating());
+            ps.setInt(i++, p.getPurchased());
+
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {  // <= bắt Exception vì Db.getConnection() throws Exception
+            throw new RuntimeException("Insert product failed: " + e.getMessage(), e);
+        }
+    }
+
+    public boolean update(Product p) {
+        final String sql =
+            "UPDATE sanpham " +
+            "SET TenSP=?, MaDM=?, MaTH=?, Gia=?, Anh=?, MoTa=?, TonKho=?, Rating=?, Purchased=? " +
+            "WHERE MaSP=?";
+        try (Connection con = Db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            int i = 1;
+            ps.setString(i++, p.getName());
+            ps.setInt(i++, p.getCategoryId());
+            if (p.getBrandId() == null) ps.setNull(i++, Types.INTEGER);
+            else                         ps.setInt(i++, p.getBrandId());
+            ps.setBigDecimal(i++, p.getPrice());
+            ps.setString(i++, p.getImage());
+            ps.setString(i++, p.getDescription());
+            ps.setInt(i++, p.getStock());
+            ps.setDouble(i++, p.getRating());
+            ps.setInt(i++, p.getPurchased());
+            ps.setInt(i,   p.getId());
+
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {  // <= sửa ở đây
+            throw new RuntimeException("Update product failed: " + e.getMessage(), e);
+        }
+    }
+
+    public boolean delete(int id) {
+        final String sql = "DELETE FROM sanpham WHERE MaSP=?";
+        try (Connection con = Db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {  // <= sửa ở đây
+            throw new RuntimeException("Delete product failed: " + e.getMessage(), e);
         }
     }
 
@@ -101,50 +164,4 @@ public class ProductDAO {
         p.setPurchased(rs.getInt("Purchased"));
         return p;
     }
-    public boolean insert(Product p) {
-    String sql = "INSERT INTO sanpham(TenSP, MaDM, MaTH, Gia, Anh, MoTa, TonKho, Rating, Purchased, TrangThai, NgayTao) " +
-                 "VALUES (?,?,?,?,?,?,?,?,1,1,NOW())";
-    try (Connection con = Db.getConnection();
-         PreparedStatement ps = con.prepareStatement(sql)) {
-        ps.setString(1, p.getName());
-        ps.setInt(2, p.getCategoryId());
-        if (p.getBrandId() == null) ps.setNull(3, Types.INTEGER);
-        else ps.setInt(3, p.getBrandId());
-        ps.setBigDecimal(4, p.getPrice());
-        ps.setString(5, p.getImage());
-        ps.setString(6, p.getDescription());
-        ps.setInt(7, p.getStock());
-        ps.setDouble(8, p.getRating());
-        ps.setInt(9, p.getPurchased());
-        return ps.executeUpdate() > 0;
-    } catch (Exception e) { throw new RuntimeException("Insert product failed", e); }
-}
-
-public boolean update(Product p) {
-    String sql = "UPDATE sanpham SET TenSP=?, MaDM=?, MaTH=?, Gia=?, Anh=?, MoTa=?, TonKho=?, Rating=?, Purchased=? WHERE MaSP=?";
-    try (Connection con = Db.getConnection();
-         PreparedStatement ps = con.prepareStatement(sql)) {
-        ps.setString(1, p.getName());
-        ps.setInt(2, p.getCategoryId());
-        if (p.getBrandId() == null) ps.setNull(3, Types.INTEGER);
-        else ps.setInt(3, p.getBrandId());
-        ps.setBigDecimal(4, p.getPrice());
-        ps.setString(5, p.getImage());
-        ps.setString(6, p.getDescription());
-        ps.setInt(7, p.getStock());
-        ps.setDouble(8, p.getRating());
-        ps.setInt(9, p.getPurchased());
-        ps.setInt(10, p.getId());
-        return ps.executeUpdate() > 0;
-    } catch (Exception e) { throw new RuntimeException("Update product failed", e); }
-}
-
-public boolean delete(int id) {
-    String sql = "DELETE FROM sanpham WHERE MaSP=?";
-    try (Connection con = Db.getConnection();
-         PreparedStatement ps = con.prepareStatement(sql)) {
-        ps.setInt(1, id);
-        return ps.executeUpdate() > 0;
-    } catch (Exception e) { throw new RuntimeException("Delete product failed", e); }
-}
 }
