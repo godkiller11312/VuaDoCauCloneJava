@@ -232,4 +232,48 @@ public boolean updateStatus(int orderId, String status) {
         return ps.executeUpdate() > 0;
     } catch (Exception e) { throw new RuntimeException(e); }
 }
+public int insertAdmin(int userId, String status, String note) {
+    final String sql = "INSERT INTO donhang (MaND, NgayDH, TrangThai, GhiChu) " +
+                       "VALUES (?, NOW(), ?, ?)";
+    try (Connection con = Db.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        ps.setInt(1, userId);
+        ps.setString(2, status);
+        ps.setString(3, note);
+        ps.executeUpdate();
+        try (ResultSet rs = ps.getGeneratedKeys()) {
+            if (rs.next()) return rs.getInt(1);
+        }
+        throw new RuntimeException("Không lấy được khóa tự tăng MaDH sau khi insert.");
+    } catch (Exception e) {
+        throw new RuntimeException("insertAdmin failed: " + e.getMessage(), e);
+    }
+}
+
+/** Xóa 1 đơn (xóa chi tiết trước, rồi xóa đơn). Trả về true nếu xóa được. */
+public boolean delete(int orderId) {
+    final String sqlDeleteItems = "DELETE FROM chitietdh WHERE MaDH=?";
+    final String sqlDeleteOrder = "DELETE FROM donhang  WHERE MaDH=?";
+    try (Connection con = Db.getConnection()) {
+        con.setAutoCommit(false);
+        try (PreparedStatement psi = con.prepareStatement(sqlDeleteItems);
+             PreparedStatement pso = con.prepareStatement(sqlDeleteOrder)) {
+            psi.setInt(1, orderId);
+            psi.executeUpdate(); // có thể =0 nếu đơn rỗng
+
+            pso.setInt(1, orderId);
+            int rows = pso.executeUpdate();
+
+            con.commit();
+            return rows > 0;
+        } catch (Exception ex) {
+            con.rollback();
+            throw ex;
+        } finally {
+            con.setAutoCommit(true);
+        }
+    } catch (Exception e) {
+        throw new RuntimeException("delete order failed: " + e.getMessage(), e);
+    }
+}
 }

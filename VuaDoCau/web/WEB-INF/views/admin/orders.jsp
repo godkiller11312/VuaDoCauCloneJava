@@ -17,12 +17,17 @@
     .nav-admin .navbar-nav{flex-direction:row;margin-left:0!important}
     .nav-admin .navbar-brand{margin-right:.75rem}
     .nav-admin .nav-link{padding-left:.75rem;padding-right:.75rem}
+
+    .stt-new{background:#ffc107;color:#000;}
+    .stt-confirmed{background:#0d6efd;}
+    .stt-shipping{background:#17a2b8;}
+    .stt-done{background:#198754;}
+    .stt-canceled{background:#dc3545;}
   </style>
 </head>
 <body class="bg-soft">
 <c:set var="cxt" value="${pageContext.request.contextPath}" />
 
-<!-- NAVBAR gọn cho admin -->
 <nav class="navbar navbar-expand-lg bg-white shadow-sm nav-admin">
   <div class="container">
     <div class="d-flex align-items-center w-100">
@@ -49,6 +54,7 @@
 <div class="container py-4">
   <div class="d-flex align-items-center mb-3">
     <h3 class="fw-bold me-auto">Quản Lý Đơn hàng</h3>
+
   </div>
 
   <c:if test="${not empty sessionScope.flash_success}">
@@ -68,9 +74,11 @@
     <div class="col-md-3">
       <select class="form-select" name="status">
         <option value="">Tất cả trạng thái</option>
-        <c:forEach var="st" items="${['NEW','CONFIRMED','SHIPPING','DONE','CANCELED']}">
-          <option value="${st}" ${status==st?'selected':''}>${st}</option>
-        </c:forEach>
+        <option value="NEW" ${status=='NEW'?'selected':''}>Mới đặt</option>
+        <option value="CONFIRMED" ${status=='CONFIRMED'?'selected':''}>Đã xác nhận</option>
+        <option value="SHIPPING" ${status=='SHIPPING'?'selected':''}>Đang giao hàng</option>
+        <option value="DONE" ${status=='DONE'?'selected':''}>Hoàn tất</option>
+        <option value="CANCELED" ${status=='CANCELED'?'selected':''}>Đã hủy</option>
       </select>
     </div>
     <div class="col-md-2">
@@ -99,25 +107,34 @@
             <div class="small fw-semibold">${o.fullName}</div>
             <div class="small text-muted">${o.email}</div>
           </td>
-          <td><span class="badge bg-secondary">${o.status}</span></td>
+          <td>
+            <c:choose>
+              <c:when test="${o.status=='NEW'}"><span class="badge stt-new">Mới đặt</span></c:when>
+              <c:when test="${o.status=='CONFIRMED'}"><span class="badge stt-confirmed">Đã xác nhận</span></c:when>
+              <c:when test="${o.status=='SHIPPING'}"><span class="badge stt-shipping">Đang giao</span></c:when>
+              <c:when test="${o.status=='DONE'}"><span class="badge stt-done">Hoàn tất</span></c:when>
+              <c:when test="${o.status=='CANCELED'}"><span class="badge stt-canceled">Đã hủy</span></c:when>
+              <c:otherwise><span class="badge bg-secondary">${o.status}</span></c:otherwise>
+            </c:choose>
+          </td>
           <td class="text-end"><fmt:formatNumber value="${o.total}" type="number" groupingUsed="true"/> đ</td>
           <td class="text-end">
-            <!-- Nút Xem chi tiết -->
-            <a class="btn btn-sm btn-outline-primary me-2"
-               href="${cxt}/admin/orders?action=detail&id=${o.id}">
-              Xem
-            </a>
+            <a class="btn btn-sm btn-outline-primary me-1"
+               href="${cxt}/admin/orders?action=detail&id=${o.id}">Xem</a>
 
-            <!-- Cập nhật trạng thái -->
-            <form method="post" action="${cxt}/admin/orders" class="d-inline">
-              <input type="hidden" name="action" value="updateStatus">
-              <input type="hidden" name="id" value="${o.id}">
-              <select name="status" class="form-select form-select-sm d-inline-block" style="width:auto">
-                <c:forEach var="st" items="${['NEW','CONFIRMED','SHIPPING','DONE','CANCELED']}">
-                  <option value="${st}" ${o.status==st?'selected':''}>${st}</option>
-                </c:forEach>
-              </select>
-              <button class="btn btn-sm btn-outline-primary">Cập nhật</button>
+            <!-- SỬA: mở modal chọn trạng thái -->
+            <button class="btn btn-sm btn-outline-secondary me-1"
+                    data-bs-toggle="modal" data-bs-target="#modalEdit"
+                    data-id="${o.id}" data-status="${o.status}">
+              Sửa
+            </button>
+
+            <!-- XÓA -->
+            <form method="post" action="${cxt}/admin/orders" class="d-inline"
+                  onsubmit="return confirm('Xóa đơn hàng #${o.id}? Hành động không thể hoàn tác.')">
+              <input type="hidden" name="action" value="delete"/>
+              <input type="hidden" name="id" value="${o.id}"/>
+              <button class="btn btn-sm btn-outline-danger">Xóa</button>
             </form>
           </td>
         </tr>
@@ -126,6 +143,88 @@
     </table>
   </div>
 </div>
+
+<!-- Modal SỬA -->
+<div class="modal fade" id="modalEdit" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" action="${cxt}/admin/orders">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalEditTitle">Sửa trạng thái đơn</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="action" value="updateStatus">
+          <input type="hidden" name="id" id="e-id">
+          <div class="mb-3">
+            <label class="form-label">Trạng thái</label>
+            <select name="status" id="e-status" class="form-select">
+              <option value="NEW">Mới đặt</option>
+              <option value="CONFIRMED">Đã xác nhận</option>
+              <option value="SHIPPING">Đang giao hàng</option>
+              <option value="DONE">Hoàn tất</option>
+              <option value="CANCELED">Đã hủy</option>
+            </select>
+          </div>
+         
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+          <button class="btn btn-primary" type="submit">Lưu</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal THÊM (tạo nhanh một đơn, có thể thêm chi tiết sau) -->
+<div class="modal fade" id="modalCreate" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" action="${cxt}/admin/orders">
+        <div class="modal-header">
+          <h5 class="modal-title">Thêm đơn mới</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="action" value="create">
+          <div class="mb-3">
+            <label class="form-label">Mã người dùng (MaND)</label>
+            <input class="form-control" name="userId" required placeholder="vd: 1">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Trạng thái</label>
+            <select name="status" class="form-select">
+              <option value="NEW">Mới đặt</option>
+              <option value="CONFIRMED">Đã xác nhận</option>
+              <option value="SHIPPING">Đang giao hàng</option>
+              <option value="DONE">Hoàn tất</option>
+              <option value="CANCELED">Đã hủy</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Ghi chú</label>
+            <textarea class="form-control" name="note" rows="2" placeholder="SDT / Địa chỉ / ghi chú..."></textarea>
+          </div>
+          <div class="text-muted small">* Tạo đơn rỗng (chưa có chi tiết). Anh có thể thêm chi tiết sau trong phần “Xem”.</div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+          <button class="btn btn-success" type="submit">Tạo</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+const editModal = document.getElementById('modalEdit');
+editModal.addEventListener('show.bs.modal', event => {
+  const btn = event.relatedTarget;
+  document.getElementById('e-id').value = btn.dataset.id;
+  document.getElementById('e-status').value = btn.dataset.status;
+});
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

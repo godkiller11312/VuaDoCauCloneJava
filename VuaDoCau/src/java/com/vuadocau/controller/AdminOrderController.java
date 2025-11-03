@@ -64,23 +64,36 @@ public class AdminOrderController extends HttpServlet {
        req.getRequestDispatcher("/WEB-INF/views/admin/orders.jsp").forward(req, resp);
     }
 
-    @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        if (!isAdmin(req)) { resp.sendRedirect(req.getContextPath()+"/home"); return; }
+   @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+        throws ServletException, IOException {
+    if (!isAdmin(req)) { resp.sendRedirect(req.getContextPath()+"/home"); return; }
 
-        req.setCharacterEncoding("UTF-8");
-        String action = req.getParameter("action");
-        try {
-            if ("updateStatus".equals(action)) {
-                int id = Integer.parseInt(req.getParameter("id"));
-                String st = req.getParameter("status");
-                orderDAO.updateStatus(id, st);
-                req.getSession().setAttribute("flash_success", "Đã cập nhật trạng thái đơn #" + id);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            req.getSession().setAttribute("flash_error", "Lỗi: " + e.getMessage());
+    req.setCharacterEncoding("UTF-8");
+    String action = req.getParameter("action");
+    try {
+        if ("updateStatus".equals(action)) {
+            int id = Integer.parseInt(req.getParameter("id"));
+            String st = req.getParameter("status");
+            orderDAO.updateStatus(id, st);
+            req.getSession().setAttribute("flash_success", "Đã cập nhật trạng thái đơn #" + id);
+        } else if ("create".equals(action)) {
+            int userId = Integer.parseInt(req.getParameter("userId"));
+            String st   = req.getParameter("status");
+            String note = req.getParameter("note");
+            int newId = orderDAO.insertAdmin(userId, st, note);
+            req.getSession().setAttribute("flash_success", "Đã tạo đơn mới #" + newId);
+        } else if ("delete".equals(action)) {
+            int id = Integer.parseInt(req.getParameter("id"));
+            boolean ok = orderDAO.delete(id);
+            if (ok) req.getSession().setAttribute("flash_success", "Đã xóa đơn #" + id);
+            else    req.getSession().setAttribute("flash_error", "Không thể xóa đơn #" + id);
+        } else {
+            req.getSession().setAttribute("flash_error", "Action không hợp lệ.");
         }
-        resp.sendRedirect(req.getContextPath()+"/admin/orders");
+    } catch (Exception e) {
+        e.printStackTrace();
+        req.getSession().setAttribute("flash_error", "Lỗi: " + e.getMessage());
     }
+    resp.sendRedirect(req.getContextPath()+"/admin/orders");
+}
 }
