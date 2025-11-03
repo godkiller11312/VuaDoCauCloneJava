@@ -150,7 +150,7 @@
       </thead>
       <tbody>
       <c:forEach var="p" items="${products}">
-        <tr>
+        <tr id="row-${p.id}">
           <td>${p.id}</td>
           <td><img class="thumb" src="${cxt}/asset/images/${p.image}" onerror="this.src='${cxt}/asset/images/no-image.png'"></td>
           <td>${p.name}</td>
@@ -160,7 +160,14 @@
           <td class="text-center"><fmt:formatNumber value="${p.rating}" type="number" maxFractionDigits="1"/></td>
           <td class="text-center">${p.purchased}</td>
           <td class="text-end">
-            <button class="btn btn-sm btn-outline-secondary"
+            <!-- Nút xem chi tiết -->
+            <a class="btn btn-sm btn-outline-primary me-1"
+               href="${cxt}/admin/products?action=detail&id=${p.id}">
+              Xem
+            </a>
+
+            <!-- Nút sửa (mở modal) -->
+            <button class="btn btn-sm btn-outline-secondary me-1"
                     data-bs-toggle="modal" data-bs-target="#modalForm"
                     data-id="${p.id}"
                     data-name="${fn:escapeXml(p.name)}"
@@ -176,6 +183,7 @@
               Sửa
             </button>
 
+            <!-- Xóa -->
             <form method="post" action="${cxt}/admin/products" class="d-inline"
                   onsubmit="return confirm('Xóa sản phẩm #${p.id}?')">
               <input type="hidden" name="action" value="delete"/>

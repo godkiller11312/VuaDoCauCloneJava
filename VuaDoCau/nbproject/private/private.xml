@@ -4,18 +4,25 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/auth/login.jsp</file>
+            <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/controller/AdminOrderController.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/model/Category.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/filter/AuthFilter.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/dao/CategoryDAO.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/util/PasswordUtil.java</file>
+            <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/model/Order.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/controller/ProductController.java</file>
+            <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/model/OrderItem.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/dao/ProductDAO.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/controller/LoginController.java</file>
             <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/partials/mini-cart.jsp</file>
+            <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/admin/order-detail.jsp</file>
+            <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/controller/AdminProductController.java</file>
+            <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/admin/orders.jsp</file>
             <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/home.jsp</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/dao/UserDAO.java</file>
             <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/checkout.jsp</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/util/Db.java</file>
+            <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/admin/products.jsp</file>
             <file>file:/D:/Netbean/VuaDoCau/web/index.jsp</file>
             <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/products.jsp</file>
             <file>file:/D:/Netbean/VuaDoCau/nbproject/project.properties</file>
@@ -27,6 +34,8 @@
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/controller/DebugDbServlet.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/controller/LogoutController.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/filter/AdminFilter.java</file>
+            <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/order_detail.jsp</file>
+            <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/dao/OrderDAO.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/model/Product.java</file>
             <file>file:/D:/Netbean/VuaDoCau/web/asset/css/site.css</file>
             <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/cart.jsp</file>

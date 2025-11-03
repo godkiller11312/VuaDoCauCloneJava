@@ -19,9 +19,9 @@
     .btn-teal:hover{ filter:brightness(.95); color:#fff }
     .thumb{ background:#f6f7ff }
     .card-title{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
-.nav-admin .navbar-nav{flex-direction:row;margin-left:0!important}
-.nav-admin .navbar-brand{margin-right:.75rem}
-.nav-admin .nav-link{padding-left:.75rem;padding-right:.75rem}
+    .nav-admin .navbar-nav{flex-direction:row;margin-left:0!important}
+    .nav-admin .navbar-brand{margin-right:.75rem}
+    .nav-admin .nav-link{padding-left:.75rem;padding-right:.75rem}
   </style>
 </head>
 <body class="bg-soft">
@@ -33,12 +33,9 @@
   <div class="container">
     <div class="d-flex align-items-center w-100">
 
-      <!-- Logo -->
       <a class="navbar-brand fw-bold me-2" href="${cxt}/home">VuaĐồCâu</a>
 
-      <!-- Menu trái -->
       <ul class="navbar-nav flex-row gap-3 align-items-center">
-        <!-- ADMIN: chỉ 2 mục quản trị, không có search -->
         <c:if test="${isAdmin}">
           <li class="nav-item">
             <a class="nav-link text-danger fw-semibold" href="${cxt}/admin/products">Quản Lý Sản phẩm</a>
@@ -48,7 +45,6 @@
           </li>
         </c:if>
 
-        <!-- USER: menu thông thường -->
         <c:if test="${!isAdmin}">
           <li class="nav-item"><a class="nav-link" href="${cxt}/home">Trang chủ</a></li>
           <li class="nav-item dropdown">
@@ -63,10 +59,8 @@
         </c:if>
       </ul>
 
-      <!-- Đẩy dropdown sang phải -->
       <div class="flex-grow-1"></div>
 
-      <!-- Search CHỈ hiện với user (admin không có search) -->
       <c:if test="${!isAdmin}">
         <form class="d-none d-lg-flex me-2" style="max-width:520px" method="get" action="${cxt}/products">
           <input class="form-control me-2" type="search" name="q" placeholder="Tìm sản phẩm...">
@@ -74,32 +68,42 @@
         </form>
       </c:if>
 
-      <!-- Dropdown tài khoản -->
-      <div class="dropdown">
-        <button class="btn btn-outline-secondary rounded-pill dropdown-toggle px-3" type="button" data-bs-toggle="dropdown">
-          ${sessionScope.authUser.email}
-        </button>
-        <ul class="dropdown-menu dropdown-menu-end shadow">
-          <c:if test="${!isAdmin}">
-            <li>
-              <a class="dropdown-item d-flex justify-content-between align-items-center" href="${cxt}/cart">
-                Giỏ hàng
-                <span class="badge text-bg-primary">${empty sessionScope.cartCount ? 0 : sessionScope.cartCount}</span>
-              </a>
-            </li>
-          </c:if>
-          <li><a class="dropdown-item" href="${cxt}/profile">Hồ sơ cá nhân</a></li>
-          <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item text-danger" href="${cxt}/logout">Đăng xuất</a></li>
-        </ul>
-      </div>
+      <c:choose>
+        <c:when test="${not empty sessionScope.authUser}">
+          <div class="dropdown">
+            <button class="btn btn-outline-secondary rounded-pill dropdown-toggle px-3" type="button" data-bs-toggle="dropdown">
+              ${sessionScope.authUser.email}
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow">
+              <c:if test="${!isAdmin}">
+                <li>
+                  <a class="dropdown-item d-flex justify-content-between align-items-center" href="${cxt}/cart">
+                    Giỏ hàng
+                    <span class="badge text-bg-primary">
+                      ${empty sessionScope.cartCount ? 0 : sessionScope.cartCount}
+                    </span>
+                  </a>
+                </li>
+              </c:if>
+              <li><a class="dropdown-item" href="${cxt}/profile">Hồ sơ cá nhân</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-danger" href="${cxt}/logout">Đăng xuất</a></li>
+            </ul>
+          </div>
+        </c:when>
+        <c:otherwise>
+          <div class="ms-2 d-flex gap-2">
+            <a class="btn btn-outline-success" href="${cxt}/login">Đăng nhập</a>
+            <a class="btn btn-success" href="${cxt}/register">Đăng ký</a>
+          </div>
+        </c:otherwise>
+      </c:choose>
 
     </div>
   </div>
 </nav>
 
 <div class="container py-4">
-  <!-- ============== ADMIN HOME ============== -->
   <c:if test="${isAdmin}">
     <div class="row justify-content-center">
       <div class="col-12 col-lg-10">
@@ -124,25 +128,12 @@
                 </div>
               </a>
             </div>
-
-            <!-- Có thể thêm các mục quản trị khác ở đây -->
-            <%-- 
-            <div class="col-12 col-md-6">
-              <a class="text-decoration-none" href="${cxt}/admin/users">
-                <div class="border rounded-4 p-4 h-100 shadow-sm">
-                  <div class="fs-5 fw-semibold mb-1 text-danger">Quản lý Người dùng</div>
-                  <div class="text-muted">Phân quyền, khóa/mở tài khoản…</div>
-                </div>
-              </a>
-            </div>
-            --%>
           </div>
         </div>
       </div>
     </div>
   </c:if>
 
-  <!-- ============== USER HOME (giữ nguyên danh mục + sản phẩm) ============== -->
   <c:if test="${!isAdmin}">
     <c:forEach var="entry" items="${sections}">
       <c:set var="cat"  value="${entry.key}"/>
@@ -198,8 +189,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Mini-cart chỉ cần cho user; để nguyên include cũng không sao,
-     nhưng nếu muốn tối ưu có thể bao bằng điều kiện -->
 <c:if test="${!isAdmin}">
   <jsp:include page="/WEB-INF/views/partials/mini-cart.jsp" />
 </c:if>
