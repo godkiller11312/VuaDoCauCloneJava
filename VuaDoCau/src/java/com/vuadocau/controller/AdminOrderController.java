@@ -26,6 +26,32 @@ public class AdminOrderController extends HttpServlet {
             throws ServletException, IOException {
         if (!isAdmin(req)) { resp.sendRedirect(req.getContextPath()+"/home"); return; }
 
+        String action = req.getParameter("action");
+        if ("detail".equalsIgnoreCase(action)) {
+            try {
+                int id = Integer.parseInt(req.getParameter("id"));
+                Order order = orderDAO.findAdminById(id);
+                if (order == null) {
+                    req.getSession().setAttribute("flash_error", "Không tìm thấy đơn #" + id);
+                    resp.sendRedirect(req.getContextPath()+"/admin/orders");
+                    return;
+                }
+                // phí ship có thể tính ở đây nếu cần
+                order.setShipFee(java.math.BigDecimal.ZERO);
+                order.setTotal(order.getSubtotal().add(order.getShipFee()));
+
+                req.setAttribute("order", order);
+                req.getRequestDispatcher("/WEB-INF/views/admin/order-detail.jsp").forward(req, resp);
+                return;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                req.getSession().setAttribute("flash_error", "Lỗi: " + ex.getMessage());
+                resp.sendRedirect(req.getContextPath()+"/admin/orders");
+                return;
+            }
+        }
+
+        // Danh sách
         String q = req.getParameter("q");
         String status = req.getParameter("status");
 
@@ -34,7 +60,8 @@ public class AdminOrderController extends HttpServlet {
         req.setAttribute("q", q);
         req.setAttribute("status", status);
 
-        req.getRequestDispatcher("/WEB-INF/views/admin/orders.jsp").forward(req, resp);
+   
+       req.getRequestDispatcher("/WEB-INF/views/admin/orders.jsp").forward(req, resp);
     }
 
     @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp)

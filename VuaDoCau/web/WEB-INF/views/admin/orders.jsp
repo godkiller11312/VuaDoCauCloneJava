@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" %> 
 <%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
@@ -102,6 +102,13 @@
           <td><span class="badge bg-secondary">${o.status}</span></td>
           <td class="text-end"><fmt:formatNumber value="${o.total}" type="number" groupingUsed="true"/> đ</td>
           <td class="text-end">
+            <!-- Nút Xem chi tiết -->
+            <a class="btn btn-sm btn-outline-primary me-2"
+               href="${cxt}/admin/orders?action=detail&id=${o.id}">
+              Xem
+            </a>
+
+            <!-- Cập nhật trạng thái -->
             <form method="post" action="${cxt}/admin/orders" class="d-inline">
               <input type="hidden" name="action" value="updateStatus">
               <input type="hidden" name="id" value="${o.id}">
