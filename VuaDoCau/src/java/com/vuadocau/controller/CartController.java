@@ -31,8 +31,7 @@ public class CartController extends HttpServlet {
     }
 
     private int parseInt(String s, int def) {
-        try { return Integer.parseInt(s); }
-        catch (Exception e) { return def; }
+        try { return Integer.parseInt(s); } catch (Exception e) { return def; }
     }
 
     private void json(HttpServletResponse resp, String body) throws IOException {
@@ -47,10 +46,18 @@ public class CartController extends HttpServlet {
         HttpSession session = req.getSession();
         Cart cart = getCart(session);
 
-        String action = req.getParameter("action"); // add|remove|clear|null(show)
+        String action   = req.getParameter("action");     // add|remove|clear|null(show)
+        String fragment = req.getParameter("fragment");   // nếu có -> trả về fragment HTML
+
+        // ✅ trả về FRAGMENT cho mini-cart body (không tạo file mới)
+        if (fragment != null) {
+            req.setAttribute("fragment", Boolean.TRUE);
+            req.getRequestDispatcher("/WEB-INF/views/partials/mini-cart.jsp")
+               .forward(req, resp);
+            return;
+        }
 
         if ("add".equals(action)) {
-            // Fallback GET (giữ hành vi cũ khi không dùng JS)
             int id  = parseInt(req.getParameter("id"), -1);
             int qty = parseInt(req.getParameter("qty"), 1);
             Product p = productDAO.findById(id);
@@ -77,14 +84,12 @@ public class CartController extends HttpServlet {
             return;
         }
 
-        // lấy flash nếu có
         Object flash = session.getAttribute("flash_success");
         if (flash != null) {
             req.setAttribute("message", flash);
             session.removeAttribute("flash_success");
         }
 
-        // show page
         req.setAttribute("cart", cart);
         req.setAttribute("view", "/WEB-INF/views/cart.jsp");
         req.setAttribute("pageTitle", "Giỏ hàng");
@@ -99,15 +104,17 @@ public class CartController extends HttpServlet {
         Cart cart = getCart(session);
         String action = req.getParameter("action");
 
-        // === AJAX add (không reload) ===
+        // === AJAX ADD ===
         if ("add".equals(action)) {
             int id  = parseInt(req.getParameter("id"), -1);
             int qty = parseInt(req.getParameter("qty"), 1);
+
             Product p = productDAO.findById(id);
             if (p != null) {
                 cart.add(p, qty);
                 syncBadge(session, cart);
             }
+
             CartItem it = cart.getItem(id);
             BigDecimal itemSubtotal = it != null ? it.getSubtotal() : BigDecimal.ZERO;
             BigDecimal totalAmount  = cart.getTotalAmount();
@@ -124,7 +131,7 @@ public class CartController extends HttpServlet {
             return;
         }
 
-        // === AJAX: đặt số lượng 1 item (ô number/Áp dụng) ===
+        // === AJAX SET QTY ===
         if ("set".equals(action)) {
             int id  = parseInt(req.getParameter("id"), -1);
             int qty = parseInt(req.getParameter("qty"), 1);
@@ -147,7 +154,7 @@ public class CartController extends HttpServlet {
             return;
         }
 
-        // === Fallback: cập nhật hàng loạt ===
+        // Fallback: cập nhật hàng loạt
         req.getParameterMap().forEach((name, values) -> {
             if (name.startsWith("qty[")) {
                 int id = parseInt(name.substring(4, name.length() - 1), -1);

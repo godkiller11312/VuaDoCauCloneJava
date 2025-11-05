@@ -2,13 +2,16 @@
 <%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+
+<c:set var="cxt" value="${pageContext.request.contextPath}" />
+
 <c:forEach var="entry" items="${sections}">
   <c:set var="cat"  value="${entry.key}"/>
   <c:set var="list" value="${entry.value}"/>
 
   <div class="d-flex align-items-baseline mb-2 mt-4">
     <h4 class="me-auto fw-bold">${cat.name}</h4>
-    <a class="text-decoration-none" href="${pageContext.request.contextPath}/products?cat=${cat.id}">
+    <a class="text-decoration-none" href="${cxt}/products?cat=${cat.id}">
       Xem tất cả →
     </a>
   </div>
@@ -24,9 +27,9 @@
             <div class="card h-100 shadow-sm rounded-4 border-0">
               <div class="ratio ratio-1x1 rounded-top-4 d-flex align-items-center justify-content-center thumb" style="background:#f6f7ff">
                 <img class="p-4"
-                     src="${pageContext.request.contextPath}/asset/images/${p.image != null ? p.image : 'no-image.png'}"
+                     src="${cxt}/asset/images/${p.image != null ? p.image : 'no-image.png'}"
                      alt="${p.name}"
-                     onerror="this.src='${pageContext.request.contextPath}/asset/images/no-image.png'">
+                     onerror="this.src='${cxt}/asset/images/no-image.png'">
               </div>
               <div class="card-body">
                 <span class="badge bg-light text-dark mb-2">${p.categoryName}</span>
@@ -39,8 +42,10 @@
                   <fmt:formatNumber value="${p.price}" type="number" groupingUsed="true"/> đ
                 </div>
                 <div class="mt-3 d-grid">
-                  <a class="btn btn-teal rounded-pill"
-                     href="${pageContext.request.contextPath}/cart?action=add&id=${p.id}">
+                  <!-- GIỮ href cũ để fallback, nhưng JS sẽ chặn không reload -->
+                  <a class="btn btn-teal rounded-pill btn-add-to-cart"
+                     href="${cxt}/cart?action=add&id=${p.id}"
+                     data-id="${p.id}" data-qty="1">
                     Thêm vào giỏ
                   </a>
                 </div>
@@ -52,3 +57,4 @@
     </c:otherwise>
   </c:choose>
 </c:forEach>
+
