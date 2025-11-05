@@ -25,9 +25,11 @@ public class CheckoutController extends HttpServlet {
             req.setAttribute("prefillName",  u.getName());
             req.setAttribute("prefillEmail", u.getEmail());
         }
-        req.setAttribute("cart", cart);
-        req.setAttribute("shipFee", SHIP_FEE);
-        req.getRequestDispatcher("/WEB-INF/views/checkout.jsp").forward(req, resp);
+    req.setAttribute("cart", cart);
+req.setAttribute("shipFee", SHIP_FEE);
+req.setAttribute("view", "/WEB-INF/views/checkout.jsp");
+req.setAttribute("pageTitle", "Thanh toán");
+req.getRequestDispatcher("/WEB-INF/views/_layout/main.jsp").forward(req, resp);
     }
 
     @Override

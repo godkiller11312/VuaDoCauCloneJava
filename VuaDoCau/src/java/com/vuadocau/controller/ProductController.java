@@ -41,9 +41,11 @@ protected void doGet(HttpServletRequest req, HttpServletResponse resp)
         g = "all";
     }
 
-    req.setAttribute("products", products);
-    req.setAttribute("q", q);
-    req.setAttribute("g", g);
-    req.getRequestDispatcher("/WEB-INF/views/products.jsp").forward(req, resp);
+  req.setAttribute("products", products);
+req.setAttribute("q", q);
+req.setAttribute("g", g);
+req.setAttribute("view", "/WEB-INF/views/products.jsp");
+req.setAttribute("pageTitle", "Sản phẩm");
+req.getRequestDispatcher("/WEB-INF/views/_layout/main.jsp").forward(req, resp);
 }
 }

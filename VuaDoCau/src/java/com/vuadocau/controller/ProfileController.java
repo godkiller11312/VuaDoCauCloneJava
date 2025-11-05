@@ -22,8 +22,10 @@ public class ProfileController extends HttpServlet {
         if (u == null) { resp.sendRedirect(req.getContextPath() + "/login"); return; }
 
         List<Order> orders = orderDAO.findByUser(u.getId());
-        req.setAttribute("orders", orders);
-        req.setAttribute("user", u);
-        req.getRequestDispatcher("/WEB-INF/views/profile.jsp").forward(req, resp);
+   req.setAttribute("orders", orders);
+req.setAttribute("user", u);
+req.setAttribute("view", "/WEB-INF/views/profile.jsp");
+req.setAttribute("pageTitle", "Hồ sơ cá nhân");
+req.getRequestDispatcher("/WEB-INF/views/_layout/main.jsp").forward(req, resp);
     }
 }

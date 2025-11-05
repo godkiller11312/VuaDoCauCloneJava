@@ -18,8 +18,6 @@ public class AdminProductController extends HttpServlet {
     private final ProductDAO productDAO = new ProductDAO();
     private final CategoryDAO categoryDAO = new CategoryDAO();
 
-    /* ===== helpers ===== */
-
     private boolean isAdmin(HttpServletRequest req){
         HttpSession s = req.getSession(false);
         if (s == null) return false;
@@ -35,14 +33,11 @@ public class AdminProductController extends HttpServlet {
     private BigDecimal tryParseDecimal(String s){
         try {
             if (s == null || s.isBlank()) return BigDecimal.ZERO;
-            // loại dấu phẩy/thousand separator nếu người dùng gõ
             return new BigDecimal(s.replace(",", "").trim());
         } catch (Exception e){
             return BigDecimal.ZERO;
         }
     }
-
-    /* ===== GET: list + detail ===== */
 
     @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -51,7 +46,6 @@ public class AdminProductController extends HttpServlet {
 
         String action = req.getParameter("action");
         if ("detail".equals(action)) {
-            // xem chi tiết sản phẩm
             Integer id = tryParseInt(req.getParameter("id"));
             if (id == null) {
                 req.getSession().setAttribute("flash_error", "Thiếu mã sản phẩm.");
@@ -65,7 +59,10 @@ public class AdminProductController extends HttpServlet {
                 return;
             }
             req.setAttribute("p", p);
-            req.getRequestDispatcher("/WEB-INF/views/admin/product-detail.jsp").forward(req, resp);
+            req.setAttribute("categories", categoryDAO.findAll());
+            req.setAttribute("view", "/WEB-INF/views/admin/product-detail.jsp");
+            req.setAttribute("pageTitle", "Quản trị · Sản phẩm · #" + id);
+            req.getRequestDispatcher("/WEB-INF/views/_layout/main.jsp").forward(req, resp);
             return;
         }
 
@@ -86,11 +83,10 @@ public class AdminProductController extends HttpServlet {
         req.setAttribute("categories", categoryDAO.findAll());
         req.setAttribute("q", q);
         req.setAttribute("cat", cat);
-
-        req.getRequestDispatcher("/WEB-INF/views/admin/products.jsp").forward(req, resp);
+        req.setAttribute("view", "/WEB-INF/views/admin/products.jsp");
+        req.setAttribute("pageTitle", "Quản trị · Sản phẩm");
+        req.getRequestDispatcher("/WEB-INF/views/_layout/main.jsp").forward(req, resp);
     }
-
-    /* ===== POST: create / update / delete ===== */
 
     @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -103,29 +99,26 @@ public class AdminProductController extends HttpServlet {
         try {
             if ("create".equalsIgnoreCase(action) || "update".equalsIgnoreCase(action)) {
                 Product p = new Product();
-
                 if ("update".equalsIgnoreCase(action)) {
                     Integer id = tryParseInt(req.getParameter("id"));
                     if (id == null) throw new IllegalArgumentException("Thiếu mã sản phẩm để cập nhật");
                     p.setId(id);
                 }
-
                 p.setName(req.getParameter("name"));
-                p.setCategoryId(tryParseInt(req.getParameter("categoryId")) == null ? 0
-                        : tryParseInt(req.getParameter("categoryId")));
-                Integer brandId = tryParseInt(req.getParameter("brandId"));
-                p.setBrandId(brandId); // có thể null
+                Integer catId = tryParseInt(req.getParameter("categoryId"));
+                p.setCategoryId(catId == null ? 0 : catId);
+                p.setBrandId(tryParseInt(req.getParameter("brandId")));
                 p.setPrice(tryParseDecimal(req.getParameter("price")));
                 p.setImage(req.getParameter("image"));
                 p.setDescription(req.getParameter("description"));
-                p.setStock(tryParseInt(req.getParameter("stock")) == null ? 0
-                        : tryParseInt(req.getParameter("stock")));
+                Integer stock = tryParseInt(req.getParameter("stock"));
+                p.setStock(stock == null ? 0 : stock);
                 try {
                     String r = req.getParameter("rating");
                     p.setRating((r == null || r.isBlank()) ? 0 : Double.parseDouble(r));
                 } catch (Exception ignore) { p.setRating(0); }
-                p.setPurchased(tryParseInt(req.getParameter("purchased")) == null ? 0
-                        : tryParseInt(req.getParameter("purchased")));
+                Integer purchased = tryParseInt(req.getParameter("purchased"));
+                p.setPurchased(purchased == null ? 0 : purchased);
 
                 boolean ok = "create".equalsIgnoreCase(action) ? productDAO.insert(p) : productDAO.update(p);
                 if (ok) req.getSession().setAttribute("flash_success",
@@ -145,7 +138,6 @@ public class AdminProductController extends HttpServlet {
                 return;
             }
 
-            // không khớp action
             req.getSession().setAttribute("flash_error", "Action không hợp lệ.");
             resp.sendRedirect(req.getContextPath()+"/admin/products");
 

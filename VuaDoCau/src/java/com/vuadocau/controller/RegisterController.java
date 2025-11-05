@@ -13,7 +13,9 @@ public class RegisterController extends HttpServlet {
 
     @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/views/auth/register.jsp").forward(req, resp);
+       req.setAttribute("view", "/WEB-INF/views/auth/register.jsp");
+req.setAttribute("pageTitle", "Đăng ký");
+req.getRequestDispatcher("/WEB-INF/views/_layout/main.jsp").forward(req, resp);
     }
 
     @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp)

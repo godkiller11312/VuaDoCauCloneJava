@@ -1,7 +1,9 @@
 package com.vuadocau.controller;
 
 import com.vuadocau.dao.ProductDAO;
-import com.vuadocau.model.*;
+import com.vuadocau.model.Cart;
+import com.vuadocau.model.CartItem;
+import com.vuadocau.model.Product;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -48,12 +50,12 @@ public class CartController extends HttpServlet {
         String action = req.getParameter("action"); // add|remove|clear|null(show)
 
         if ("add".equals(action)) {
+            // Fallback GET (giữ hành vi cũ khi không dùng JS)
             int id  = parseInt(req.getParameter("id"), -1);
             int qty = parseInt(req.getParameter("qty"), 1);
             Product p = productDAO.findById(id);
             if (p != null) cart.add(p, qty);
             syncBadge(session, cart);
-            // flash “đã thêm”
             session.setAttribute("flash_success", "Đã thêm vào giỏ!");
             String back = req.getHeader("Referer");
             resp.sendRedirect(back != null ? back : req.getContextPath() + "/cart");
@@ -84,7 +86,9 @@ public class CartController extends HttpServlet {
 
         // show page
         req.setAttribute("cart", cart);
-        req.getRequestDispatcher("/WEB-INF/views/cart.jsp").forward(req, resp);
+        req.setAttribute("view", "/WEB-INF/views/cart.jsp");
+        req.setAttribute("pageTitle", "Giỏ hàng");
+        req.getRequestDispatcher("/WEB-INF/views/_layout/main.jsp").forward(req, resp);
     }
 
     @Override
@@ -95,7 +99,32 @@ public class CartController extends HttpServlet {
         Cart cart = getCart(session);
         String action = req.getParameter("action");
 
-        // AJAX: đặt số lượng 1 item (khi đổi ô number / bấm "Áp dụng")
+        // === AJAX add (không reload) ===
+        if ("add".equals(action)) {
+            int id  = parseInt(req.getParameter("id"), -1);
+            int qty = parseInt(req.getParameter("qty"), 1);
+            Product p = productDAO.findById(id);
+            if (p != null) {
+                cart.add(p, qty);
+                syncBadge(session, cart);
+            }
+            CartItem it = cart.getItem(id);
+            BigDecimal itemSubtotal = it != null ? it.getSubtotal() : BigDecimal.ZERO;
+            BigDecimal totalAmount  = cart.getTotalAmount();
+            int totalQty            = cart.getTotalQty();
+
+            String body = String.format(
+                "{\"ok\":true,\"id\":%d,\"qty\":%d,\"itemSubtotal\":%s,\"totalAmount\":%s,\"count\":%d}",
+                id, (it != null ? it.getQuantity() : 0),
+                itemSubtotal.toPlainString(),
+                totalAmount.toPlainString(),
+                totalQty
+            );
+            json(resp, body);
+            return;
+        }
+
+        // === AJAX: đặt số lượng 1 item (ô number/Áp dụng) ===
         if ("set".equals(action)) {
             int id  = parseInt(req.getParameter("id"), -1);
             int qty = parseInt(req.getParameter("qty"), 1);
@@ -107,18 +136,18 @@ public class CartController extends HttpServlet {
             BigDecimal totalAmount  = cart.getTotalAmount();
             int totalQty            = cart.getTotalQty();
 
-            String json = String.format(
+            String body = String.format(
                 "{\"ok\":true,\"id\":%d,\"qty\":%d,\"itemSubtotal\":%s,\"totalAmount\":%s,\"totalQty\":%d}",
                 id, qty,
                 itemSubtotal.toPlainString(),
                 totalAmount.toPlainString(),
                 totalQty
             );
-            json(resp, json);
+            json(resp, body);
             return;
         }
 
-        // fallback: cập nhật hàng loạt (ít dùng)
+        // === Fallback: cập nhật hàng loạt ===
         req.getParameterMap().forEach((name, values) -> {
             if (name.startsWith("qty[")) {
                 int id = parseInt(name.substring(4, name.length() - 1), -1);

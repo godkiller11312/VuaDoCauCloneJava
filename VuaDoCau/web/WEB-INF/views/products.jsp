@@ -1,146 +1,49 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>VuaĐồCâu - Sản phẩm</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
-  <style>
-    :root{ --teal:#22b8a7 }
-    .bg-soft{
-      background:
-        radial-gradient(1200px 600px at 10% 0%, #eaf6ff 0, rgba(255,255,255,.9) 60%),
-        radial-gradient(1200px 600px at 90% 100%, #eafff9 0, rgba(255,255,255,.9) 60%);
-    }
-    .btn-teal{ background:var(--teal); color:#fff }
-    .btn-teal:hover{ filter:brightness(.95); color:#fff }
-    .thumb{ background:#f6f7ff }
-    .card-title{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
-    .navbar .nav-link { padding-left:.75rem; padding-right:.75rem }
-  </style>
-</head>
-<body class="bg-soft">
 
 <c:set var="cxt" value="${pageContext.request.contextPath}" />
-<c:set var="auth" value="${sessionScope.authUser}" />
-<c:set var="isAdmin" value="${not empty auth and auth.roleId == 1}" />
 
-<nav class="navbar navbar-expand-lg bg-white shadow-sm">
-  <div class="container">
-    <a class="navbar-brand fw-bold" href="${cxt}/home">VuaĐồCâu</a>
+<h3 class="mb-3 fw-bold">Sản phẩm</h3>
 
-    <ul class="navbar-nav me-3 align-items-center">
-      <!-- User thường -->
-      <c:if test="${!isAdmin}">
-        <li class="nav-item"><a class="nav-link" href="${cxt}/home">Trang chủ</a></li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Danh mục</a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="${cxt}/products?g=all">Tất cả sản phẩm</a></li>
-            <li><a class="dropdown-item" href="${cxt}/products?g=can">Cần câu</a></li>
-            <li><a class="dropdown-item" href="${cxt}/products?g=may">Máy câu</a></li>
-            <li><a class="dropdown-item" href="${cxt}/products?g=khac">Dây / Mồi / Phụ kiện</a></li>
-          </ul>
-        </li>
-      </c:if>
+<c:choose>
+  <c:when test="${empty products}">
+    <div class="alert alert-info">Không có sản phẩm phù hợp.</div>
+  </c:when>
 
-      <!-- Admin: link ngang, màu đỏ; không có 'Quản lý danh mục' -->
-      <c:if test="${isAdmin}">
-        <li class="nav-item"><span class="nav-link text-danger fw-bold">Quản trị:</span></li>
-        <li class="nav-item"><a class="nav-link text-danger fw-semibold" href="${cxt}/admin/products">Quản Lý Sản phẩm</a></li>
-        <li class="nav-item"><a class="nav-link text-danger fw-semibold" href="${cxt}/admin/orders">Quản Lý Đơn hàng</a></li>
-      </c:if>
-    </ul>
+  <c:otherwise>
+    <div class="row g-4">
+      <c:forEach items="${products}" var="p">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <div class="card h-100 shadow-sm rounded-4 border-0">
+            <div class="ratio ratio-1x1 rounded-top-4 d-flex align-items-center justify-content-center thumb">
+              <img class="p-4"
+                   src="${cxt}/asset/images/${p.image != null ? p.image : 'no-image.png'}"
+                   alt="${p.name}"
+                   onerror="this.src='${cxt}/asset/images/no-image.png'">
+            </div>
 
-    <!-- RIGHT: search + account -->
-    <form class="d-flex ms-auto me-2 flex-grow-1" style="max-width:520px" method="get" action="${cxt}/products">
-      <input class="form-control me-2" type="search" name="q" value="${q}" placeholder="Tìm sản phẩm...">
-      <button class="btn btn-teal">Tìm</button>
-    </form>
+            <div class="card-body">
+              <span class="badge bg-light text-dark mb-2">${p.categoryName}</span>
+              <h6 class="card-title">${p.name}</h6>
 
-    <c:choose>
-      <c:when test="${not empty sessionScope.authUser}">
-        <div class="dropdown">
-          <button class="btn btn-outline-secondary rounded-pill dropdown-toggle px-3" type="button" data-bs-toggle="dropdown">
-            ${sessionScope.authUser.email}
-          </button>
-          <ul class="dropdown-menu dropdown-menu-end shadow">
-            <!-- Ẩn Giỏ hàng với Admin -->
-            <c:if test="${!isAdmin}">
-              <li>
-                <a class="dropdown-item d-flex justify-content-between align-items-center" href="${cxt}/cart">
-                  Giỏ hàng
-                  <span class="badge text-bg-primary">${empty sessionScope.cartCount ? 0 : sessionScope.cartCount}</span>
-                </a>
-              </li>
-            </c:if>
-            <li><a class="dropdown-item" href="${cxt}/profile">Hồ sơ cá nhân</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item text-danger" href="${cxt}/logout">Đăng xuất</a></li>
-          </ul>
-        </div>
-      </c:when>
-      <c:otherwise>
-        <div class="ms-2 d-flex gap-2">
-          <a class="btn btn-outline-success" href="${cxt}/login">Đăng nhập</a>
-          <a class="btn btn-success" href="${cxt}/register">Đăng ký</a>
-        </div>
-      </c:otherwise>
-    </c:choose>
-  </div>
-</nav>
-
-<section class="container py-4">
-  <h3 class="mb-3 fw-bold">Sản phẩm</h3>
-
-  <c:choose>
-    <c:when test="${empty products}">
-      <div class="alert alert-info">Không có sản phẩm phù hợp.</div>
-    </c:when>
-    <c:otherwise>
-      <div class="row g-4">
-        <c:forEach items="${products}" var="p">
-          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div class="card h-100 shadow-sm rounded-4 border-0">
-              <div class="ratio ratio-1x1 rounded-top-4 d-flex align-items-center justify-content-center thumb">
-                <img class="p-4"
-                     src="${cxt}/asset/images/${p.image != null ? p.image : 'no-image.png'}"
-                     alt="${p.name}"
-                     onerror="this.src='${cxt}/asset/images/no-image.png'">
+              <div class="small text-muted">
+                ★ <fmt:formatNumber value="${p.rating}" type="number" maxFractionDigits="1"/> ·
+                Đã mua: ${p.purchased}
               </div>
-              <div class="card-body">
-                <span class="badge bg-light text-dark mb-2">${p.categoryName}</span>
-                <h6 class="card-title">${p.name}</h6>
-                <div class="small text-muted">
-                  ★ <fmt:formatNumber value="${p.rating}" type="number" maxFractionDigits="1"/> ·
-                  Đã mua: ${p.purchased}
-                </div>
-                <div class="mt-2 fw-bold text-danger">
-                  <fmt:formatNumber value="${p.price}" type="number" groupingUsed="true"/> đ
-                </div>
-                <div class="mt-3 d-grid">
-                  <a class="btn btn-teal rounded-pill" href="${cxt}/cart?action=add&id=${p.id}">Thêm vào giỏ</a>
-                </div>
+
+              <div class="mt-2 fw-bold text-danger">
+                <fmt:formatNumber value="${p.price}" type="number" groupingUsed="true"/> đ
+              </div>
+
+              <div class="mt-3 d-grid">
+                <a class="btn btn-teal rounded-pill"
+                   href="${cxt}/cart?action=add&id=${p.id}">Thêm vào giỏ</a>
               </div>
             </div>
           </div>
-        </c:forEach>
-      </div>
-    </c:otherwise>
-  </c:choose>
-</section>
-
-<footer class="border-top mt-5">
-  <div class="container py-4 text-muted small">© 2025 Vua Đồ Câu</div>
-</footer>
-
-<!-- Bootstrap bundle (Popper included) - chỉ nhúng 1 lần -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Mini-cart floating button + offcanvas -->
-<jsp:include page="/WEB-INF/views/partials/mini-cart.jsp" />
-</body>
-</html>
+        </div>
+      </c:forEach>
+    </div>
+  </c:otherwise>
+</c:choose>

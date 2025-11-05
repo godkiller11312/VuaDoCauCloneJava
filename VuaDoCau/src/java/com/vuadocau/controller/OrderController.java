@@ -32,7 +32,9 @@ public class OrderController extends HttpServlet {
         o.setShipFee(SHIP_FEE);
         if (o.getSubtotal() != null) o.setTotal(o.getSubtotal().add(SHIP_FEE));
 
-        req.setAttribute("order", o);
-        req.getRequestDispatcher("/WEB-INF/views/order_detail.jsp").forward(req, resp);
+       req.setAttribute("order", o);
+req.setAttribute("view", "/WEB-INF/views/order_detail.jsp");
+req.setAttribute("pageTitle", "Đơn hàng #" + id);
+req.getRequestDispatcher("/WEB-INF/views/_layout/main.jsp").forward(req, resp);
     }
 }

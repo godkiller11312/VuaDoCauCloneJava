@@ -1,130 +1,85 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html; charset=UTF-8" isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8"/>
-  <title>Xác nhận đơn hàng</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
-  <style>
-    .bg-soft{background:
-      radial-gradient(1200px 600px at 10% 0%, #eaf6ff 0, rgba(255,255,255,.9) 60%),
-      radial-gradient(1200px 600px at 90% 100%, #eafff9 0, rgba(255,255,255,.9) 60%)}
-  </style>
-</head>
-<body class="bg-soft">
-<nav class="navbar navbar-expand-lg bg-white shadow-sm">
-  <div class="container">
-    <a class="navbar-brand fw-bold" href="${pageContext.request.contextPath}/home">VuaĐồCâu</a>
-    <a class="btn btn-outline-secondary ms-auto" href="${pageContext.request.contextPath}/cart">Quay lại giỏ</a>
+<c:set var="cxt" value="${pageContext.request.contextPath}" />
+<c:set var="cart" value="${requestScope.cart}" />
+
+<h3 class="mb-3">Thanh toán</h3>
+
+<c:if test="${not empty errors}">
+  <div class="alert alert-danger">
+    <ul class="mb-0">
+      <c:forEach var="e" items="${errors}"><li>${e}</li></c:forEach>
+    </ul>
   </div>
-</nav>
+</c:if>
 
-<div class="container py-4">
-  <h2 class="fw-bold mb-3">Xác nhận đơn hàng</h2>
-
-  <c:if test="${not empty errors}">
-    <div class="alert alert-danger">
-      <ul class="mb-0">
-        <c:forEach items="${errors}" var="e"><li>${e}</li></c:forEach>
-      </ul>
-    </div>
-  </c:if>
-
-  <div class="row g-4">
-    <!-- LEFT: bảng tóm tắt -->
-    <div class="col-lg-7">
-      <div class="table-responsive bg-white rounded-3 shadow-sm">
-        <table class="table align-middle mb-0">
-          <thead class="table-light">
-          <tr>
-            <th>Sản phẩm</th>
-            <th class="text-end">Giá</th>
-            <th class="text-center">SL</th>
-            <th class="text-end">Tạm tính</th>
-          </tr>
-          </thead>
-          <tbody>
-          <c:forEach var="it" items="${cart.items}">
-            <tr>
-              <td>
-                <div class="d-flex align-items-center gap-3">
-                  <img src="${pageContext.request.contextPath}/asset/images/${it.image != null ? it.image : 'no-image.png'}"
-                       alt="${it.name}" style="width:56px;height:56px;object-fit:cover"
-                       onerror="this.src='${pageContext.request.contextPath}/asset/images/no-image.png'">
-                  <div class="fw-semibold">${it.name}</div>
-                </div>
-              </td>
-              <td class="text-end"><fmt:formatNumber value="${it.price}" type="number" groupingUsed="true"/> đ</td>
-              <td class="text-center">${it.quantity}</td>
-              <td class="text-end"><fmt:formatNumber value="${it.subtotal}" type="number" groupingUsed="true"/> đ</td>
-            </tr>
-          </c:forEach>
-          <tr>
-            <td colspan="3" class="text-end fw-semibold">Tạm tính</td>
-            <td class="text-end">
-              <fmt:formatNumber value="${cart.totalAmount}" type="number" groupingUsed="true"/> đ
-            </td>
-          </tr>
-          <tr>
-            <td colspan="3" class="text-end fw-semibold">Phí ship</td>
-            <td class="text-end">
-              <fmt:formatNumber value="${shipFee}" type="number" groupingUsed="true"/> đ
-            </td>
-          </tr>
-          <tr>
-            <td colspan="3" class="text-end fs-5 fw-bold">Tổng cộng</td>
-            <td class="text-end fs-5 fw-bold text-success">
-              <fmt:formatNumber value="${cart.totalAmount + shipFee}" type="number" groupingUsed="true"/> đ
-            </td>
-          </tr>
-          </tbody>
-        </table>
+<div class="row g-4">
+  <div class="col-lg-7">
+    <form class="card card-body" action="${cxt}/checkout" method="post">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Họ tên</label>
+          <input class="form-control" name="fullName"
+                 value="${not empty prefillName ? prefillName : prefillName}"/>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Số điện thoại</label>
+          <input class="form-control" name="phone" value="${prefillPhone}"/>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Email</label>
+          <input class="form-control" name="email" value="${prefillEmail}"/>
+        </div>
+        <div class="col-12">
+          <label class="form-label">Địa chỉ</label>
+          <input class="form-control" name="address" value="${prefillAddress}"/>
+        </div>
+        <div class="col-12">
+          <label class="form-label">Ghi chú</label>
+          <textarea class="form-control" rows="3" name="note">${prefillNote}</textarea>
+        </div>
       </div>
-    </div>
+      <div class="d-flex gap-2 mt-3">
+        <a class="btn btn-outline-secondary" href="${cxt}/cart">Quay lại giỏ</a>
+        <button class="btn btn-teal ms-auto">Đặt hàng</button>
+      </div>
+    </form>
+  </div>
 
-    <!-- RIGHT: form nhận hàng -->
-    <div class="col-lg-5">
-      <div class="card shadow-sm rounded-4">
-        <div class="card-body">
-          <h5 class="card-title fw-bold mb-3">Thông tin nhận hàng</h5>
-          <form method="post" action="${pageContext.request.contextPath}/checkout" class="vstack gap-3">
-            <div>
-              <label class="form-label">Họ tên</label>
-              <input name="fullName" type="text" class="form-control"
-                     value="${empty prefillName ? prefillName : prefillName}">
-            </div>
-            <div>
-              <label class="form-label">SDT</label>
-              <input name="phone" type="text" class="form-control"
-                     value="${prefillPhone}">
-            </div>
-            <div>
-              <label class="form-label">Email</label>
-              <input name="email" type="email" class="form-control"
-                     value="${empty prefillEmail ? '' : prefillEmail}">
-            </div>
-            <div>
-              <label class="form-label">Địa chỉ</label>
-              <textarea name="address" rows="3" class="form-control">${prefillAddress}</textarea>
-            </div>
-            <div>
-              <label class="form-label">Note</label>
-              <textarea name="note" rows="2" class="form-control" placeholder="Ghi chú (tuỳ chọn)">${prefillNote}</textarea>
-            </div>
-            <div class="d-grid gap-2">
-              <button class="btn btn-success">Đặt hàng</button>
-              <a class="btn btn-outline-secondary" href="${pageContext.request.contextPath}/cart">Quay lại giỏ</a>
-            </div>
-          </form>
+  <div class="col-lg-5">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title mb-3">Đơn hàng</h5>
+        <ul class="list-group mb-3">
+          <c:forEach var="it" items="${cart.items}">
+            <li class="list-group-item d-flex justify-content-between">
+              <div>
+                <div class="fw-semibold">${it.name}</div>
+                <small class="text-muted">x${it.quantity}</small>
+              </div>
+              <div>
+                <fmt:formatNumber value="${it.subtotal}" type="currency" currencySymbol="₫" maxFractionDigits="0"/>
+              </div>
+            </li>
+          </c:forEach>
+        </ul>
+        <div class="d-flex justify-content-between">
+          <span>Tạm tính</span>
+          <strong><fmt:formatNumber value="${cart.totalAmount}" type="currency" currencySymbol="₫" maxFractionDigits="0"/></strong>
+        </div>
+        <div class="d-flex justify-content-between">
+          <span>Phí vận chuyển</span>
+          <strong><fmt:formatNumber value="${shipFee}" type="currency" currencySymbol="₫" maxFractionDigits="0"/></strong>
+        </div>
+        <hr/>
+        <div class="d-flex justify-content-between fs-5">
+          <span>Tổng thanh toán</span>
+          <strong>
+            <fmt:formatNumber value="${cart.totalAmount + shipFee}" type="currency" currencySymbol="₫" maxFractionDigits="0"/>
+          </strong>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>

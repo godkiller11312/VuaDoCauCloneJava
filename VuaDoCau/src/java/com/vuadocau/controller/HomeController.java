@@ -28,7 +28,9 @@ public class HomeController extends HttpServlet {
         for (Category c : cats) {
             sections.put(c, productDAO.findTopByCategory(c.getId(), limit));
         }
-        req.setAttribute("sections", sections);
-        req.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(req, resp);
+       req.setAttribute("sections", sections);
+req.setAttribute("view", "/WEB-INF/views/home.jsp");
+req.setAttribute("pageTitle", "Trang chủ");
+req.getRequestDispatcher("/WEB-INF/views/_layout/main.jsp").forward(req, resp);
     }
 }

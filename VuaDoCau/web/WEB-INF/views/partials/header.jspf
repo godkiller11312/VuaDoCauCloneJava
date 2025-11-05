@@ -1,0 +1,84 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="cxt" value="${pageContext.request.contextPath}" />
+<c:set var="auth" value="${sessionScope.authUser}" />
+<c:set var="isAdmin" value="${not empty auth and auth.roleId == 1}" />
+
+<nav class="navbar navbar-expand-lg bg-white shadow-sm nav-admin">
+  <div class="container">
+    <div class="d-flex align-items-center w-100">
+
+      <!-- Brand -->
+      <a class="navbar-brand fw-bold me-2" href="${cxt}/home">VuaĐồCâu</a>
+
+      <!-- Left nav -->
+      <ul class="navbar-nav flex-row gap-3 align-items-center">
+        <c:choose>
+          <c:when test="${isAdmin}">
+            <li class="nav-item">
+              <a class="nav-link text-danger fw-semibold" href="${cxt}/admin/products">Quản Lý Sản phẩm</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-danger fw-semibold" href="${cxt}/admin/orders">Quản Lý Đơn hàng</a>
+            </li>
+          </c:when>
+          <c:otherwise>
+            <li class="nav-item"><a class="nav-link" href="${cxt}/home">Trang chủ</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Danh mục</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="${cxt}/products?g=all">Tất cả sản phẩm</a></li>
+                <li><a class="dropdown-item" href="${cxt}/products?g=can">Cần câu</a></li>
+                <li><a class="dropdown-item" href="${cxt}/products?g=may">Máy câu</a></li>
+                <li><a class="dropdown-item" href="${cxt}/products?g=khac">Dây, Mồi, Phụ kiện</a></li>
+              </ul>
+            </li>
+          </c:otherwise>
+        </c:choose>
+      </ul>
+
+      <div class="flex-grow-1"></div>
+
+      <!-- Search (khách) -->
+      <c:if test="${!isAdmin}">
+        <form class="d-none d-lg-flex me-2" style="max-width:520px" method="get" action="${cxt}/products">
+          <input class="form-control me-2" type="search" name="q" placeholder="Tìm sản phẩm...">
+          <button class="btn btn-teal">Tìm</button>
+        </form>
+      </c:if>
+
+      <!-- User -->
+      <c:choose>
+        <c:when test="${not empty auth}">
+          <div class="dropdown">
+            <button class="btn btn-outline-secondary rounded-pill dropdown-toggle px-3" type="button" data-bs-toggle="dropdown">
+              <c:out value="${auth.email}"/>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow">
+              <c:if test="${!isAdmin}">
+                <li>
+                  <a class="dropdown-item d-flex justify-content-between align-items-center" href="${cxt}/cart">
+                    Giỏ hàng
+                    <span class="badge text-bg-primary">
+                      <c:out value="${empty sessionScope.cartCount ? 0 : sessionScope.cartCount}"/>
+                    </span>
+                  </a>
+                </li>
+              </c:if>
+              <li><a class="dropdown-item" href="${cxt}/profile">Hồ sơ cá nhân</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-danger" href="${cxt}/logout">Đăng xuất</a></li>
+            </ul>
+          </div>
+        </c:when>
+        <c:otherwise>
+          <div class="ms-2 d-flex gap-2">
+            <a class="btn btn-outline-success" href="${cxt}/login">Đăng nhập</a>
+            <a class="btn btn-success" href="${cxt}/register">Đăng ký</a>
+          </div>
+        </c:otherwise>
+      </c:choose>
+
+    </div>
+  </div>
+</nav>
