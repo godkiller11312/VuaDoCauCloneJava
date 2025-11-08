@@ -39,7 +39,8 @@ public class AdminProductController extends HttpServlet {
         }
     }
 
-    @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         if (!isAdmin(req)) { resp.sendRedirect(req.getContextPath()+"/home"); return; }
@@ -66,29 +67,39 @@ public class AdminProductController extends HttpServlet {
             return;
         }
 
-        // danh sách + filter
-        String q = req.getParameter("q");
+        // ============ Danh sách + filter + sort ============
+        String q   = req.getParameter("q");
         Integer cat = tryParseInt(req.getParameter("cat"));
 
-        List<Product> products;
-        if (q != null && !q.isBlank()) {
-            products = productDAO.search(q.trim());
-        } else if (cat != null) {
-            products = productDAO.findByCategory(cat);
-        } else {
-            products = productDAO.findAll();
+        // sort & dir (id|name|price|stock|rating|purchased) + (asc|desc)
+        String sort = req.getParameter("sort");
+        String dir  = req.getParameter("dir");
+        if (sort == null) sort = "id";
+        if (dir == null)  dir  = "desc";
+
+        switch (sort) {
+            case "id": case "name": case "price": case "stock": case "rating": case "purchased":
+                break;
+            default: sort = "id";
         }
+        dir = "asc".equalsIgnoreCase(dir) ? "asc" : "desc";
+
+        // gọi DAO chung cho admin (có filter + sort)
+        List<Product> products = productDAO.adminSearch(q, cat, sort, dir);
 
         req.setAttribute("products", products);
         req.setAttribute("categories", categoryDAO.findAll());
         req.setAttribute("q", q);
         req.setAttribute("cat", cat);
+        req.setAttribute("sort", sort);
+        req.setAttribute("dir", dir);
         req.setAttribute("view", "/WEB-INF/views/admin/products.jsp");
         req.setAttribute("pageTitle", "Quản trị · Sản phẩm");
         req.getRequestDispatcher("/WEB-INF/views/_layout/main.jsp").forward(req, resp);
     }
 
-    @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         if (!isAdmin(req)) { resp.sendRedirect(req.getContextPath()+"/home"); return; }

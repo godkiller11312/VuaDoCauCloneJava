@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" isELIgnored="false" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <c:set var="cxt" value="${pageContext.request.contextPath}" />
 
 <div class="d-flex align-items-center justify-content-between mb-3">
@@ -22,9 +24,7 @@
           <label class="form-label">Danh mục</label>
           <select class="form-select" name="categoryId" required>
             <c:forEach var="c" items="${categories}">
-              <option value="${c.id}" <c:if test="${c.id == p.categoryId}">selected</c:if>>
-                ${c.name}
-              </option>
+              <option value="${c.id}" <c:if test="${c.id == p.categoryId}">selected</c:if>>${c.name}</option>
             </c:forEach>
           </select>
         </div>
@@ -43,8 +43,8 @@
         </div>
 
         <div class="col-md-6">
-          <label class="form-label">Ảnh (URL)</label>
-          <input class="form-control" name="image" value="${p.image}"/>
+          <label class="form-label">Ảnh (URL hoặc tên file trong /asset/images)</label>
+          <input id="imgInput" class="form-control" name="image" value="${p.image}"/>
         </div>
         <div class="col-md-3">
           <label class="form-label">Rating</label>
@@ -72,8 +72,20 @@
     <div class="card">
       <div class="card-body">
         <div class="ratio ratio-1x1 mb-3" style="max-width:320px">
-          <img src="${p.image}" class="img-fluid rounded" alt="${p.name}" style="object-fit:cover"/>
+          <img id="imgPreview"
+               src="${
+                 (not empty p.image and (fn:startsWith(p.image,'http') or fn:startsWith(p.image,'/')))
+                   ? p.image
+                   : (empty p.image
+                        ? cxt.concat('/asset/images/no-image.png')
+                        : cxt.concat('/asset/images/').concat(p.image))
+               }"
+               class="img-fluid rounded"
+               alt="${p.name}"
+               style="object-fit:cover"
+               onerror="this.src='${cxt}/asset/images/no-image.png'">
         </div>
+
         <div class="text-muted small">
           ID: <strong>${p.id}</strong><br/>
           Danh mục: <strong>${p.categoryName}</strong><br/>
@@ -90,3 +102,26 @@
     </div>
   </div>
 </div>
+
+<script>
+  // Live preview khi sửa ô Ảnh
+  (function () {
+    var input = document.getElementById('imgInput');
+    var img   = document.getElementById('imgPreview');
+    if (!input || !img) return;
+
+    input.addEventListener('input', function () {
+      var v = (input.value || '').trim();
+      var cxt = '<c:out value="${cxt}"/>';
+      var src;
+      if (!v) {
+        src = cxt + '/asset/images/no-image.png';
+      } else if (v.startsWith('http') || v.startsWith('/')) {
+        src = v;
+      } else {
+        src = cxt + '/asset/images/' + v;
+      }
+      img.src = src;
+    });
+  })();
+</script>

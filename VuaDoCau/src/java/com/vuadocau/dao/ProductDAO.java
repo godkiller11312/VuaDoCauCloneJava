@@ -84,7 +84,7 @@ public class ProductDAO {
             ps.setInt(i++, p.getPurchased());
 
             return ps.executeUpdate() > 0;
-        } catch (Exception e) {  // <= bắt Exception vì Db.getConnection() throws Exception
+        } catch (Exception e) {
             throw new RuntimeException("Insert product failed: " + e.getMessage(), e);
         }
     }
@@ -111,7 +111,7 @@ public class ProductDAO {
             ps.setInt(i,   p.getId());
 
             return ps.executeUpdate() > 0;
-        } catch (Exception e) {  // <= sửa ở đây
+        } catch (Exception e) {
             throw new RuntimeException("Update product failed: " + e.getMessage(), e);
         }
     }
@@ -122,7 +122,7 @@ public class ProductDAO {
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             return ps.executeUpdate() > 0;
-        } catch (Exception e) {  // <= sửa ở đây
+        } catch (Exception e) {
             throw new RuntimeException("Delete product failed: " + e.getMessage(), e);
         }
     }
@@ -163,5 +163,53 @@ public class ProductDAO {
         p.setRating(rs.getDouble("Rating"));
         p.setPurchased(rs.getInt("Purchased"));
         return p;
+    }
+
+    /* ========================= NEW: tìm cho admin có filter + sort ========================= */
+
+    public List<Product> adminSearch(String keyword, Integer categoryId, String sort, String dir) {
+        // map tên sort -> cột SQL an toàn
+        String orderCol;
+        switch (sort) {
+            case "name":      orderCol = "sp.TenSP"; break;
+            case "price":     orderCol = "sp.Gia"; break;
+            case "stock":     orderCol = "sp.TonKho"; break;
+            case "rating":    orderCol = "sp.Rating"; break;
+            case "purchased": orderCol = "sp.Purchased"; break;
+            case "id":
+            default:          orderCol = "sp.MaSP";
+        }
+        String orderDir = "asc".equalsIgnoreCase(dir) ? "ASC" : "DESC";
+
+        StringBuilder sql = new StringBuilder(BASE_SELECT).append(" WHERE 1=1 ");
+        List<Object> params = new ArrayList<>();
+
+        if (keyword != null && !keyword.isBlank()) {
+            sql.append(" AND sp.TenSP LIKE ? ");
+            params.add("%" + keyword.trim() + "%");
+        }
+        if (categoryId != null) {
+            sql.append(" AND sp.MaDM = ? ");
+            params.add(categoryId);
+        }
+        sql.append(" ORDER BY ").append(orderCol).append(' ').append(orderDir);
+
+        return queryDyn(sql.toString(), params);
+    }
+
+    private List<Product> queryDyn(String sql, List<Object> params) {
+        List<Product> list = new ArrayList<>();
+        try (Connection con = Db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) list.add(mapRow(rs));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("QueryDyn failed: " + e.getMessage(), e);
+        }
+        return list;
     }
 }
