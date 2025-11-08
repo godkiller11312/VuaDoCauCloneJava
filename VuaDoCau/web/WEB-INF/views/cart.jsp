@@ -32,12 +32,16 @@
             <td style="width:64px">
               <c:choose>
                 <c:when test="${not empty it.image and (fn:startsWith(it.image,'http') or fn:startsWith(it.image,'/'))}">
-                  <img src="${it.image}" class="img-thumbnail"
+                  <img src="${it.image}"
+                       onerror="this.onerror=null;this.src='${cxt}/asset/images/no-image.png';"
+                       class="img-thumbnail"
                        style="width:56px;height:56px;object-fit:cover" alt="">
                 </c:when>
                 <c:otherwise>
                   <c:url value="/asset/images/${empty it.image ? 'no-image.png' : it.image}" var="imgPath" />
-                  <img src="${imgPath}" class="img-thumbnail"
+                  <img src="${imgPath}"
+                       onerror="this.onerror=null;this.src='${cxt}/asset/images/no-image.png';"
+                       class="img-thumbnail"
                        style="width:56px;height:56px;object-fit:cover" alt="">
                 </c:otherwise>
               </c:choose>

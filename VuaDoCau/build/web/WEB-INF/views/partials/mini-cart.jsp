@@ -18,14 +18,19 @@
       <c:otherwise>
         <c:forEach var="it" items="${cart.items}">
           <div class="d-flex align-items-center border-bottom py-2">
-
             <c:choose>
               <c:when test="${not empty it.image and (fn:startsWith(it.image,'http') or fn:startsWith(it.image,'/'))}">
-                <img src="${it.image}" class="me-2 rounded" style="width:48px;height:48px;object-fit:cover" alt="">
+                <img src="${it.image}"
+                     onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/asset/images/no-image.png';"
+                     class="me-2 rounded"
+                     style="width:48px;height:48px;object-fit:cover" alt="">
               </c:when>
               <c:otherwise>
                 <c:url value="/asset/images/${empty it.image ? 'no-image.png' : it.image}" var="imgUrl"/>
-                <img src="${imgUrl}" class="me-2 rounded" style="width:48px;height:48px;object-fit:cover" alt="">
+                <img src="${imgUrl}"
+                     onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/asset/images/no-image.png';"
+                     class="me-2 rounded"
+                     style="width:48px;height:48px;object-fit:cover" alt="">
               </c:otherwise>
             </c:choose>
 
@@ -76,14 +81,19 @@
           <c:otherwise>
             <c:forEach var="it" items="${cart.items}">
               <div class="d-flex align-items-center border-bottom py-2">
-
                 <c:choose>
                   <c:when test="${not empty it.image and (fn:startsWith(it.image,'http') or fn:startsWith(it.image,'/'))}">
-                    <img src="${it.image}" class="me-2 rounded" style="width:48px;height:48px;object-fit:cover" alt="">
+                    <img src="${it.image}"
+                         onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/asset/images/no-image.png';"
+                         class="me-2 rounded"
+                         style="width:48px;height:48px;object-fit:cover" alt="">
                   </c:when>
                   <c:otherwise>
                     <c:url value="/asset/images/${empty it.image ? 'no-image.png' : it.image}" var="imgUrl"/>
-                    <img src="${imgUrl}" class="me-2 rounded" style="width:48px;height:48px;object-fit:cover" alt="">
+                    <img src="${imgUrl}"
+                         onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/asset/images/no-image.png';"
+                         class="me-2 rounded"
+                         style="width:48px;height:48px;object-fit:cover" alt="">
                   </c:otherwise>
                 </c:choose>
 
