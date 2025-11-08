@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <c:set var="cxt" value="${pageContext.request.contextPath}" />
 <c:set var="cart" value="${requestScope.cart}" />
@@ -29,7 +30,17 @@
         <c:forEach var="it" items="${cart.items}">
           <tr data-id="${it.productId}">
             <td style="width:64px">
-              <img src="${it.image}" class="img-thumbnail" style="width:56px;height:56px;object-fit:cover">
+              <c:choose>
+                <c:when test="${not empty it.image and (fn:startsWith(it.image,'http') or fn:startsWith(it.image,'/'))}">
+                  <img src="${it.image}" class="img-thumbnail"
+                       style="width:56px;height:56px;object-fit:cover" alt="">
+                </c:when>
+                <c:otherwise>
+                  <c:url value="/asset/images/${empty it.image ? 'no-image.png' : it.image}" var="imgPath" />
+                  <img src="${imgPath}" class="img-thumbnail"
+                       style="width:56px;height:56px;object-fit:cover" alt="">
+                </c:otherwise>
+              </c:choose>
             </td>
             <td class="fw-semibold">${it.name}</td>
             <td class="text-end">
@@ -45,7 +56,8 @@
               <fmt:formatNumber value="${it.subtotal}" type="currency" currencySymbol="₫" maxFractionDigits="0"/>
             </td>
             <td class="text-end">
-              <a class="btn btn-sm btn-outline-danger" href="${cxt}/cart?action=remove&id=${it.productId}">Xóa</a>
+              <a class="btn btn-sm btn-outline-danger"
+                 href="${cxt}/cart?action=remove&id=${it.productId}">Xóa</a>
             </td>
           </tr>
         </c:forEach>
@@ -90,7 +102,7 @@
           document.getElementById('totalAmount').textContent =
             new Intl.NumberFormat('vi-VN').format(parseInt(d.totalAmount)) + ' ₫';
         }
-      }).catch(()=>{ /* ignore */ });
+      }).catch(()=>{});
     });
   });
 })();

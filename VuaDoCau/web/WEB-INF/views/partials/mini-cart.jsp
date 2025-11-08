@@ -1,17 +1,15 @@
 <%@ page contentType="text/html; charset=UTF-8" isELIgnored="false" %>
-<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<c:set var="cxt" value="${pageContext.request.contextPath}" />
 <c:set var="cart" value="${sessionScope.CART}" />
 <c:set var="cartCount" value="${empty sessionScope.cartCount ? 0 : sessionScope.cartCount}" />
-
-<%-- ✅ Chỉ cần có param fragment (bất cứ giá trị nào) hoặc requestScope.fragment là true => render FRAGMENT --%>
 <c:set var="isFragment" value="${requestScope.fragment or not empty param.fragment}" />
 
 <c:choose>
 
-  <%-- ============ FRAGMENT: chỉ render phần body để JS thay vào #miniCartBody ============ --%>
+  <%-- ========== FRAGMENT (body để JS refresh) ========== --%>
   <c:when test="${isFragment}">
     <c:choose>
       <c:when test="${cart == null or empty cart.items}">
@@ -20,9 +18,17 @@
       <c:otherwise>
         <c:forEach var="it" items="${cart.items}">
           <div class="d-flex align-items-center border-bottom py-2">
-            <img
-              src="${empty it.image ? (cxt.concat('/asset/images/no-image.png')) : (cxt.concat('/asset/images/').concat(it.image))}"
-              class="me-2 rounded" style="width:48px;height:48px;object-fit:cover" alt="">
+
+            <c:choose>
+              <c:when test="${not empty it.image and (fn:startsWith(it.image,'http') or fn:startsWith(it.image,'/'))}">
+                <img src="${it.image}" class="me-2 rounded" style="width:48px;height:48px;object-fit:cover" alt="">
+              </c:when>
+              <c:otherwise>
+                <c:url value="/asset/images/${empty it.image ? 'no-image.png' : it.image}" var="imgUrl"/>
+                <img src="${imgUrl}" class="me-2 rounded" style="width:48px;height:48px;object-fit:cover" alt="">
+              </c:otherwise>
+            </c:choose>
+
             <div class="flex-grow-1 small">
               <div class="fw-semibold text-truncate"><c:out value="${it.name}"/></div>
               <div class="text-muted">SL: <c:out value="${it.quantity}"/></div>
@@ -32,6 +38,7 @@
             </div>
           </div>
         </c:forEach>
+
         <div class="d-flex justify-content-between pt-2">
           <span class="fw-semibold">Tạm tính</span>
           <span class="fw-bold text-success">
@@ -42,9 +49,8 @@
     </c:choose>
   </c:when>
 
-  <%-- ============ FULL WIDGET: nút nổi + offcanvas + container #miniCartBody ============ --%>
+  <%-- ========== FULL WIDGET (nút nổi + offcanvas) ========== --%>
   <c:otherwise>
-    <!-- Nút bay bay -->
     <button type="button" class="cart-fab" data-bs-toggle="offcanvas" data-bs-target="#miniCart"
             aria-controls="miniCart" title="Giỏ hàng">
       <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16" width="22" height="22">
@@ -54,7 +60,6 @@
       <span class="cart-badge" id="miniCartCount"><c:out value="${cartCount}"/></span>
     </button>
 
-    <!-- Offcanvas -->
     <div class="offcanvas offcanvas-end offcanvas-cart" tabindex="-1" id="miniCart" aria-labelledby="miniCartLabel">
       <div class="offcanvas-header">
         <h5 class="offcanvas-title fw-bold" id="miniCartLabel">
@@ -71,9 +76,17 @@
           <c:otherwise>
             <c:forEach var="it" items="${cart.items}">
               <div class="d-flex align-items-center border-bottom py-2">
-                <img
-                  src="${empty it.image ? (cxt.concat('/asset/images/no-image.png')) : (cxt.concat('/asset/images/').concat(it.image))}"
-                  class="me-2 rounded" style="width:48px;height:48px;object-fit:cover" alt="">
+
+                <c:choose>
+                  <c:when test="${not empty it.image and (fn:startsWith(it.image,'http') or fn:startsWith(it.image,'/'))}">
+                    <img src="${it.image}" class="me-2 rounded" style="width:48px;height:48px;object-fit:cover" alt="">
+                  </c:when>
+                  <c:otherwise>
+                    <c:url value="/asset/images/${empty it.image ? 'no-image.png' : it.image}" var="imgUrl"/>
+                    <img src="${imgUrl}" class="me-2 rounded" style="width:48px;height:48px;object-fit:cover" alt="">
+                  </c:otherwise>
+                </c:choose>
+
                 <div class="flex-grow-1 small">
                   <div class="fw-semibold text-truncate"><c:out value="${it.name}"/></div>
                   <div class="text-muted">SL: <c:out value="${it.quantity}"/></div>
@@ -83,6 +96,7 @@
                 </div>
               </div>
             </c:forEach>
+
             <div class="d-flex justify-content-between pt-2">
               <span class="fw-semibold">Tạm tính</span>
               <span class="fw-bold text-success">
@@ -94,13 +108,13 @@
       </div>
 
       <div class="offcanvas-footer p-3 border-top">
-        <a class="btn btn-success w-100 mb-2" href="${cxt}/checkout">Thanh toán</a>
-        <a class="btn btn-outline-secondary w-100" href="${cxt}/cart" data-bs-dismiss="offcanvas">Xem giỏ hàng</a>
+        <a class="btn btn-success w-100 mb-2" href="${pageContext.request.contextPath}/checkout">Thanh toán</a>
+        <a id="btnGoCart" class="btn btn-outline-secondary w-100"
+           href="${pageContext.request.contextPath}/cart">Xem giỏ hàng</a>
       </div>
     </div>
 
     <script>
-      // cập nhật badge/qty (được scripts.jspf gọi)
       window.setMiniCartCount = function(n){
         const b = document.getElementById('miniCartCount');
         if (b) b.textContent = n;
@@ -109,5 +123,4 @@
       };
     </script>
   </c:otherwise>
-
 </c:choose>
