@@ -22,34 +22,43 @@
   .sorted .sort-icon{opacity:.9}
 </style>
 
-<!-- ======= Thanh tìm kiếm + lọc (đặt trên bảng) ======= -->
-<form class="row g-2 align-items-center mb-3" method="get" action="${cxt}/admin/products">
-  <!-- giữ sort/dir hiện tại khi lọc -->
-  <input type="hidden" name="sort" value="${curSort}">
-  <input type="hidden" name="dir"  value="${curDir}">
+<!-- ======= Thanh tìm kiếm + lọc + nút Thêm ======= -->
+<div class="row g-2 align-items-center mb-3">
+  <div class="col-12 col-lg-9">
+    <form class="row g-2 align-items-center" method="get" action="${cxt}/admin/products">
+      <!-- giữ sort/dir hiện tại khi lọc -->
+      <input type="hidden" name="sort" value="${curSort}">
+      <input type="hidden" name="dir"  value="${curDir}">
 
-  <div class="col-12 col-md-5">
-    <input class="form-control" name="q" value="${fn:escapeXml(q)}"
-           placeholder="Tìm theo tên sản phẩm...">
+      <div class="col-12 col-md-6">
+        <input class="form-control" name="q" value="${fn:escapeXml(q)}"
+               placeholder="Tìm theo tên sản phẩm...">
+      </div>
+
+      <div class="col-8 col-md-4">
+        <select class="form-select" name="cat">
+          <option value="">-- Tất cả danh mục --</option>
+          <c:forEach var="c" items="${categories}">
+            <option value="${c.id}" <c:if test="${cat == c.id}">selected</c:if>>
+              ${c.name}
+            </option>
+          </c:forEach>
+        </select>
+      </div>
+
+      <div class="col-4 col-md-2">
+        <button class="btn btn-outline-secondary w-100">Lọc</button>
+      </div>
+    </form>
   </div>
 
-  <div class="col-12 col-md-4">
-    <select class="form-select" name="cat">
-      <option value="">-- Tất cả danh mục --</option>
-      <c:forEach var="c" items="${categories}">
-        <option value="${c.id}" <c:if test="${cat == c.id}">selected</c:if>>
-          ${c.name}
-        </option>
-      </c:forEach>
-    </select>
+  <!-- Nút Thêm sản phẩm -->
+  <div class="col-12 col-lg-3 text-lg-end">
+    <button class="btn btn-teal btn-success" data-bs-toggle="modal" data-bs-target="#modalCreate">
+      Thêm sản phẩm
+    </button>
   </div>
-
-  <div class="col-6 col-md-1">
-    <button class="btn btn-outline-secondary w-100">Lọc</button>
-  </div>
-
-
-</form>
+</div>
 
 <!-- Thống kê nhỏ -->
 <div class="mb-2 small text-muted">
@@ -153,7 +162,7 @@
         <tr>
           <td>${p.id}</td>
 
-          <!-- Ảnh: ưu tiên URL tuyệt đối/đường dẫn bắt đầu bằng '/', nếu chỉ là tên file thì prefix /asset/images -->
+          <!-- Ảnh: ưu tiên URL tuyệt đối/bắt đầu bằng '/', nếu chỉ là file name thì prefix /asset/images -->
           <td style="width:64px">
             <c:choose>
               <c:when test="${not empty p.image and (fn:startsWith(p.image,'http') or fn:startsWith(p.image,'/'))}">
@@ -198,4 +207,63 @@
       </c:if>
     </tbody>
   </table>
+</div>
+
+<!-- ============== Modal: Thêm sản phẩm ============== -->
+<div class="modal fade" id="modalCreate" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <form class="modal-content" action="${cxt}/admin/products" method="post">
+      <input type="hidden" name="action" value="create"/>
+      <div class="modal-header">
+        <h5 class="modal-title">Thêm sản phẩm</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-md-8">
+            <label class="form-label">Tên</label>
+            <input class="form-control" name="name" required/>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Danh mục</label>
+            <select class="form-select" name="categoryId" required>
+              <c:forEach var="c" items="${categories}">
+                <option value="${c.id}">${c.name}</option>
+              </c:forEach>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Thương hiệu (mã)</label>
+            <input class="form-control" name="brandId" placeholder="Có thể để trống"/>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Giá</label>
+            <input class="form-control" name="price" required/>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Tồn kho</label>
+            <input class="form-control" name="stock" value="0" required/>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Ảnh (URL hoặc tên file trong /asset/images)</label>
+            <input class="form-control" name="image"/>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Rating</label>
+            <input class="form-control" name="rating" value="0"/>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Mô tả</label>
+            <textarea class="form-control" name="description" rows="3"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Hủy</button>
+        <button class="btn btn-success">Lưu</button>
+      </div>
+    </form>
+  </div>
 </div>
