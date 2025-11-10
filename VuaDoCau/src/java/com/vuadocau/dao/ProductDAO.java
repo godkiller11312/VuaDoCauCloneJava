@@ -9,12 +9,12 @@ import java.util.List;
 
 public class ProductDAO {
 
-    private static final String BASE_SELECT =
-        "SELECT sp.MaSP, sp.TenSP, sp.MaDM, dm.TenDM, sp.MaTH, th.TenTH, " +
-        "       sp.Gia, sp.Anh, sp.MoTa, sp.TonKho, sp.Rating, sp.Purchased " +
-        "FROM sanpham sp " +
-        "LEFT JOIN danhmuc dm ON dm.MaDM = sp.MaDM " +
-        "LEFT JOIN thuonghieu th ON th.MaTH = sp.MaTH ";
+private static final String BASE_SELECT =
+    "SELECT sp.MaSP, sp.TenSP, sp.MaDM, dm.TenDM, sp.MaTH, th.TenTH, " +
+    "       sp.Gia, sp.GiaCu, sp.Anh, sp.MoTa, sp.TonKho, sp.Rating, sp.Purchased " +
+    "FROM sanpham sp " +
+    "LEFT JOIN danhmuc dm ON dm.MaDM = sp.MaDM " +
+    "LEFT JOIN thuonghieu th ON th.MaTH = sp.MaTH ";
 
     public List<Product> findAll() {
         String sql = BASE_SELECT + " ORDER BY sp.MaSP DESC";
@@ -162,6 +162,8 @@ public class ProductDAO {
         p.setStock(rs.getInt("TonKho"));
         p.setRating(rs.getDouble("Rating"));
         p.setPurchased(rs.getInt("Purchased"));
+        p.setPrice(rs.getBigDecimal("Gia"));
+        p.setOldPrice(rs.getBigDecimal("GiaCu"));  // ✅ thêm dòng này
         return p;
     }
 

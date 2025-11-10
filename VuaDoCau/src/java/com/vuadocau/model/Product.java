@@ -15,7 +15,10 @@
         private int stock;
         private double rating;
         private int purchased;
+        private BigDecimal oldPrice; // Giá cũ
 
+        public BigDecimal getOldPrice() { return oldPrice; }
+        public void setOldPrice(BigDecimal oldPrice) { this.oldPrice = oldPrice; }
         // getters/setters
         public int getId() { return id; }
         public void setId(int id) { this.id = id; }

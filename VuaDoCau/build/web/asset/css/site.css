@@ -94,3 +94,18 @@ body {
 /* Mini-cart qty controls */
 .qty-actions .btn{ padding:2px 8px }
 .qty-actions .mc-qty{ width:60px; text-align:center; }
+
+.price-old {
+  text-decoration: line-through;
+  color: #9ca3af;
+  font-weight: 500;
+  margin-right: .5rem;
+}
+.badge-sale {
+  background: #fee2e2;
+  color: #b91c1c;
+  font-weight: 600;
+  font-size: 0.8rem;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
