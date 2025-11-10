@@ -22,22 +22,29 @@
               <c:when test="${not empty it.image and (fn:startsWith(it.image,'http') or fn:startsWith(it.image,'/'))}">
                 <img src="${it.image}"
                      onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/asset/images/no-image.png';"
-                     class="me-2 rounded"
-                     style="width:48px;height:48px;object-fit:cover" alt="">
+                     class="me-2 rounded" style="width:48px;height:48px;object-fit:cover" alt="">
               </c:when>
               <c:otherwise>
                 <c:url value="/asset/images/${empty it.image ? 'no-image.png' : it.image}" var="imgUrl"/>
                 <img src="${imgUrl}"
                      onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/asset/images/no-image.png';"
-                     class="me-2 rounded"
-                     style="width:48px;height:48px;object-fit:cover" alt="">
+                     class="me-2 rounded" style="width:48px;height:48px;object-fit:cover" alt="">
               </c:otherwise>
             </c:choose>
 
             <div class="flex-grow-1 small">
               <div class="fw-semibold text-truncate"><c:out value="${it.name}"/></div>
-              <div class="text-muted">SL: <c:out value="${it.quantity}"/></div>
+
+              <!-- Controls – / input / + / Xóa -->
+              <div class="qty-actions d-inline-flex align-items-center mt-1" data-id="${it.productId}">
+                <button class="btn btn-sm btn-outline-secondary mc-minus" type="button" aria-label="Giảm">−</button>
+                <input class="form-control form-control-sm mc-qty mx-1" type="number" min="0"
+                       value="${it.quantity}" style="width:60px;text-align:center">
+                <button class="btn btn-sm btn-outline-secondary mc-plus" type="button" aria-label="Tăng">+</button>
+                <button class="btn btn-sm btn-link text-danger mc-remove ms-2" type="button" aria-label="Xóa">Xóa</button>
+              </div>
             </div>
+
             <div class="text-end small fw-bold text-danger">
               <fmt:formatNumber value="${it.subtotal}" type="number" groupingUsed="true"/> đ
             </div>
@@ -85,22 +92,27 @@
                   <c:when test="${not empty it.image and (fn:startsWith(it.image,'http') or fn:startsWith(it.image,'/'))}">
                     <img src="${it.image}"
                          onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/asset/images/no-image.png';"
-                         class="me-2 rounded"
-                         style="width:48px;height:48px;object-fit:cover" alt="">
+                         class="me-2 rounded" style="width:48px;height:48px;object-fit:cover" alt="">
                   </c:when>
                   <c:otherwise>
                     <c:url value="/asset/images/${empty it.image ? 'no-image.png' : it.image}" var="imgUrl"/>
                     <img src="${imgUrl}"
                          onerror="this.onerror=null;this.src='${pageContext.request.contextPath}/asset/images/no-image.png';"
-                         class="me-2 rounded"
-                         style="width:48px;height:48px;object-fit:cover" alt="">
+                         class="me-2 rounded" style="width:48px;height:48px;object-fit:cover" alt="">
                   </c:otherwise>
                 </c:choose>
 
                 <div class="flex-grow-1 small">
                   <div class="fw-semibold text-truncate"><c:out value="${it.name}"/></div>
-                  <div class="text-muted">SL: <c:out value="${it.quantity}"/></div>
+                  <div class="qty-actions d-inline-flex align-items-center mt-1" data-id="${it.productId}">
+                    <button class="btn btn-sm btn-outline-secondary mc-minus" type="button" aria-label="Giảm">−</button>
+                    <input class="form-control form-control-sm mc-qty mx-1" type="number" min="0"
+                           value="${it.quantity}" style="width:60px;text-align:center">
+                    <button class="btn btn-sm btn-outline-secondary mc-plus" type="button" aria-label="Tăng">+</button>
+                    <button class="btn btn-sm btn-link text-danger mc-remove ms-2" type="button" aria-label="Xóa">Xóa</button>
+                  </div>
                 </div>
+
                 <div class="text-end small fw-bold text-danger">
                   <fmt:formatNumber value="${it.subtotal}" type="number" groupingUsed="true"/> đ
                 </div>

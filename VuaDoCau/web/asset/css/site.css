@@ -85,3 +85,7 @@
 .stars-outer::before{content:"★★★★★";color:#e5e7eb;letter-spacing:2px}
 .stars-inner{position:absolute;top:0;left:0;white-space:nowrap;overflow:hidden;width:0}
 .stars-inner::before{content:"★★★★★";color:#ffc107;letter-spacing:2px}
+
+/* Mini-cart qty controls */
+.qty-actions .btn{ padding:2px 8px }
+.qty-actions .mc-qty{ width:60px; text-align:center; }

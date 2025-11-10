@@ -49,7 +49,7 @@ public class CartController extends HttpServlet {
         String action   = req.getParameter("action");     // add|remove|clear|null(show)
         String fragment = req.getParameter("fragment");   // nếu có -> trả về fragment HTML
 
-        // ✅ trả về FRAGMENT cho mini-cart body (không tạo file mới)
+        // ✅ FRAGMENT cho mini-cart body (không tạo file mới)
         if (fragment != null) {
             req.setAttribute("fragment", Boolean.TRUE);
             req.getRequestDispatcher("/WEB-INF/views/partials/mini-cart.jsp")
@@ -145,7 +145,7 @@ public class CartController extends HttpServlet {
 
             String body = String.format(
                 "{\"ok\":true,\"id\":%d,\"qty\":%d,\"itemSubtotal\":%s,\"totalAmount\":%s,\"totalQty\":%d}",
-                id, qty,
+                id, (it != null ? it.getQuantity() : 0),
                 itemSubtotal.toPlainString(),
                 totalAmount.toPlainString(),
                 totalQty
@@ -154,7 +154,23 @@ public class CartController extends HttpServlet {
             return;
         }
 
-        // Fallback: cập nhật hàng loạt
+        // === AJAX REMOVE ===
+        if ("remove".equals(action)) {
+            int id = parseInt(req.getParameter("id"), -1);
+            cart.remove(id);
+            syncBadge(session, cart);
+
+            String body = String.format(
+                "{\"ok\":true,\"id\":%d,\"totalAmount\":%s,\"totalQty\":%d}",
+                id,
+                cart.getTotalAmount().toPlainString(),
+                cart.getTotalQty()
+            );
+            json(resp, body);
+            return;
+        }
+
+        // Fallback: cập nhật hàng loạt (form giỏ hàng đầy đủ)
         req.getParameterMap().forEach((name, values) -> {
             if (name.startsWith("qty[")) {
                 int id = parseInt(name.substring(4, name.length() - 1), -1);

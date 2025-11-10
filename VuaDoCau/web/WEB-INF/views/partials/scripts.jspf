@@ -49,14 +49,13 @@
     return res.json();
   }
 
-  // Thêm vào giỏ: nút .btn-add-to-cart ở Home/Products
+  // ====== NÚT "THÊM VÀO GIỎ" Ở HOME/PRODUCTS ======
   document.addEventListener('click', async function (e) {
     const btn = e.target.closest('.btn-add-to-cart');
     if (!btn) return;
 
-    // Nếu thiếu data-id -> để hành vi cũ (reload) hoạt động
     const id = btn.dataset.id;
-    if (!id) return;
+    if (!id) return; // fallback về reload mặc định
 
     e.preventDefault();
     try {
@@ -73,6 +72,58 @@
     } catch {
       note('Lỗi kết nối, thử lại sau.', false);
     }
+  });
+
+  // ====== MINI-CART: set qty / remove (AJAX) ======
+  function updateBadges(data){
+    const count = (data.count ?? data.totalQty ?? 0);
+    if (typeof window.setMiniCartCount === 'function') window.setMiniCartCount(count);
+  }
+  async function setQty(id, qty){
+    const d = await postForm(CXT + '/cart', { action:'set', id, qty });
+    if (d && d.ok){ updateBadges(d); await refreshMiniCart(); }
+  }
+  async function removeItem(id){
+    const d = await postForm(CXT + '/cart', { action:'remove', id });
+    if (d && d.ok){ updateBadges(d); await refreshMiniCart(); }
+  }
+
+  // Click -, +, Xóa
+  document.addEventListener('click', async function(e){
+    const minus = e.target.closest('.mc-minus');
+    const plus  = e.target.closest('.mc-plus');
+    const del   = e.target.closest('.mc-remove');
+    if (!minus && !plus && !del) return;
+
+    const wrap = e.target.closest('.qty-actions');
+    const id   = wrap ? parseInt(wrap.dataset.id,10) : NaN;
+    if (!id) return;
+    const input = wrap.querySelector('.mc-qty');
+
+    if (minus){
+      const v = Math.max(0, (parseInt(input.value,10)||0) - 1);
+      if (v === 0) await removeItem(id); else await setQty(id, v);
+      return;
+    }
+    if (plus){
+      const v = Math.max(0, (parseInt(input.value,10)||0) + 1);
+      await setQty(id, v);
+      return;
+    }
+    if (del){
+      await removeItem(id);
+    }
+  });
+
+  // Nhập số trực tiếp
+  document.addEventListener('change', async function(e){
+    const inp = e.target.closest('.mc-qty');
+    if (!inp) return;
+    const wrap = inp.closest('.qty-actions');
+    const id   = wrap ? parseInt(wrap.dataset.id,10) : NaN;
+    if (!id) return;
+    const v = Math.max(0, parseInt(inp.value,10)||0);
+    if (v === 0) await removeItem(id); else await setQty(id, v);
   });
 
   // Expose để nơi khác gọi khi cần
