@@ -15,34 +15,45 @@
       <a class="btn btn-outline-secondary w-100" href="${cxt}/logout">Đăng xuất</a>
     </div>
   </div>
+
   <div class="col-lg-8">
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title mb-3">Đơn hàng của bạn</h5>
+        <h5 class="card-title mb-3">Hoạt động gần đây</h5>
         <div class="table-responsive">
           <table class="table align-middle">
             <thead class="table-light">
-              <tr><th>#</th><th>Ngày</th><th>Trạng thái</th><th class="text-end">Tổng</th><th></th></tr>
+              <tr>
+                <th>#</th>
+                <th>Thời gian</th>
+                <th>Loại</th>
+                <th>Nội dung</th>
+                <th>IP</th>
+              </tr>
             </thead>
             <tbody>
-              <c:forEach var="o" items="${orders}">
-                <tr>
-                  <td>${o.id}</td>
-                  <td><fmt:formatDate value="${o.createdAt}" pattern="dd/MM/yyyy HH:mm"/></td>
-                  <td><span class="badge bg-soft-gray">${o.status}</span></td>
-                  <td class="text-end">
-                    <fmt:formatNumber value="${o.total}" type="currency" currencySymbol="₫" maxFractionDigits="0"/>
-                  </td>
-                  <td class="text-end">
-                    <a class="btn btn-sm btn-outline-primary" href="${cxt}/order?id=${o.id}">Xem</a>
-                  </td>
-                </tr>
-              </c:forEach>
-              <c:if test="${empty orders}">
-                <tr><td colspan="5" class="text-center text-muted">Chưa có đơn hàng nào</td></tr>
-              </c:if>
+            <c:forEach var="a" items="${activities}" varStatus="st">
+              <tr>
+                <td>${st.index + 1}</td>
+                <td><fmt:formatDate value="${a.createdAt}" pattern="dd/MM/yyyy HH:mm:ss"/></td>
+               <td>
+  <span class="badge bg-secondary">${a.type}</span>
+</td>
+
+                <td>${a.message}</td>
+                <td>${a.ip}</td>
+              </tr>
+            </c:forEach>
+            <c:if test="${empty activities}">
+              <tr>
+                <td colspan="5" class="text-center text-muted">Chưa có hoạt động nào</td>
+              </tr>
+            </c:if>
             </tbody>
           </table>
+        </div>
+        <div class="text-muted small">
+          Hiển thị tối đa 20 hoạt động gần nhất.
         </div>
       </div>
     </div>

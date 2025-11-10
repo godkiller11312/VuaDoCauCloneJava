@@ -8,6 +8,7 @@
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/filter/AuthFilter.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/dao/CategoryDAO.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/util/PasswordUtil.java</file>
+            <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/admin/user-detail.jsp</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/model/OrderItem.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/controller/ProductController.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/dao/ProductDAO.java</file>
@@ -18,6 +19,7 @@
             <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/partials/header.jspf</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/dao/UserDAO.java</file>
             <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/home.jsp</file>
+            <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/dao/ActivityLogDAO.java</file>
             <file>file:/D:/Netbean/VuaDoCau/nbproject/build-impl.xml</file>
             <file>file:/D:/Netbean/VuaDoCau/nbproject/project.properties</file>
             <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/products.jsp</file>
@@ -35,15 +37,18 @@
             <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/auth/register.jsp</file>
             <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/admin/order-detail.jsp</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/controller/AdminProductController.java</file>
+            <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/controller/AdminUserController.java</file>
             <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/checkout.jsp</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/util/Db.java</file>
             <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/admin/products.jsp</file>
             <file>file:/D:/Netbean/VuaDoCau/web/index.jsp</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/controller/OrderController.java</file>
+            <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/model/ActivityLog.java</file>
             <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/profile.jsp</file>
             <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/web.xml</file>
             <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/order_success.jsp</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/controller/RegisterController.java</file>
+            <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/admin/users.jsp</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/controller/HomeController.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/controller/DebugDbServlet.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/filter/AdminFilter.java</file>

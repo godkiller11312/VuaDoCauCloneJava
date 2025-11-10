@@ -46,6 +46,22 @@
           </div>
         </a>
       </div>
+          <!-- Card Quản lý tài khoản -->
+<div class="col-lg-6">
+  <a class="text-decoration-none" href="${cxt}/admin/users">
+    <div class="card border-0 shadow-sm hover-lift">
+      <div class="card-body d-flex align-items-center gap-3">
+        <div class="rounded-3 bg-success-subtle p-3">
+          <i class="bi bi-people fs-4 text-success"></i>
+        </div>
+        <div>
+          <div class="fw-semibold">Quản lý tài khoản</div>
+          <div class="text-muted small">Xem / sửa / đổi mật khẩu / xoá người dùng…</div>
+        </div>
+      </div>
+    </div>
+  </a>
+</div>
     </div>
   </div>
 </c:when>

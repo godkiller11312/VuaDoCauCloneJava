@@ -1,5 +1,6 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <c:set var="cxt" value="${pageContext.request.contextPath}" />
 <c:set var="auth" value="${sessionScope.authUser}" />
 <c:set var="isAdmin" value="${not empty auth and auth.roleId == 1}" />
@@ -20,6 +21,9 @@
             </li>
             <li class="nav-item">
               <a class="nav-link text-danger fw-semibold" href="${cxt}/admin/orders">Quản Lý Đơn hàng</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-danger fw-semibold" href="${cxt}/admin/users">Quản Lý Tài khoản</a>
             </li>
           </c:when>
           <c:otherwise>
@@ -43,7 +47,7 @@
       <c:if test="${!isAdmin}">
         <form class="d-none d-lg-flex me-2" style="max-width:520px" method="get" action="${cxt}/products">
           <input class="form-control me-2" type="search" name="q" placeholder="Tìm sản phẩm...">
-          <button class="btn btn-teal">Tìm</button>
+          <button class="btn btn-teal" type="submit">Tìm</button>
         </form>
       </c:if>
 
@@ -57,17 +61,16 @@
             <ul class="dropdown-menu dropdown-menu-end shadow">
               <c:if test="${!isAdmin}">
                 <li>
-                  <a class="dropdown-item d-flex justify-content-between align-items-center" href="${cxt}/cart">
+                  <a class="dropdown-item d-flex align-items-center position-relative" href="${cxt}/cart">
                     Giỏ hàng
-        <span class="badge bg-danger position-absolute top-0 start-100 translate-middle"
-      id="headerCartCount">
-  <c:out value="${empty sessionScope.cartCount ? 0 : sessionScope.cartCount}"/>
-</span>
+                    <span class="badge bg-danger position-absolute top-0 start-100 translate-middle" id="headerCartCount">
+                      <c:out value="${empty sessionScope.cartCount ? 0 : sessionScope.cartCount}"/>
+                    </span>
                   </a>
                 </li>
               </c:if>
               <li><a class="dropdown-item" href="${cxt}/profile">Hồ sơ cá nhân</a></li>
-              <li><hr class="dropdown-divider"></li>
+              <li><hr class="dropdown-divider" /></li>
               <li><a class="dropdown-item text-danger" href="${cxt}/logout">Đăng xuất</a></li>
             </ul>
           </div>
