@@ -21,13 +21,17 @@
           <input class="form-control" name="name" value="${p.name}" required/>
         </div>
         <div class="col-md-4">
-          <label class="form-label">Danh mục</label>
-          <select class="form-select" name="categoryId" required>
-            <c:forEach var="c" items="${categories}">
-              <option value="${c.id}" <c:if test="${c.id == p.categoryId}">selected</c:if>>${c.name}</option>
-            </c:forEach>
-          </select>
-        </div>
+  <label class="form-label">Giá</label>
+  <input class="form-control" name="price" value="${p.price}"/>
+</div>
+<div class="col-md-4">
+  <label class="form-label">Giá cũ (tuỳ chọn)</label>
+  <input class="form-control" name="oldPrice" value="${p.oldPrice}"/>
+</div>
+<div class="col-md-4">
+  <label class="form-label">Tồn kho</label>
+  <input class="form-control" name="stock" value="${p.stock}"/>
+</div>
 
         <div class="col-md-4">
           <label class="form-label">Thương hiệu (mã)</label>

@@ -9,12 +9,12 @@ import java.util.List;
 
 public class ProductDAO {
 
-private static final String BASE_SELECT =
-    "SELECT sp.MaSP, sp.TenSP, sp.MaDM, dm.TenDM, sp.MaTH, th.TenTH, " +
-    "       sp.Gia, sp.GiaCu, sp.Anh, sp.MoTa, sp.TonKho, sp.Rating, sp.Purchased " +
-    "FROM sanpham sp " +
-    "LEFT JOIN danhmuc dm ON dm.MaDM = sp.MaDM " +
-    "LEFT JOIN thuonghieu th ON th.MaTH = sp.MaTH ";
+    private static final String BASE_SELECT =
+        "SELECT sp.MaSP, sp.TenSP, sp.MaDM, dm.TenDM, sp.MaTH, th.TenTH, " +
+        "       sp.Gia, sp.GiaCu, sp.Anh, sp.MoTa, sp.TonKho, sp.Rating, sp.Purchased " +   // <<== GiaCu
+        "FROM sanpham sp " +
+        "LEFT JOIN danhmuc dm ON dm.MaDM = sp.MaDM " +
+        "LEFT JOIN thuonghieu th ON th.MaTH = sp.MaTH ";
 
     public List<Product> findAll() {
         String sql = BASE_SELECT + " ORDER BY sp.MaSP DESC";
@@ -39,13 +39,9 @@ private static final String BASE_SELECT =
     public List<Product> findByCategoryIds(int... ids) {
         if (ids == null || ids.length == 0) return findAll();
         StringBuilder sb = new StringBuilder(BASE_SELECT).append(" WHERE sp.MaDM IN (");
-        for (int i = 0; i < ids.length; i++) {
-            sb.append("?").append(i < ids.length - 1 ? "," : ")");
-        }
+        for (int i = 0; i < ids.length; i++) sb.append("?").append(i < ids.length - 1 ? "," : ")");
         sb.append(" ORDER BY sp.MaSP DESC");
-        return query(sb.toString(), ps -> {
-            for (int i = 0; i < ids.length; i++) ps.setInt(i + 1, ids[i]);
-        });
+        return query(sb.toString(), ps -> { for (int i = 0; i < ids.length; i++) ps.setInt(i + 1, ids[i]); });
     }
 
     public Product findById(int id) {
@@ -66,8 +62,8 @@ private static final String BASE_SELECT =
     public boolean insert(Product p) {
         final String sql =
             "INSERT INTO sanpham " +
-            "(TenSP, MaDM, MaTH, Gia, Anh, MoTa, TonKho, Rating, Purchased, TrangThai, NgayTao) " +
-            "VALUES (?,?,?,?,?,?,?,?,?,1,NOW())";
+            "(TenSP, MaDM, MaTH, Gia, GiaCu, Anh, MoTa, TonKho, Rating, Purchased, TrangThai, NgayTao) " + // <<== GiaCu
+            "VALUES (?,?,?,?,?,?,?,?,?,?,1,NOW())";
         try (Connection con = Db.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -77,6 +73,7 @@ private static final String BASE_SELECT =
             if (p.getBrandId() == null) ps.setNull(i++, Types.INTEGER);
             else                         ps.setInt(i++, p.getBrandId());
             ps.setBigDecimal(i++, p.getPrice());
+            if (p.getOldPrice() == null) ps.setNull(i++, Types.DECIMAL); else ps.setBigDecimal(i++, p.getOldPrice()); // <<==
             ps.setString(i++, p.getImage());
             ps.setString(i++, p.getDescription());
             ps.setInt(i++, p.getStock());
@@ -92,7 +89,7 @@ private static final String BASE_SELECT =
     public boolean update(Product p) {
         final String sql =
             "UPDATE sanpham " +
-            "SET TenSP=?, MaDM=?, MaTH=?, Gia=?, Anh=?, MoTa=?, TonKho=?, Rating=?, Purchased=? " +
+            "SET TenSP=?, MaDM=?, MaTH=?, Gia=?, GiaCu=?, Anh=?, MoTa=?, TonKho=?, Rating=?, Purchased=? " +  // <<== GiaCu
             "WHERE MaSP=?";
         try (Connection con = Db.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -103,6 +100,7 @@ private static final String BASE_SELECT =
             if (p.getBrandId() == null) ps.setNull(i++, Types.INTEGER);
             else                         ps.setInt(i++, p.getBrandId());
             ps.setBigDecimal(i++, p.getPrice());
+            if (p.getOldPrice() == null) ps.setNull(i++, Types.DECIMAL); else ps.setBigDecimal(i++, p.getOldPrice()); // <<==
             ps.setString(i++, p.getImage());
             ps.setString(i++, p.getDescription());
             ps.setInt(i++, p.getStock());
@@ -157,30 +155,29 @@ private static final String BASE_SELECT =
         p.setBrandName(rs.getString("TenTH"));
 
         p.setPrice(rs.getBigDecimal("Gia"));
+        p.setOldPrice(rs.getBigDecimal("GiaCu"));  // <<== NEW (có thể null)
         p.setImage(rs.getString("Anh"));
         p.setDescription(rs.getString("MoTa"));
         p.setStock(rs.getInt("TonKho"));
         p.setRating(rs.getDouble("Rating"));
         p.setPurchased(rs.getInt("Purchased"));
-        p.setPrice(rs.getBigDecimal("Gia"));
-        p.setOldPrice(rs.getBigDecimal("GiaCu"));  // ✅ thêm dòng này
         return p;
     }
 
-    /* ========================= NEW: tìm cho admin có filter + sort ========================= */
+    /* ========================= Admin search ========================= */
 
     public List<Product> adminSearch(String keyword, Integer categoryId, String sort, String dir) {
-        // map tên sort -> cột SQL an toàn
         String orderCol;
-        switch (sort) {
-            case "name":      orderCol = "sp.TenSP"; break;
-            case "price":     orderCol = "sp.Gia"; break;
-            case "stock":     orderCol = "sp.TonKho"; break;
-            case "rating":    orderCol = "sp.Rating"; break;
-            case "purchased": orderCol = "sp.Purchased"; break;
-            case "id":
-            default:          orderCol = "sp.MaSP";
-        }
+       switch (sort) {
+  case "name":      orderCol = "sp.TenSP"; break;
+  case "price":     orderCol = "sp.Gia"; break;
+  case "oldPrice":  orderCol = "sp.GiaCu"; break;   // NEW
+  case "stock":     orderCol = "sp.TonKho"; break;
+  case "rating":    orderCol = "sp.Rating"; break;
+  case "purchased": orderCol = "sp.Purchased"; break;
+  case "id":
+  default:          orderCol = "sp.MaSP";
+}
         String orderDir = "asc".equalsIgnoreCase(dir) ? "ASC" : "DESC";
 
         StringBuilder sql = new StringBuilder(BASE_SELECT).append(" WHERE 1=1 ");
@@ -203,9 +200,7 @@ private static final String BASE_SELECT =
         List<Product> list = new ArrayList<>();
         try (Connection con = Db.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
-            for (int i = 0; i < params.size(); i++) {
-                ps.setObject(i + 1, params.get(i));
-            }
+            for (int i = 0; i < params.size(); i++) ps.setObject(i + 1, params.get(i));
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) list.add(mapRow(rs));
             }

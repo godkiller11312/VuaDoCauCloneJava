@@ -10,6 +10,7 @@
 
 <c:set var="nextIdDir"        value="${curSort eq 'id'        and curDir eq 'asc' ? 'desc' : 'asc'}" />
 <c:set var="nextNameDir"      value="${curSort eq 'name'      and curDir eq 'asc' ? 'desc' : 'asc'}" />
+<c:set var="nextOldPriceDir"  value="${curSort eq 'oldPrice'  and curDir eq 'asc' ? 'desc' : 'asc'}" />
 <c:set var="nextPriceDir"     value="${curSort eq 'price'     and curDir eq 'asc' ? 'desc' : 'asc'}" />
 <c:set var="nextStockDir"     value="${curSort eq 'stock'     and curDir eq 'asc' ? 'desc' : 'asc'}" />
 <c:set var="nextRatingDir"    value="${curSort eq 'rating'    and curDir eq 'asc' ? 'desc' : 'asc'}" />
@@ -26,7 +27,6 @@
 <div class="row g-2 align-items-center mb-3">
   <div class="col-12 col-lg-9">
     <form class="row g-2 align-items-center" method="get" action="${cxt}/admin/products">
-      <!-- giữ sort/dir hiện tại khi lọc -->
       <input type="hidden" name="sort" value="${curSort}">
       <input type="hidden" name="dir"  value="${curDir}">
 
@@ -52,7 +52,6 @@
     </form>
   </div>
 
-  <!-- Nút Thêm sản phẩm -->
   <div class="col-12 col-lg-3 text-lg-end">
     <button class="btn btn-teal btn-success" data-bs-toggle="modal" data-bs-target="#modalCreate">
       Thêm sản phẩm
@@ -71,8 +70,8 @@
     </c:forEach>
   </c:if>
 </div>
-<!-- ======= /Thanh tìm kiếm ======= -->
 
+<!-- ======= BẢNG DANH SÁCH ======= -->
 <div class="table-responsive">
   <table class="table align-middle">
     <thead class="table-light">
@@ -106,14 +105,28 @@
         <th>Danh mục</th>
 
         <th class="text-end" style="white-space:nowrap;">
+          <a class="th-sort ${curSort eq 'oldPrice' ? 'sorted' : ''}"
+             href="${baseLink}&sort=oldPrice&dir=${nextOldPriceDir}">
+            Giá cũ
+            <span class="sort-icon">
+              <c:choose>
+                <c:when test="${curSort eq 'oldPrice'}">${curDir eq 'asc' ? '▲' : '▼'}</c:when>
+                <c:otherwise>↕</c:otherwise>
+              </c:choose>
+            </span>
+          </a>
+        </th>
+
+        <th class="text-end" style="white-space:nowrap;">
           <a class="th-sort ${curSort eq 'price' ? 'sorted' : ''}"
              href="${baseLink}&sort=price&dir=${nextPriceDir}">
-            Giá <span class="sort-icon">
-                  <c:choose>
-                    <c:when test="${curSort eq 'price'}">${curDir eq 'asc' ? '▲' : '▼'}</c:when>
-                    <c:otherwise>↕</c:otherwise>
-                  </c:choose>
-                </span>
+            Giá
+            <span class="sort-icon">
+              <c:choose>
+                <c:when test="${curSort eq 'price'}">${curDir eq 'asc' ? '▲' : '▼'}</c:when>
+                <c:otherwise>↕</c:otherwise>
+              </c:choose>
+            </span>
           </a>
         </th>
 
@@ -162,7 +175,6 @@
         <tr>
           <td>${p.id}</td>
 
-          <!-- Ảnh: ưu tiên URL tuyệt đối/bắt đầu bằng '/', nếu chỉ là file name thì prefix /asset/images -->
           <td style="width:64px">
             <c:choose>
               <c:when test="${not empty p.image and (fn:startsWith(p.image,'http') or fn:startsWith(p.image,'/'))}">
@@ -182,9 +194,21 @@
           <td class="fw-semibold">${p.name}</td>
           <td>${p.categoryName}</td>
 
-          <td class="text-end">
+          <!-- Giá cũ -->
+ <td class="text-end text-muted" style="min-width:120px">
+  <c:choose>
+    <c:when test="${p.oldPrice != null && p.oldPrice > 0}">
+      <fmt:formatNumber value="${p.oldPrice}" type="currency" currencySymbol="₫" maxFractionDigits="0"/>
+    </c:when>
+    <c:otherwise>—</c:otherwise>
+  </c:choose>
+</td>
+
+          <!-- Giá -->
+          <td class="text-end fw-semibold" style="min-width:120px">
             <fmt:formatNumber value="${p.price}" type="currency" currencySymbol="₫" maxFractionDigits="0"/>
           </td>
+
           <td class="text-center">${p.stock}</td>
           <td class="text-center">${p.rating}</td>
           <td class="text-center">${p.purchased}</td>
@@ -203,7 +227,7 @@
       </c:forEach>
 
       <c:if test="${empty products}">
-        <tr><td colspan="9" class="text-center text-muted">Không có sản phẩm</td></tr>
+        <tr><td colspan="10" class="text-center text-muted">Không có sản phẩm</td></tr>
       </c:if>
     </tbody>
   </table>
@@ -241,6 +265,11 @@
             <label class="form-label">Giá</label>
             <input class="form-control" name="price" required/>
           </div>
+          <div class="col-md-4">
+            <label class="form-label">Giá cũ (tuỳ chọn)</label>
+            <input class="form-control" name="oldPrice" placeholder="VD: 1,990,000"/>
+          </div>
+
           <div class="col-md-4">
             <label class="form-label">Tồn kho</label>
             <input class="form-control" name="stock" value="0" required/>

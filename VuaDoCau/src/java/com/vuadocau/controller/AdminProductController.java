@@ -39,6 +39,16 @@ public class AdminProductController extends HttpServlet {
         }
     }
 
+    // NEW: cho phép trả về null nếu không nhập
+    private BigDecimal tryParseNullableDecimal(String s){
+        try {
+            if (s == null || s.isBlank()) return null;
+            return new BigDecimal(s.replace(",", "").trim());
+        } catch (Exception e){
+            return null;
+        }
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -67,24 +77,24 @@ public class AdminProductController extends HttpServlet {
             return;
         }
 
-        // ============ Danh sách + filter + sort ============
+        // Danh sách + filter + sort
         String q   = req.getParameter("q");
         Integer cat = tryParseInt(req.getParameter("cat"));
 
-        // sort & dir (id|name|price|stock|rating|purchased) + (asc|desc)
         String sort = req.getParameter("sort");
         String dir  = req.getParameter("dir");
         if (sort == null) sort = "id";
         if (dir == null)  dir  = "desc";
 
-        switch (sort) {
-            case "id": case "name": case "price": case "stock": case "rating": case "purchased":
-                break;
-            default: sort = "id";
-        }
+       // sort & dir (id|name|price|oldPrice|stock|rating|purchased)
+switch (sort) {
+  case "id": case "name": case "price": case "oldPrice":
+  case "stock": case "rating": case "purchased":
+    break;
+  default: sort = "id";
+}
         dir = "asc".equalsIgnoreCase(dir) ? "asc" : "desc";
 
-        // gọi DAO chung cho admin (có filter + sort)
         List<Product> products = productDAO.adminSearch(q, cat, sort, dir);
 
         req.setAttribute("products", products);
@@ -120,6 +130,7 @@ public class AdminProductController extends HttpServlet {
                 p.setCategoryId(catId == null ? 0 : catId);
                 p.setBrandId(tryParseInt(req.getParameter("brandId")));
                 p.setPrice(tryParseDecimal(req.getParameter("price")));
+                p.setOldPrice(tryParseNullableDecimal(req.getParameter("oldPrice"))); // NEW
                 p.setImage(req.getParameter("image"));
                 p.setDescription(req.getParameter("description"));
                 Integer stock = tryParseInt(req.getParameter("stock"));

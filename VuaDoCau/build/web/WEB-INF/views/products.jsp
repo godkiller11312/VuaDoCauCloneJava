@@ -42,25 +42,18 @@
                 </c:choose>
               </div>
 
-            <div class="mt-2">
-  <c:set var="hasOld" value="${not empty p.oldPrice and p.oldPrice > p.price}" />
-  <c:if test="${hasOld}">
-    <span class="price-old">
+ <!-- Giá: nếu có oldPrice và >0 & > price, gạch giá cũ -->
+<div class="mt-2">
+  <c:if test="${p.oldPrice != null && p.oldPrice > 0 && p.oldPrice > p.price}">
+    <span class="text-muted text-decoration-line-through me-2">
       <fmt:formatNumber value="${p.oldPrice}" type="number" groupingUsed="true"/> đ
     </span>
   </c:if>
-
   <span class="fw-bold text-danger">
     <fmt:formatNumber value="${p.price}" type="number" groupingUsed="true"/> đ
   </span>
-
-  <c:if test="${hasOld}">
-    <c:set var="percentOff" value="${(1 - (p.price / p.oldPrice)) * 100}" />
-    <span class="badge-sale ms-1">
-      -<fmt:formatNumber value="${percentOff}" maxFractionDigits="0"/>%
-    </span>
-  </c:if>
 </div>
+
 
               <div class="mt-3 d-grid">
                 <c:choose>
