@@ -79,3 +79,9 @@
   opacity: 1;
   transform: translateY(0);
 }
+
+/* ==== Star rating (0–5) ==== */
+.stars-outer{position:relative;display:inline-block;font-size:14px;line-height:1}
+.stars-outer::before{content:"★★★★★";color:#e5e7eb;letter-spacing:2px}
+.stars-inner{position:absolute;top:0;left:0;white-space:nowrap;overflow:hidden;width:0}
+.stars-inner::before{content:"★★★★★";color:#ffc107;letter-spacing:2px}
