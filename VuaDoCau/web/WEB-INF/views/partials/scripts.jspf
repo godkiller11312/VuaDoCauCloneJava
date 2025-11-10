@@ -5,8 +5,52 @@
 <script>
 (function () {
   const CXT = '<c:out value="${pageContext.request.contextPath}"/>';
+  const IS_AUTH = <c:out value="${not empty sessionScope.authUser}"/>; // true/false
 
-  // Notify nhỏ đơn giản
+  // ====== Guest Prompt Modal (chỉ tạo 1 lần) ======
+  function ensureGuestModal() {
+    if (document.getElementById('guestPromptModal')) return;
+
+    const html = `
+<div class="modal fade" id="guestPromptModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 shadow">
+      <div class="modal-header border-0">
+        <h5 class="modal-title fw-bold">Bạn chưa đăng nhập</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+      </div>
+      <div class="modal-body pt-0">
+        <p class="mb-3">
+          Vui lòng <strong>đăng nhập</strong> để đặt hàng.
+          Nếu chưa có tài khoản, bạn có thể <strong>đăng ký</strong> miễn phí,
+          hoặc liên hệ <strong>Zalo: 0886214922</strong> để đặt nhanh.
+        </p>
+        <div class="d-grid gap-2">
+          <a class="btn btn-teal fw-semibold" href="${pageContext.request.contextPath}/login">Đăng nhập</a>
+          <a class="btn btn-outline-secondary" href="${pageContext.request.contextPath}/register">Đăng ký</a>
+          <a class="btn btn-outline-primary" target="_blank" rel="noopener"
+             href="https://zalo.me/0886214922">Liên hệ Zalo 0886214922</a>
+        </div>
+      </div>
+      <div class="modal-footer border-0 pt-0">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Để sau</button>
+      </div>
+    </div>
+  </div>
+</div>`;
+    const wrap = document.createElement('div');
+    wrap.innerHTML = html;
+    document.body.appendChild(wrap.firstElementChild);
+  }
+
+  function openGuestModal(){
+    ensureGuestModal();
+    const el = document.getElementById('guestPromptModal');
+    const m = bootstrap.Modal.getOrCreateInstance(el, {backdrop:'static'});
+    m.show();
+  }
+
+  // ===== Notify nhỏ đơn giản (giữ nguyên) =====
   function note(msg, ok = true) {
     let wrap = document.getElementById('note-wrap');
     if (!wrap) {
@@ -54,19 +98,26 @@
     const btn = e.target.closest('.btn-add-to-cart');
     if (!btn) return;
 
-    const id = btn.dataset.id;
-    if (!id) return; // fallback
+    // Nếu CHƯA đăng nhập -> bật modal & không add
+    if (!IS_AUTH) {
+      e.preventDefault();
+      openGuestModal();
+      return;
+    }
 
+    // ĐÃ đăng nhập -> chạy cơ chế thêm vào giỏ như hiện tại
+    const id = btn.dataset.id;
+    if (!id) return; // fallback về reload mặc định
     e.preventDefault();
+
     try {
       const d = await postForm(CXT + '/cart', { action:'add', id });
       if (d && (d.ok || typeof d.count !== 'undefined' || typeof d.totalQty !== 'undefined')) {
-        if (d.limited) note('Chỉ còn ' + d.stock + ' sản phẩm!', false);
         if (typeof window.setMiniCartCount === 'function') {
           window.setMiniCartCount(d.count ?? d.totalQty ?? 0);
         }
         await refreshMiniCart();
-        if (!d.limited) note('Đã thêm vào giỏ hàng!');
+        note('Đã thêm vào giỏ hàng!');
       } else {
         note('Không thể thêm sản phẩm.', false);
       }
@@ -82,18 +133,11 @@
   }
   async function setQty(id, qty){
     const d = await postForm(CXT + '/cart', { action:'set', id, qty });
-    if (d && d.ok){
-      updateBadges(d);
-      if (d.limited) note('Chỉ còn ' + d.stock + ' sản phẩm!', false);
-      await refreshMiniCart();
-    }
+    if (d && d.ok){ updateBadges(d); await refreshMiniCart(); }
   }
   async function removeItem(id){
     const d = await postForm(CXT + '/cart', { action:'remove', id });
-    if (d && d.ok){
-      updateBadges(d);
-      await refreshMiniCart();
-    }
+    if (d && d.ok){ updateBadges(d); await refreshMiniCart(); }
   }
 
   // Click -, +, Xóa
@@ -131,7 +175,7 @@
     const id   = wrap ? parseInt(wrap.dataset.id,10) : NaN;
     if (!id) return;
     const v = Math.max(0, parseInt(inp.value,10)||0);
-    await setQty(id, v);
+    if (v === 0) await removeItem(id); else await setQty(id, v);
   });
 
   // Expose

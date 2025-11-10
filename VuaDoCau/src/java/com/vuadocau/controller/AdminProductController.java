@@ -39,7 +39,7 @@ public class AdminProductController extends HttpServlet {
         }
     }
 
-    // NEW: cho phép trả về null nếu không nhập
+    // Cho phép trả về null nếu không nhập
     private BigDecimal tryParseNullableDecimal(String s){
         try {
             if (s == null || s.isBlank()) return null;
@@ -86,13 +86,13 @@ public class AdminProductController extends HttpServlet {
         if (sort == null) sort = "id";
         if (dir == null)  dir  = "desc";
 
-       // sort & dir (id|name|price|oldPrice|stock|rating|purchased)
-switch (sort) {
-  case "id": case "name": case "price": case "oldPrice":
-  case "stock": case "rating": case "purchased":
-    break;
-  default: sort = "id";
-}
+        // sort & dir (id|name|price|oldPrice|stock|rating|purchased)
+        switch (sort) {
+            case "id": case "name": case "price": case "oldPrice":
+            case "stock": case "rating": case "purchased":
+                break;
+            default: sort = "id";
+        }
         dir = "asc".equalsIgnoreCase(dir) ? "asc" : "desc";
 
         List<Product> products = productDAO.adminSearch(q, cat, sort, dir);
@@ -120,25 +120,38 @@ switch (sort) {
         try {
             if ("create".equalsIgnoreCase(action) || "update".equalsIgnoreCase(action)) {
                 Product p = new Product();
+
+                Integer id = null;
                 if ("update".equalsIgnoreCase(action)) {
-                    Integer id = tryParseInt(req.getParameter("id"));
+                    id = tryParseInt(req.getParameter("id"));
                     if (id == null) throw new IllegalArgumentException("Thiếu mã sản phẩm để cập nhật");
                     p.setId(id);
                 }
-                p.setName(req.getParameter("name"));
+
+                // Nếu form update không gửi categoryId -> giữ nguyên danh mục cũ
                 Integer catId = tryParseInt(req.getParameter("categoryId"));
+                if (catId == null && "update".equalsIgnoreCase(action)) {
+                    Product old = productDAO.findById(id);
+                    if (old == null) throw new IllegalArgumentException("Không tìm thấy sản phẩm #" + id);
+                    catId = old.getCategoryId();
+                }
+
+                p.setName(req.getParameter("name"));
                 p.setCategoryId(catId == null ? 0 : catId);
                 p.setBrandId(tryParseInt(req.getParameter("brandId")));
                 p.setPrice(tryParseDecimal(req.getParameter("price")));
-                p.setOldPrice(tryParseNullableDecimal(req.getParameter("oldPrice"))); // NEW
+                p.setOldPrice(tryParseNullableDecimal(req.getParameter("oldPrice"))); // << NEW
                 p.setImage(req.getParameter("image"));
                 p.setDescription(req.getParameter("description"));
+
                 Integer stock = tryParseInt(req.getParameter("stock"));
                 p.setStock(stock == null ? 0 : stock);
+
                 try {
                     String r = req.getParameter("rating");
                     p.setRating((r == null || r.isBlank()) ? 0 : Double.parseDouble(r));
                 } catch (Exception ignore) { p.setRating(0); }
+
                 Integer purchased = tryParseInt(req.getParameter("purchased"));
                 p.setPurchased(purchased == null ? 0 : purchased);
 
@@ -146,6 +159,7 @@ switch (sort) {
                 if (ok) req.getSession().setAttribute("flash_success",
                         ("create".equalsIgnoreCase(action) ? "Đã thêm" : "Đã cập nhật") + " sản phẩm thành công.");
                 else    req.getSession().setAttribute("flash_error", "Thao tác không thành công.");
+
                 resp.sendRedirect(req.getContextPath()+"/admin/products");
                 return;
             }

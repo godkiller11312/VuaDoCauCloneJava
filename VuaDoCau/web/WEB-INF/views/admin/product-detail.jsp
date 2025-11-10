@@ -16,40 +16,41 @@
       <input type="hidden" name="id" value="${p.id}"/>
 
       <div class="row g-3">
+        <!-- Tên -->
         <div class="col-md-8">
           <label class="form-label">Tên</label>
           <input class="form-control" name="name" value="${p.name}" required/>
         </div>
-        <div class="col-md-4">
-  <label class="form-label">Giá</label>
-  <input class="form-control" name="price" value="${p.price}"/>
-</div>
-<div class="col-md-4">
-  <label class="form-label">Giá cũ (tuỳ chọn)</label>
-  <input class="form-control" name="oldPrice" value="${p.oldPrice}"/>
-</div>
-<div class="col-md-4">
-  <label class="form-label">Tồn kho</label>
-  <input class="form-control" name="stock" value="${p.stock}"/>
-</div>
 
-        <div class="col-md-4">
-          <label class="form-label">Thương hiệu (mã)</label>
-          <input class="form-control" name="brandId" value="${p.brandId}"/>
-        </div>
+        <!-- Giá hiện tại -->
         <div class="col-md-4">
           <label class="form-label">Giá</label>
           <input class="form-control" name="price" value="${p.price}"/>
+        </div>
+
+        <!-- Giá cũ + Tồn kho -->
+        <div class="col-md-4">
+          <label class="form-label">Giá cũ (tuỳ chọn)</label>
+          <input class="form-control" name="oldPrice" value="${p.oldPrice}"/>
         </div>
         <div class="col-md-4">
           <label class="form-label">Tồn kho</label>
           <input class="form-control" name="stock" value="${p.stock}"/>
         </div>
 
+        <!-- Thương hiệu -->
+        <div class="col-md-4">
+          <label class="form-label">Thương hiệu (mã)</label>
+          <input class="form-control" name="brandId" value="${p.brandId}"/>
+        </div>
+
+        <!-- Ảnh -->
         <div class="col-md-6">
           <label class="form-label">Ảnh (URL hoặc tên file trong /asset/images)</label>
           <input id="imgInput" class="form-control" name="image" value="${p.image}"/>
         </div>
+
+        <!-- Rating + Đã mua -->
         <div class="col-md-3">
           <label class="form-label">Rating</label>
           <input class="form-control" name="rating" value="${p.rating}"/>
@@ -59,6 +60,7 @@
           <input class="form-control" name="purchased" value="${p.purchased}"/>
         </div>
 
+        <!-- Mô tả -->
         <div class="col-12">
           <label class="form-label">Mô tả</label>
           <textarea class="form-control" name="description" rows="4">${p.description}</textarea>
