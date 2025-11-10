@@ -4,7 +4,7 @@
 <c:set var="auth" value="${sessionScope.authUser}" />
 <c:set var="isAdmin" value="${not empty auth and auth.roleId == 1}" />
 
-<nav class="navbar navbar-expand-lg bg-white shadow-sm nav-admin">
+<nav class="navbar navbar-expand-lg bg-white shadow-sm nav-admin fixed-top">
   <div class="container">
     <div class="d-flex align-items-center w-100">
 

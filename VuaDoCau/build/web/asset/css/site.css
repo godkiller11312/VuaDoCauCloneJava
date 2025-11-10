@@ -8,6 +8,11 @@
 .thumb { background:#f6f7ff; }
 
 
+/* ===== Navbar fixed-top fix spacing ===== */
+body {
+  padding-top: 70px; /* điều chỉnh nếu header cao hơn/thấp hơn */
+}
+
 /* === Floating Cart (bay bay như Zalo) === */
 .cart-fab {
   position: fixed;
