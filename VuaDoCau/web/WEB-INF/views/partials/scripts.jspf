@@ -55,17 +55,18 @@
     if (!btn) return;
 
     const id = btn.dataset.id;
-    if (!id) return; // fallback về reload mặc định
+    if (!id) return; // fallback
 
     e.preventDefault();
     try {
       const d = await postForm(CXT + '/cart', { action:'add', id });
       if (d && (d.ok || typeof d.count !== 'undefined' || typeof d.totalQty !== 'undefined')) {
+        if (d.limited) note('Chỉ còn ' + d.stock + ' sản phẩm!', false);
         if (typeof window.setMiniCartCount === 'function') {
           window.setMiniCartCount(d.count ?? d.totalQty ?? 0);
         }
         await refreshMiniCart();
-        note('Đã thêm vào giỏ hàng!');
+        if (!d.limited) note('Đã thêm vào giỏ hàng!');
       } else {
         note('Không thể thêm sản phẩm.', false);
       }
@@ -81,11 +82,18 @@
   }
   async function setQty(id, qty){
     const d = await postForm(CXT + '/cart', { action:'set', id, qty });
-    if (d && d.ok){ updateBadges(d); await refreshMiniCart(); }
+    if (d && d.ok){
+      updateBadges(d);
+      if (d.limited) note('Chỉ còn ' + d.stock + ' sản phẩm!', false);
+      await refreshMiniCart();
+    }
   }
   async function removeItem(id){
     const d = await postForm(CXT + '/cart', { action:'remove', id });
-    if (d && d.ok){ updateBadges(d); await refreshMiniCart(); }
+    if (d && d.ok){
+      updateBadges(d);
+      await refreshMiniCart();
+    }
   }
 
   // Click -, +, Xóa
@@ -123,10 +131,10 @@
     const id   = wrap ? parseInt(wrap.dataset.id,10) : NaN;
     if (!id) return;
     const v = Math.max(0, parseInt(inp.value,10)||0);
-    if (v === 0) await removeItem(id); else await setQty(id, v);
+    await setQty(id, v);
   });
 
-  // Expose để nơi khác gọi khi cần
+  // Expose
   window.refreshMiniCart = refreshMiniCart;
 
 })();

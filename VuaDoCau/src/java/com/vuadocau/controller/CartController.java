@@ -47,9 +47,8 @@ public class CartController extends HttpServlet {
         Cart cart = getCart(session);
 
         String action   = req.getParameter("action");     // add|remove|clear|null(show)
-        String fragment = req.getParameter("fragment");   // nếu có -> trả về fragment HTML
+        String fragment = req.getParameter("fragment");   // nếu có -> fragment HTML
 
-        // ✅ FRAGMENT cho mini-cart body (không tạo file mới)
         if (fragment != null) {
             req.setAttribute("fragment", Boolean.TRUE);
             req.getRequestDispatcher("/WEB-INF/views/partials/mini-cart.jsp")
@@ -84,12 +83,6 @@ public class CartController extends HttpServlet {
             return;
         }
 
-        Object flash = session.getAttribute("flash_success");
-        if (flash != null) {
-            req.setAttribute("message", flash);
-            session.removeAttribute("flash_success");
-        }
-
         req.setAttribute("cart", cart);
         req.setAttribute("view", "/WEB-INF/views/cart.jsp");
         req.setAttribute("pageTitle", "Giỏ hàng");
@@ -104,12 +97,16 @@ public class CartController extends HttpServlet {
         Cart cart = getCart(session);
         String action = req.getParameter("action");
 
-        // === AJAX ADD ===
+        // === AJAX ADD (tôn trọng tồn kho) ===
         if ("add".equals(action)) {
             int id  = parseInt(req.getParameter("id"), -1);
             int qty = parseInt(req.getParameter("qty"), 1);
 
             Product p = productDAO.findById(id);
+            int before = 0;
+            CartItem beforeItem = cart.getItem(id);
+            if (beforeItem != null) before = beforeItem.getQuantity();
+
             if (p != null) {
                 cart.add(p, qty);
                 syncBadge(session, cart);
@@ -119,10 +116,13 @@ public class CartController extends HttpServlet {
             BigDecimal itemSubtotal = it != null ? it.getSubtotal() : BigDecimal.ZERO;
             BigDecimal totalAmount  = cart.getTotalAmount();
             int totalQty            = cart.getTotalQty();
+            int stock               = it != null ? it.getStock() : (p != null ? Math.max(0, p.getStock()) : 0);
+            boolean limited         = it != null && ((it.getQuantity() - before) < qty);
 
             String body = String.format(
-                "{\"ok\":true,\"id\":%d,\"qty\":%d,\"itemSubtotal\":%s,\"totalAmount\":%s,\"count\":%d}",
+                "{\"ok\":true,\"id\":%d,\"qty\":%d,\"stock\":%d,\"limited\":%s,\"itemSubtotal\":%s,\"totalAmount\":%s,\"count\":%d}",
                 id, (it != null ? it.getQuantity() : 0),
+                stock, limited ? "true" : "false",
                 itemSubtotal.toPlainString(),
                 totalAmount.toPlainString(),
                 totalQty
@@ -131,21 +131,34 @@ public class CartController extends HttpServlet {
             return;
         }
 
-        // === AJAX SET QTY ===
+        // === AJAX SET QTY (kẹp <= stock) ===
         if ("set".equals(action)) {
             int id  = parseInt(req.getParameter("id"), -1);
-            int qty = parseInt(req.getParameter("qty"), 1);
-            cart.update(id, qty);
+            int want = parseInt(req.getParameter("qty"), 1);
+
+            // biết stock thực tế
+            Product p = productDAO.findById(id);
+            if (p != null) {
+                // sync stock vào cartItem để Cart.update kẹp đúng
+                CartItem ci = cart.getItem(id);
+                if (ci != null) ci.setStock(Math.max(0, p.getStock())); // NOTE: getter khác thì đổi
+            }
+
+            cart.update(id, want);
             syncBadge(session, cart);
 
             CartItem it = cart.getItem(id);
+            int qty          = (it != null ? it.getQuantity() : 0);
+            int stock        = (it != null ? it.getStock() : (p != null ? Math.max(0, p.getStock()) : 0));
+            boolean limited  = want > stock;
+
             BigDecimal itemSubtotal = it != null ? it.getSubtotal() : BigDecimal.ZERO;
             BigDecimal totalAmount  = cart.getTotalAmount();
             int totalQty            = cart.getTotalQty();
 
             String body = String.format(
-                "{\"ok\":true,\"id\":%d,\"qty\":%d,\"itemSubtotal\":%s,\"totalAmount\":%s,\"totalQty\":%d}",
-                id, (it != null ? it.getQuantity() : 0),
+                "{\"ok\":true,\"id\":%d,\"qty\":%d,\"stock\":%d,\"limited\":%s,\"itemSubtotal\":%s,\"totalAmount\":%s,\"totalQty\":%d}",
+                id, qty, stock, limited ? "true" : "false",
                 itemSubtotal.toPlainString(),
                 totalAmount.toPlainString(),
                 totalQty
@@ -170,7 +183,7 @@ public class CartController extends HttpServlet {
             return;
         }
 
-        // Fallback: cập nhật hàng loạt (form giỏ hàng đầy đủ)
+        // Fallback: cập nhật hàng loạt từ form
         req.getParameterMap().forEach((name, values) -> {
             if (name.startsWith("qty[")) {
                 int id = parseInt(name.substring(4, name.length() - 1), -1);

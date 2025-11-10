@@ -8,15 +8,17 @@ public class CartItem {
     private String image;
     private BigDecimal price;   // đơn giá tại thời điểm thêm
     private int quantity;
+    private int stock;          // tồn kho tại thời điểm thêm
 
     public CartItem() { }
 
-    public CartItem(int productId, String name, String image, BigDecimal price, int quantity) {
+    public CartItem(int productId, String name, String image, BigDecimal price, int quantity, int stock) {
         this.productId = productId;
         this.name = name;
         this.image = image;
         this.price = price;
         this.quantity = quantity;
+        this.stock = stock;
     }
 
     public int getProductId() { return productId; }
@@ -33,6 +35,9 @@ public class CartItem {
 
     public int getQuantity() { return quantity; }
     public void setQuantity(int quantity) { this.quantity = quantity; }
+
+    public int getStock() { return stock; }
+    public void setStock(int stock) { this.stock = stock; }
 
     public BigDecimal getSubtotal() {
         return price.multiply(BigDecimal.valueOf(quantity));

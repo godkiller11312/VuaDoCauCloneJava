@@ -9,7 +9,7 @@
 
 <c:choose>
 
-  <%-- ========== FRAGMENT (body để JS refresh) ========== --%>
+  <%-- ===== FRAGMENT (để refresh) ===== --%>
   <c:when test="${isFragment}">
     <c:choose>
       <c:when test="${cart == null or empty cart.items}">
@@ -35,12 +35,16 @@
             <div class="flex-grow-1 small">
               <div class="fw-semibold text-truncate"><c:out value="${it.name}"/></div>
 
-              <!-- Controls – / input / + / Xóa -->
+              <!-- tồn kho -->
+              <div class="text-muted">Còn: <strong>${it.stock}</strong></div>
+
+              <!-- controls -->
               <div class="qty-actions d-inline-flex align-items-center mt-1" data-id="${it.productId}">
                 <button class="btn btn-sm btn-outline-secondary mc-minus" type="button" aria-label="Giảm">−</button>
                 <input class="form-control form-control-sm mc-qty mx-1" type="number" min="0"
                        value="${it.quantity}" style="width:60px;text-align:center">
-                <button class="btn btn-sm btn-outline-secondary mc-plus" type="button" aria-label="Tăng">+</button>
+                <button class="btn btn-sm btn-outline-secondary mc-plus" type="button"
+                        aria-label="Tăng" <c:if test="${it.quantity >= it.stock}">disabled</c:if>>+</button>
                 <button class="btn btn-sm btn-link text-danger mc-remove ms-2" type="button" aria-label="Xóa">Xóa</button>
               </div>
             </div>
@@ -61,7 +65,7 @@
     </c:choose>
   </c:when>
 
-  <%-- ========== FULL WIDGET (nút nổi + offcanvas) ========== --%>
+  <%-- ===== FULL WIDGET ===== --%>
   <c:otherwise>
     <button type="button" class="cart-fab" data-bs-toggle="offcanvas" data-bs-target="#miniCart"
             aria-controls="miniCart" title="Giỏ hàng">
@@ -104,11 +108,14 @@
 
                 <div class="flex-grow-1 small">
                   <div class="fw-semibold text-truncate"><c:out value="${it.name}"/></div>
+                  <div class="text-muted">Còn: <strong>${it.stock}</strong></div>
+
                   <div class="qty-actions d-inline-flex align-items-center mt-1" data-id="${it.productId}">
                     <button class="btn btn-sm btn-outline-secondary mc-minus" type="button" aria-label="Giảm">−</button>
                     <input class="form-control form-control-sm mc-qty mx-1" type="number" min="0"
                            value="${it.quantity}" style="width:60px;text-align:center">
-                    <button class="btn btn-sm btn-outline-secondary mc-plus" type="button" aria-label="Tăng">+</button>
+                    <button class="btn btn-sm btn-outline-secondary mc-plus" type="button"
+                            aria-label="Tăng" <c:if test="${it.quantity >= it.stock}">disabled</c:if>>+</button>
                     <button class="btn btn-sm btn-link text-danger mc-remove ms-2" type="button" aria-label="Xóa">Xóa</button>
                   </div>
                 </div>

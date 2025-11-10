@@ -78,23 +78,39 @@
                   <div class="card-body">
                     <span class="badge bg-light text-dark mb-2">${p.categoryName}</span>
                     <h6 class="card-title" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.name}</h6>
-                   <c:set var="r" value="${p.rating}" />
-<div class="small text-muted d-flex align-items-center gap-2">
-  <span class="stars-outer">
-    <span class="stars-inner" style="width:${r * 20}%"></span>
-  </span>
-  <small><fmt:formatNumber value="${r}" minFractionDigits="1" maxFractionDigits="1"/></small>
-  · Đã mua: ${p.purchased}
-</div>
+
+                    <c:set var="r" value="${p.rating}" />
+                    <div class="small text-muted d-flex align-items-center gap-2">
+                      <span class="stars-outer"><span class="stars-inner" style="width:${r * 20}%"></span></span>
+                      <small><fmt:formatNumber value="${r}" minFractionDigits="1" maxFractionDigits="1"/></small>
+                      · Đã mua: ${p.purchased}
+                    </div>
+
+                    <!-- tồn kho -->
+                    <div class="small mt-1">
+                      <c:choose>
+                        <c:when test="${p.stock <= 0}"><span class="text-danger">Hết hàng</span></c:when>
+                        <c:otherwise>Còn: <strong>${p.stock}</strong></c:otherwise>
+                      </c:choose>
+                    </div>
+
                     <div class="mt-2 fw-bold text-danger">
                       <fmt:formatNumber value="${p.price}" type="number" groupingUsed="true"/> đ
                     </div>
+
                     <div class="mt-3 d-grid">
-                      <a class="btn btn-teal rounded-pill btn-add-to-cart"
-                         href="${cxt}/cart?action=add&id=${p.id}"
-                         data-id="${p.id}" data-qty="1">
-                        Thêm vào giỏ
-                      </a>
+                      <c:choose>
+                        <c:when test="${p.stock <= 0}">
+                          <button class="btn btn-secondary rounded-pill" disabled>Hết hàng</button>
+                        </c:when>
+                        <c:otherwise>
+                          <a class="btn btn-teal rounded-pill btn-add-to-cart"
+                             href="${cxt}/cart?action=add&id=${p.id}"
+                             data-id="${p.id}" data-qty="1">
+                            Thêm vào giỏ
+                          </a>
+                        </c:otherwise>
+                      </c:choose>
                     </div>
                   </div>
                 </div>

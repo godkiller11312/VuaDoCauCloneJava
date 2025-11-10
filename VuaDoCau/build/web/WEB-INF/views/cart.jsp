@@ -21,7 +21,8 @@
           <th>SP</th>
           <th>Tên</th>
           <th class="text-end">Đơn giá</th>
-          <th class="text-center" style="width:140px">SL</th>
+          <th class="text-center" style="width:160px">SL</th>
+          <th class="text-center">Tồn</th>
           <th class="text-end">Tạm tính</th>
           <th></th>
         </tr>
@@ -52,10 +53,12 @@
             </td>
             <td class="text-center">
               <div class="input-group input-group-sm">
+                <button class="btn btn-outline-secondary btnMinus" type="button">−</button>
                 <input type="number" min="0" class="form-control text-center qty" value="${it.quantity}">
-                <button class="btn btn-outline-secondary btnApply">Áp dụng</button>
+                <button class="btn btn-outline-secondary btnPlus" type="button" <c:if test="${it.quantity >= it.stock}">disabled</c:if>>+</button>
               </div>
             </td>
+            <td class="text-center"><strong>${it.stock}</strong></td>
             <td class="text-end item-subtotal">
               <fmt:formatNumber value="${it.subtotal}" type="currency" currencySymbol="₫" maxFractionDigits="0"/>
             </td>
@@ -68,7 +71,7 @@
       </tbody>
       <tfoot>
         <tr>
-          <th colspan="4" class="text-end">Tổng:</th>
+          <th colspan="5" class="text-end">Tổng:</th>
           <th class="text-end" id="totalAmount">
             <fmt:formatNumber value="${cart.totalAmount}" type="currency" currencySymbol="₫" maxFractionDigits="0"/>
           </th>
@@ -90,23 +93,67 @@
   const tbody = document.getElementById('cartBody');
   if(!tbody) return;
 
-  tbody.querySelectorAll('tr').forEach(function(row){
-    const id = row.dataset.id;
-    row.querySelector('.btnApply').addEventListener('click', function(){
-      const qty = row.querySelector('.qty').value || 0;
-      fetch('${cxt}/cart', {
-        method: 'POST',
-        headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
-        body: new URLSearchParams({action:'set', id:id, qty:qty})
-      }).then(r => r.json()).then(d => {
+  function post(action, id, qty){
+    return fetch('${cxt}/cart', {
+      method: 'POST',
+      headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
+      body: new URLSearchParams({action, id, qty})
+    }).then(r => r.json());
+  }
+
+  function showNote(msg){
+    if (!window.note) return alert(msg);
+    window.note(msg, false);
+  }
+
+  tbody.addEventListener('click', function(e){
+    const row = e.target.closest('tr[data-id]');
+    if(!row) return;
+    const id  = row.dataset.id;
+    const qtyInput = row.querySelector('.qty');
+
+    if(e.target.classList.contains('btnMinus')){
+      const v = Math.max(0, (parseInt(qtyInput.value,10)||0) - 1);
+      post('set', id, v).then(d=>{
         if(d && d.ok){
-          row.querySelector('.qty').value = d.qty;
+          qtyInput.value = d.qty;
           row.querySelector('.item-subtotal').textContent =
             new Intl.NumberFormat('vi-VN').format(parseInt(d.itemSubtotal)) + ' ₫';
           document.getElementById('totalAmount').textContent =
             new Intl.NumberFormat('vi-VN').format(parseInt(d.totalAmount)) + ' ₫';
         }
-      }).catch(()=>{});
+      });
+    }
+
+    if(e.target.classList.contains('btnPlus')){
+      const v = (parseInt(qtyInput.value,10)||0) + 1;
+      post('set', id, v).then(d=>{
+        if(d && d.ok){
+          qtyInput.value = d.qty;
+          row.querySelector('.item-subtotal').textContent =
+            new Intl.NumberFormat('vi-VN').format(parseInt(d.itemSubtotal)) + ' ₫';
+          document.getElementById('totalAmount').textContent =
+            new Intl.NumberFormat('vi-VN').format(parseInt(d.totalAmount)) + ' ₫';
+          if(d.limited){ showNote('Chỉ còn ' + d.stock + ' sản phẩm!'); }
+        }
+      });
+    }
+  });
+
+  tbody.addEventListener('change', function(e){
+    const inp = e.target.closest('.qty');
+    if(!inp) return;
+    const row = inp.closest('tr[data-id]'); const id = row.dataset.id;
+    const v = Math.max(0, parseInt(inp.value,10)||0);
+    post('set', id, v).then(d=>{
+      if(d && d.ok){
+        inp.value = d.qty;
+        row.querySelector('.item-subtotal').textContent =
+          new Intl.NumberFormat('vi-VN').format(parseInt(d.itemSubtotal)) + ' ₫';
+        document.getElementById('totalAmount').textContent =
+          new Intl.NumberFormat('vi-VN').format(parseInt(d.totalAmount)) + ' ₫';
+        if(d.limited){ showNote('Chỉ còn ' + d.stock + ' sản phẩm!'); }
+      }
     });
   });
 })();
