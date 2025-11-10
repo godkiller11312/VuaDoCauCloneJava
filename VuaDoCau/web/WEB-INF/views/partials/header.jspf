@@ -7,13 +7,20 @@
 <nav class="navbar navbar-expand-lg bg-white shadow-sm nav-admin">
   <div class="container">
     <div class="d-flex align-items-center w-100">
+
+      <!-- Brand -->
       <a class="navbar-brand fw-bold me-2" href="${cxt}/home">VuaĐồCâu</a>
 
+      <!-- Left nav -->
       <ul class="navbar-nav flex-row gap-3 align-items-center">
         <c:choose>
           <c:when test="${isAdmin}">
-            <li class="nav-item"><a class="nav-link text-danger fw-semibold" href="${cxt}/admin/products">Quản Lý Sản phẩm</a></li>
-            <li class="nav-item"><a class="nav-link text-danger fw-semibold" href="${cxt}/admin/orders">Quản Lý Đơn hàng</a></li>
+            <li class="nav-item">
+              <a class="nav-link text-danger fw-semibold" href="${cxt}/admin/products">Quản Lý Sản phẩm</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-danger fw-semibold" href="${cxt}/admin/orders">Quản Lý Đơn hàng</a>
+            </li>
           </c:when>
           <c:otherwise>
             <li class="nav-item"><a class="nav-link" href="${cxt}/home">Trang chủ</a></li>
@@ -32,6 +39,7 @@
 
       <div class="flex-grow-1"></div>
 
+      <!-- Search (khách) -->
       <c:if test="${!isAdmin}">
         <form class="d-none d-lg-flex me-2" style="max-width:520px" method="get" action="${cxt}/products">
           <input class="form-control me-2" type="search" name="q" placeholder="Tìm sản phẩm...">
@@ -39,6 +47,7 @@
         </form>
       </c:if>
 
+      <!-- User -->
       <c:choose>
         <c:when test="${not empty auth}">
           <div class="dropdown">
@@ -48,12 +57,12 @@
             <ul class="dropdown-menu dropdown-menu-end shadow">
               <c:if test="${!isAdmin}">
                 <li>
-                  <a class="dropdown-item d-flex justify-content-between align-items-center position-relative" href="${cxt}/cart">
+                  <a class="dropdown-item d-flex justify-content-between align-items-center" href="${cxt}/cart">
                     Giỏ hàng
-                    <span id="headerCartCount"
-                          class="badge bg-danger position-absolute top-0 start-100 translate-middle">
-                      <c:out value="${empty sessionScope.cartCount ? 0 : sessionScope.cartCount}"/>
-                    </span>
+        <span class="badge bg-danger position-absolute top-0 start-100 translate-middle"
+      id="headerCartCount">
+  <c:out value="${empty sessionScope.cartCount ? 0 : sessionScope.cartCount}"/>
+</span>
                   </a>
                 </li>
               </c:if>
@@ -70,6 +79,7 @@
           </div>
         </c:otherwise>
       </c:choose>
+
     </div>
   </div>
 </nav>
