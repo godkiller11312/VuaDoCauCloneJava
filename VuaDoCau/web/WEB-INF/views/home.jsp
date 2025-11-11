@@ -46,18 +46,21 @@
           </div>
         </a>
       </div>
-          <!-- Card Quản lý tài khoản -->
-<div class="col-lg-6">
-  <a class="text-decoration-none" href="${cxt}/admin/users">
-    <div class="card border-0 shadow-sm hover-lift">
-      <div class="card-body d-flex align-items-center gap-3">
-        <div class="rounded-3 bg-success-subtle p-3">
-          <i class="bi bi-people fs-4 text-success"></i>
-        </div>
-        <div>
-          <div class="fw-semibold">Quản lý tài khoản</div>
-          <div class="text-muted small">Xem / sửa / đổi mật khẩu / xoá người dùng…</div>
-        </div>
+<!-- Card Quản lý tài khoản (đồng bộ style với 2 card trên) -->
+<div class="col-12 col-md-6">
+  <a href="${cxt}/admin/users" class="text-decoration-none">
+    <div class="card h-100 shadow-sm rounded-4 border-0 p-3 d-flex flex-row align-items-center">
+      <div class="me-3 d-flex align-items-center justify-content-center rounded-circle"
+           style="width:56px;height:56px;background:#fff4e5;">
+        <!-- SVG người dùng -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="#f59e0b" viewBox="0 0 16 16" aria-hidden="true">
+          <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3z"/>
+          <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+        </svg>
+      </div>
+      <div class="flex-grow-1">
+        <div class="fw-semibold text-dark">Quản lý tài khoản</div>
+        <div class="text-muted small">Xem / sửa / đổi mật khẩu / xoá người dùng…</div>
       </div>
     </div>
   </a>

@@ -26,10 +26,20 @@ public class AdminOrderController extends HttpServlet {
         return (o instanceof User) && ((User) o).getRoleId() == 1;
     }
 
+    /** Forward qua layout chung */
+    private void forwardLayout(HttpServletRequest req, HttpServletResponse resp,
+                               String viewPath, String pageTitle)
+            throws ServletException, IOException {
+        req.setAttribute("view", viewPath);
+        if (pageTitle != null) req.setAttribute("pageTitle", pageTitle);
+        req.getRequestDispatcher("/WEB-INF/views/_layout/main.jsp").forward(req, resp);
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         if (!isAdmin(req)) { resp.sendRedirect(req.getContextPath() + "/home"); return; }
+        req.setCharacterEncoding("UTF-8");
 
         User admin = (User) req.getSession().getAttribute("authUser");
         String action = req.getParameter("action");
@@ -40,20 +50,20 @@ public class AdminOrderController extends HttpServlet {
                 Order order = orderDAO.findAdminById(id);
                 if (order == null) {
                     req.getSession().setAttribute("flash_error", "Không tìm thấy đơn #" + id);
-                    // log fail view
                     if (admin != null) actDAO.log(req, admin, "ORDER_VIEW", "Không tìm thấy đơn #" + id);
                     resp.sendRedirect(req.getContextPath() + "/admin/orders");
                     return;
                 }
-                // phí ship: tạm thời 0; tổng = tạm tính + ship
                 order.setShipFee(BigDecimal.ZERO);
                 order.setTotal(order.getSubtotal().add(order.getShipFee()));
 
-                // log view
                 if (admin != null) actDAO.log(req, admin, "ORDER_VIEW", "Xem đơn #" + order.getId());
 
                 req.setAttribute("order", order);
-                req.getRequestDispatcher("/WEB-INF/views/admin/order-detail.jsp").forward(req, resp);
+
+                // ✅ dùng layout
+                forwardLayout(req, resp, "/WEB-INF/views/admin/order-detail.jsp",
+                        "Chi tiết đơn #" + order.getId());
                 return;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -71,19 +81,16 @@ public class AdminOrderController extends HttpServlet {
         String q = req.getParameter("q");
         String status = req.getParameter("status");
 
-        // sort/dir với whitelist
+        // sort/dir whitelist
         String sort = req.getParameter("sort");
         String dir  = req.getParameter("dir");
-
         if (sort == null || sort.isBlank()) sort = "id";
         if (dir  == null || dir.isBlank())  dir  = "desc";
-
         if (!Arrays.asList("id", "date", "total").contains(sort)) sort = "id";
         dir = "asc".equalsIgnoreCase(dir) ? "asc" : "desc";
 
         List<Order> orders = orderDAO.findAll(q, status, sort, dir);
 
-        // log thao tác lọc/list (nhẹ nhàng, chỉ ghi khi admin thực sự thao tác màn này)
         if (admin != null) {
             String msg = String.format("Lọc đơn: q='%s', status='%s', sort='%s', dir='%s', count=%d",
                     nullToEmpty(q), nullToEmpty(status), sort, dir, (orders == null ? 0 : orders.size()));
@@ -96,7 +103,8 @@ public class AdminOrderController extends HttpServlet {
         req.setAttribute("sort", sort);
         req.setAttribute("dir", dir);
 
-        req.getRequestDispatcher("/WEB-INF/views/admin/orders.jsp").forward(req, resp);
+        // ✅ dùng layout
+        forwardLayout(req, resp, "/WEB-INF/views/admin/orders.jsp", "Quản Lý Đơn hàng");
     }
 
     @Override
