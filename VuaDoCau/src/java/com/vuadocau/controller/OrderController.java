@@ -32,9 +32,41 @@ public class OrderController extends HttpServlet {
         o.setShipFee(SHIP_FEE);
         if (o.getSubtotal() != null) o.setTotal(o.getSubtotal().add(SHIP_FEE));
 
-       req.setAttribute("order", o);
-req.setAttribute("view", "/WEB-INF/views/order_detail.jsp");
-req.setAttribute("pageTitle", "Đơn hàng #" + id);
-req.getRequestDispatcher("/WEB-INF/views/_layout/main.jsp").forward(req, resp);
+        req.setAttribute("order", o);
+        req.setAttribute("view", "/WEB-INF/views/order_detail.jsp");
+        req.setAttribute("pageTitle", "Đơn hàng #" + id);
+        req.getRequestDispatcher("/WEB-INF/views/_layout/main.jsp").forward(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+        HttpSession ss = req.getSession();
+        User u = (User) ss.getAttribute("authUser");
+        if (u == null) { resp.sendRedirect(req.getContextPath() + "/login"); return; }
+
+        String action = req.getParameter("action");
+        int id;
+        try { id = Integer.parseInt(req.getParameter("id")); }
+        catch (Exception ex) { ss.setAttribute("flash_error", "Yêu cầu không hợp lệ."); resp.sendRedirect(req.getContextPath()+"/profile"); return; }
+
+        boolean ok = false;
+        try {
+            if ("cancel".equalsIgnoreCase(action)) {
+                ok = orderDAO.userCancelIfNew(id, u.getId());
+                ss.setAttribute(ok ? "flash_success" : "flash_error",
+                        ok ? ("Đã hủy đơn #" + id) : ("Không thể hủy đơn #" + id));
+            } else if ("received".equalsIgnoreCase(action)) {
+                ok = orderDAO.userMarkDoneIfShipping(id, u.getId());
+                ss.setAttribute(ok ? "flash_success" : "flash_error",
+                        ok ? ("Cảm ơn bạn! Đơn #" + id + " đã hoàn tất.") : ("Không thể xác nhận nhận hàng cho đơn #" + id));
+            } else {
+                ss.setAttribute("flash_error", "Action không hợp lệ.");
+            }
+        } catch (Exception e) {
+            ss.setAttribute("flash_error", "Lỗi: " + e.getMessage());
+        }
+
+        resp.sendRedirect(req.getContextPath() + "/profile");
     }
 }

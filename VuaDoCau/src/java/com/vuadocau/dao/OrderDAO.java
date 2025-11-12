@@ -17,7 +17,7 @@ public class OrderDAO {
             con.setAutoCommit(false);
             try (PreparedStatement ps = con.prepareStatement(sqlOrder, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setInt(1, o.getUserId());
-                ps.setString(2, o.getStatus()); // NEW
+                ps.setString(2, o.getStatus()); // "NEW"
                 ps.setString(3, o.getNote());
                 ps.executeUpdate();
 
@@ -97,7 +97,6 @@ public class OrderDAO {
                 o.setFullName(rs.getString("TenND"));
                 o.setEmail(rs.getString("Email"));
 
-                // items + subtotal
                 String sqlItems =
                     "SELECT ct.MaSP, sp.TenSP, sp.Anh, ct.Gia, ct.SoLuong " +
                     "FROM chitietdh ct JOIN sanpham sp ON sp.MaSP = ct.MaSP " +
@@ -128,14 +127,13 @@ public class OrderDAO {
         } catch (Exception e) { throw new RuntimeException(e); }
     }
 
-    /** Danh sách đơn cho admin + lọc + sắp xếp an toàn bằng whitelist */
+    /** Danh sách đơn cho admin + lọc + sắp xếp (whitelist) */
     public List<Order> findAll(String q, String status, String sort, String dir) {
-        // map cột sắp xếp
         String orderBy;
         switch (sort) {
             case "date":  orderBy = "dh.NgayDH"; break;
-            case "total": orderBy = "Tong";      break; // dùng alias tính tổng
-            default:      orderBy = "dh.MaDH";   break; // id
+            case "total": orderBy = "Tong";      break;
+            default:      orderBy = "dh.MaDH";   break;
         }
         String dirSql = "asc".equalsIgnoreCase(dir) ? "ASC" : "DESC";
 
@@ -183,11 +181,6 @@ public class OrderDAO {
             }
         } catch (Exception e) { throw new RuntimeException(e); }
         return list;
-    }
-
-    /** Bản cũ – giữ lại cho tương thích nếu controller cũ gọi */
-    public List<Order> findAll(String q, String status) {
-        return findAll(q, status, "id", "desc");
     }
 
     /** Chi tiết một đơn cho admin (không ràng user) */
@@ -241,6 +234,61 @@ public class OrderDAO {
         } catch (Exception e) { throw new RuntimeException(e); }
     }
 
+    // ====== Các hành động theo flow mới ======
+
+    /** User hủy đơn khi đang NEW */
+    public boolean userCancelIfNew(int orderId, int userId) {
+        final String sql = "UPDATE donhang SET TrangThai='CANCELED' WHERE MaDH=? AND MaND=? AND TrangThai='NEW'";
+        try (Connection con = Db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, orderId);
+            ps.setInt(2, userId);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) { throw new RuntimeException(e); }
+    }
+
+    /** Admin xác nhận đơn khi đang NEW → CONFIRMED */
+    public boolean adminConfirmIfNew(int orderId) {
+        final String sql = "UPDATE donhang SET TrangThai='CONFIRMED' WHERE MaDH=? AND TrangThai='NEW'";
+        try (Connection con = Db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, orderId);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) { throw new RuntimeException(e); }
+    }
+
+    /** Admin từ chối đơn khi đang NEW → CANCELED */
+    public boolean adminRejectIfNew(int orderId) {
+        final String sql = "UPDATE donhang SET TrangThai='CANCELED' WHERE MaDH=? AND TrangThai='NEW'";
+        try (Connection con = Db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, orderId);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) { throw new RuntimeException(e); }
+    }
+
+    /** Admin bắt đầu giao khi đang CONFIRMED → SHIPPING */
+    public boolean adminStartShippingIfConfirmed(int orderId) {
+        final String sql = "UPDATE donhang SET TrangThai='SHIPPING' WHERE MaDH=? AND TrangThai='CONFIRMED'";
+        try (Connection con = Db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, orderId);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) { throw new RuntimeException(e); }
+    }
+
+    /** User xác nhận đã nhận hàng khi đang SHIPPING → DONE */
+    public boolean userMarkDoneIfShipping(int orderId, int userId) {
+        final String sql = "UPDATE donhang SET TrangThai='DONE' WHERE MaDH=? AND MaND=? AND TrangThai='SHIPPING'";
+        try (Connection con = Db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, orderId);
+            ps.setInt(2, userId);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) { throw new RuntimeException(e); }
+    }
+
+    /** Giữ lại: updateStatus / insertAdmin / delete (dùng ở nơi khác nếu cần) */
     public boolean updateStatus(int orderId, String status) {
         String sql = "UPDATE donhang SET TrangThai=? WHERE MaDH=?";
         try (Connection con = Db.getConnection();
@@ -268,7 +316,6 @@ public class OrderDAO {
         }
     }
 
-    /** Xóa 1 đơn (xóa chi tiết trước, rồi xóa đơn). Trả về true nếu xóa được. */
     public boolean delete(int orderId) {
         final String sqlDeleteItems = "DELETE FROM chitietdh WHERE MaDH=?";
         final String sqlDeleteOrder = "DELETE FROM donhang  WHERE MaDH=?";
@@ -277,11 +324,9 @@ public class OrderDAO {
             try (PreparedStatement psi = con.prepareStatement(sqlDeleteItems);
                  PreparedStatement pso = con.prepareStatement(sqlDeleteOrder)) {
                 psi.setInt(1, orderId);
-                psi.executeUpdate(); // có thể =0 nếu đơn rỗng
-
+                psi.executeUpdate();
                 pso.setInt(1, orderId);
                 int rows = pso.executeUpdate();
-
                 con.commit();
                 return rows > 0;
             } catch (Exception ex) {
