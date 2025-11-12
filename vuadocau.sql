@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 11, 2025 lúc 10:12 AM
+-- Thời gian đã tạo: Th10 10, 2025 lúc 04:52 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -36,150 +36,6 @@ CREATE TABLE `activity_log` (
   `IP` varchar(45) DEFAULT NULL,
   `CreatedAt` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Đang đổ dữ liệu cho bảng `activity_log`
---
-
-INSERT INTO `activity_log` (`Id`, `UserId`, `Type`, `Message`, `Meta`, `IP`, `CreatedAt`) VALUES
-(1, 1, 'PRODUCT_CREATE', 'Thêm sản phẩm: test', NULL, '0:0:0:0:0:0:0:1', '2025-11-10 23:45:00'),
-(2, 1, 'PRODUCT_DELETE', 'Xóa sản phẩm #38', NULL, '0:0:0:0:0:0:0:1', '2025-11-10 23:45:18'),
-(3, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-10 23:47:44'),
-(4, 1, 'ORDER_UPDATE_STATUS', 'Đổi trạng thái đơn #9 -> DONE', NULL, '0:0:0:0:0:0:0:1', '2025-11-10 23:47:48'),
-(5, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-10 23:47:48'),
-(6, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-10 23:48:34'),
-(7, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-10 23:48:36'),
-(8, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'SHIPPING\', sort=\'id\', dir=\'desc\', count=1', NULL, '0:0:0:0:0:0:0:1', '2025-11-10 23:48:39'),
-(9, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-10 23:49:41'),
-(10, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-10 23:59:37'),
-(11, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-10 23:59:45'),
-(12, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-10 23:59:46'),
-(13, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-10 23:59:46'),
-(14, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-10 23:59:49'),
-(15, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-10 23:59:52'),
-(16, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 00:00:11'),
-(17, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=3, sort=\'id\', dir=\'desc\', count=4', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 00:00:15'),
-(18, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 00:05:30'),
-(19, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=3, sort=\'id\', dir=\'desc\', count=4', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 00:05:32'),
-(20, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=5, sort=\'id\', dir=\'desc\', count=5', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 00:05:34'),
-(21, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=1, sort=\'id\', dir=\'desc\', count=9', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 00:05:35'),
-(22, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=2, sort=\'id\', dir=\'desc\', count=9', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 00:05:38'),
-(23, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 00:05:45'),
-(24, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'NEW\', sort=\'id\', dir=\'desc\', count=2', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 00:05:47'),
-(25, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 00:27:38'),
-(26, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 00:35:16'),
-(27, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 00:40:15'),
-(28, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 00:40:36'),
-(29, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 00:40:38'),
-(30, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 00:40:39'),
-(31, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 00:40:40'),
-(32, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'asc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 00:45:55'),
-(33, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 00:59:12'),
-(34, 1, 'USER_LIST', 'Lọc user: q=\'\', role=1, status=null, sort=\'id\', dir=\'desc\', count=1', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 00:59:34'),
-(35, 1, 'USER_LIST', 'Lọc user: q=\'\', role=2, status=null, sort=\'id\', dir=\'desc\', count=2', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 00:59:36'),
-(36, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 00:59:38'),
-(37, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 00:59:41'),
-(38, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'email\', dir=\'asc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 00:59:45'),
-(39, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'email\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 00:59:45'),
-(40, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'email\', dir=\'asc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 00:59:46'),
-(41, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'email\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 00:59:47'),
-(42, 1, 'USER_UPDATE', 'Cập nhật user #2', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 01:01:11'),
-(43, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 01:01:11'),
-(44, 1, 'USER_UPDATE', 'Cập nhật user #2', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 01:01:19'),
-(45, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 01:01:19'),
-(46, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 01:19:08'),
-(47, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 01:19:27'),
-(48, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 01:26:49'),
-(49, 1, 'USER_CREATE', 'Tạo user: test@gmail.com', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 01:27:02'),
-(50, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=4', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 01:27:02'),
-(51, 1, 'USER_RESET_PASSWORD', 'Reset mật khẩu user #4', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 01:27:23'),
-(52, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=4', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 01:27:23'),
-(53, 1, 'USER_DELETE', 'Xóa user #4', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 01:27:34'),
-(54, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 01:27:34'),
-(55, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 01:29:43'),
-(56, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 01:35:10'),
-(57, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 01:38:04'),
-(58, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 01:38:08'),
-(59, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 01:38:31'),
-(60, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 01:41:45'),
-(61, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:31:03'),
-(62, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:31:14'),
-(63, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:31:17'),
-(64, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:31:19'),
-(65, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:31:41'),
-(66, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:31:43'),
-(67, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:31:44'),
-(68, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:31:47'),
-(69, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:31:50'),
-(70, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:44:28'),
-(71, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:44:28'),
-(72, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:44:29'),
-(73, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:44:30'),
-(74, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:44:31'),
-(75, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:44:32'),
-(76, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:44:32'),
-(77, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:44:33'),
-(78, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:44:34'),
-(79, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:44:34'),
-(80, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:44:35'),
-(81, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:44:36'),
-(82, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:44:36'),
-(83, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:44:37'),
-(84, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:44:38'),
-(85, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:44:39'),
-(86, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:44:39'),
-(87, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:44:39'),
-(88, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:44:39'),
-(89, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:47:40'),
-(90, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:47:41'),
-(91, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:47:41'),
-(92, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:47:43'),
-(93, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:47:43'),
-(94, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:47:44'),
-(95, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:47:45'),
-(96, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:47:46'),
-(97, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:47:46'),
-(98, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:47:46'),
-(99, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:48:08'),
-(100, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:48:08'),
-(101, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:53:11'),
-(102, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:53:13'),
-(103, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:53:21'),
-(104, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:53:23'),
-(105, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:53:30'),
-(106, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:53:36'),
-(107, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:53:39'),
-(108, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:53:39'),
-(109, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:53:40'),
-(110, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:53:41'),
-(111, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:53:41'),
-(112, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:53:43'),
-(113, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:53:43'),
-(114, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:53:43'),
-(115, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 15:53:44'),
-(116, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 16:02:00'),
-(117, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 16:02:01'),
-(118, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 16:02:01'),
-(119, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 16:02:03'),
-(120, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 16:02:04'),
-(121, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 16:06:50'),
-(122, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 16:06:51'),
-(123, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 16:06:52'),
-(124, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 16:06:52'),
-(125, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 16:06:53'),
-(126, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 16:07:30'),
-(127, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 16:07:34'),
-(128, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 16:07:35'),
-(129, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 16:07:37'),
-(130, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 16:07:38'),
-(131, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 16:07:39'),
-(132, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'CONFIRMED\', sort=\'id\', dir=\'desc\', count=2', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 16:07:53'),
-(133, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 16:07:58'),
-(134, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 16:07:58'),
-(135, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 16:08:01'),
-(136, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 16:08:03'),
-(137, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 16:08:04'),
-(138, 1, 'ORDER_LIST', 'Lọc đơn: q=\'\', status=\'\', sort=\'id\', dir=\'desc\', count=7', NULL, '0:0:0:0:0:0:0:1', '2025-11-11 16:08:05');
 
 -- --------------------------------------------------------
 
@@ -257,7 +113,7 @@ INSERT INTO `donhang` (`MaDH`, `MaND`, `NgayDH`, `TrangThai`, `GhiChu`) VALUES
 (6, 2, '2025-11-08 15:33:05', 'CONFIRMED', 'Tên: Khách A | SDT: 0886214923 | Email: user@vuadocau.vn | Địa chỉ: Na Hang-Tuyên Quang | Note: testt t'),
 (7, 3, '2025-11-08 16:36:02', 'NEW', 'Tên: SơnTesst | SDT: 0886214921 | Email: thson1602@gmail.com | Địa chỉ: ok | Note: ok'),
 (8, 3, '2025-11-10 11:21:01', 'NEW', 'Tên: SơnTesst | SDT: 0123456789 | Email: thson1602@gmail.com | Địa chỉ: hn | Note: gay'),
-(9, 3, '2025-11-10 16:43:18', 'DONE', 'Tên: SơnTesst | SDT: 0886214922 | Email: thson1602@gmail.com | Địa chỉ: Tổ 13 Thị Trấn Na Hang - Tuyên Quang | Note: xzc');
+(9, 3, '2025-11-10 16:43:18', 'NEW', 'Tên: SơnTesst | SDT: 0886214922 | Email: thson1602@gmail.com | Địa chỉ: Tổ 13 Thị Trấn Na Hang - Tuyên Quang | Note: xzc');
 
 -- --------------------------------------------------------
 
@@ -545,7 +401,7 @@ ALTER TABLE `thuonghieu`
 -- AUTO_INCREMENT cho bảng `activity_log`
 --
 ALTER TABLE `activity_log`
-  MODIFY `Id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=139;
+  MODIFY `Id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `danhmuc`
@@ -563,7 +419,7 @@ ALTER TABLE `donhang`
 -- AUTO_INCREMENT cho bảng `nguoidung`
 --
 ALTER TABLE `nguoidung`
-  MODIFY `MaND` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `MaND` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `roles`
@@ -575,7 +431,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT cho bảng `sanpham`
 --
 ALTER TABLE `sanpham`
-  MODIFY `MaSP` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `MaSP` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT cho bảng `sanpham_backup_yyyymmddhhmm`
