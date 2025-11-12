@@ -46,25 +46,25 @@
           </div>
         </a>
       </div>
-<!-- Card Quản lý tài khoản (đồng bộ style với 2 card trên) -->
-<div class="col-12 col-md-6">
-  <a href="${cxt}/admin/users" class="text-decoration-none">
-    <div class="card h-100 shadow-sm rounded-4 border-0 p-3 d-flex flex-row align-items-center">
-      <div class="me-3 d-flex align-items-center justify-content-center rounded-circle"
-           style="width:56px;height:56px;background:#fff4e5;">
-        <!-- SVG người dùng -->
-        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="#f59e0b" viewBox="0 0 16 16" aria-hidden="true">
-          <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3z"/>
-          <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-        </svg>
+
+      <!-- Quản lý tài khoản -->
+      <div class="col-12 col-md-6">
+        <a href="${cxt}/admin/users" class="text-decoration-none">
+          <div class="card h-100 shadow-sm rounded-4 border-0 p-3 d-flex flex-row align-items-center">
+            <div class="me-3 d-flex align-items-center justify-content-center rounded-circle"
+                 style="width:56px;height:56px;background:#fff4e5;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="#f59e0b" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3z"/>
+                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+              </svg>
+            </div>
+            <div class="flex-grow-1">
+              <div class="fw-semibold text-dark">Quản lý tài khoản</div>
+              <div class="text-muted small">Xem / sửa / đổi mật khẩu / xoá người dùng…</div>
+            </div>
+          </div>
+        </a>
       </div>
-      <div class="flex-grow-1">
-        <div class="fw-semibold text-dark">Quản lý tài khoản</div>
-        <div class="text-muted small">Xem / sửa / đổi mật khẩu / xoá người dùng…</div>
-      </div>
-    </div>
-  </a>
-</div>
     </div>
   </div>
 </c:when>
@@ -89,14 +89,22 @@
               <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <div class="card h-100 shadow-sm rounded-4 border-0">
                   <div class="ratio ratio-1x1 rounded-top-4 d-flex align-items-center justify-content-center thumb" style="background:#f6f7ff">
-                    <img class="p-4"
-                         src="${cxt}/asset/images/${p.image != null ? p.image : 'no-image.png'}"
-                         alt="${p.name}"
-                         onerror="this.src='${cxt}/asset/images/no-image.png'">
+                    <!-- Ảnh bọc link -->
+                    <a href="${cxt}/product?id=${p.id}" class="d-block">
+                      <img class="p-4"
+                           src="${cxt}/asset/images/${p.image != null ? p.image : 'no-image.png'}"
+                           alt="${p.name}"
+                           onerror="this.src='${cxt}/asset/images/no-image.png'">
+                    </a>
                   </div>
                   <div class="card-body">
                     <span class="badge bg-light text-dark mb-2">${p.categoryName}</span>
-                    <h6 class="card-title" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.name}</h6>
+                    <!-- Tên bọc link -->
+                    <h6 class="card-title" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+                      <a class="text-decoration-none text-dark" href="${cxt}/product?id=${p.id}">
+                        ${p.name}
+                      </a>
+                    </h6>
 
                     <c:set var="r" value="${p.rating}" />
                     <div class="small text-muted d-flex align-items-center gap-2">
@@ -105,7 +113,6 @@
                       · Đã mua: ${p.purchased}
                     </div>
 
-                    <!-- tồn kho -->
                     <div class="small mt-1">
                       <c:choose>
                         <c:when test="${p.stock <= 0}"><span class="text-danger">Hết hàng</span></c:when>
@@ -113,18 +120,17 @@
                       </c:choose>
                     </div>
 
-    <!-- Giá: nếu có oldPrice và >0 & > price, gạch giá cũ -->
-<div class="mt-2">
-  <c:if test="${p.oldPrice != null && p.oldPrice > 0 && p.oldPrice > p.price}">
-    <span class="text-muted text-decoration-line-through me-2">
-      <fmt:formatNumber value="${p.oldPrice}" type="number" groupingUsed="true"/> đ
-    </span>
-  </c:if>
-  <span class="fw-bold text-danger">
-    <fmt:formatNumber value="${p.price}" type="number" groupingUsed="true"/> đ
-  </span>
-</div>
-
+                    <!-- Giá -->
+                    <div class="mt-2">
+                      <c:if test="${p.oldPrice != null && p.oldPrice > 0 && p.oldPrice > p.price}">
+                        <span class="text-muted text-decoration-line-through me-2">
+                          <fmt:formatNumber value="${p.oldPrice}" type="number" groupingUsed="true"/> đ
+                        </span>
+                      </c:if>
+                      <span class="fw-bold text-danger">
+                        <fmt:formatNumber value="${p.price}" type="number" groupingUsed="true"/> đ
+                      </span>
+                    </div>
 
                     <div class="mt-3 d-grid">
                       <c:choose>

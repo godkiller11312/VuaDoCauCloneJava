@@ -17,15 +17,23 @@
         <div class="col-12 col-sm-6 col-md-4 col-lg-3">
           <div class="card h-100 shadow-sm rounded-4 border-0">
             <div class="ratio ratio-1x1 rounded-top-4 d-flex align-items-center justify-content-center thumb">
-              <img class="p-4"
-                   src="${cxt}/asset/images/${p.image != null ? p.image : 'no-image.png'}"
-                   alt="${p.name}"
-                   onerror="this.src='${cxt}/asset/images/no-image.png'">
+              <!-- Ảnh bọc link -->
+              <a href="${cxt}/product?id=${p.id}" class="d-block">
+                <img class="p-4"
+                     src="${cxt}/asset/images/${p.image != null ? p.image : 'no-image.png'}"
+                     alt="${p.name}"
+                     onerror="this.src='${cxt}/asset/images/no-image.png'">
+              </a>
             </div>
 
             <div class="card-body">
               <span class="badge bg-light text-dark mb-2">${p.categoryName}</span>
-              <h6 class="card-title">${p.name}</h6>
+              <!-- Tên bọc link -->
+              <h6 class="card-title">
+                <a class="text-decoration-none text-dark" href="${cxt}/product?id=${p.id}">
+                  ${p.name}
+                </a>
+              </h6>
 
               <c:set var="r" value="${p.rating}" />
               <div class="small text-muted d-flex align-items-center gap-2">
@@ -34,7 +42,6 @@
                 · Đã mua: ${p.purchased}
               </div>
 
-              <!-- tồn kho -->
               <div class="small mt-1">
                 <c:choose>
                   <c:when test="${p.stock <= 0}"><span class="text-danger">Hết hàng</span></c:when>
@@ -42,18 +49,17 @@
                 </c:choose>
               </div>
 
- <!-- Giá: nếu có oldPrice và >0 & > price, gạch giá cũ -->
-<div class="mt-2">
-  <c:if test="${p.oldPrice != null && p.oldPrice > 0 && p.oldPrice > p.price}">
-    <span class="text-muted text-decoration-line-through me-2">
-      <fmt:formatNumber value="${p.oldPrice}" type="number" groupingUsed="true"/> đ
-    </span>
-  </c:if>
-  <span class="fw-bold text-danger">
-    <fmt:formatNumber value="${p.price}" type="number" groupingUsed="true"/> đ
-  </span>
-</div>
-
+              <!-- Giá -->
+              <div class="mt-2">
+                <c:if test="${p.oldPrice != null && p.oldPrice > 0 && p.oldPrice > p.price}">
+                  <span class="text-muted text-decoration-line-through me-2">
+                    <fmt:formatNumber value="${p.oldPrice}" type="number" groupingUsed="true"/> đ
+                  </span>
+                </c:if>
+                <span class="fw-bold text-danger">
+                  <fmt:formatNumber value="${p.price}" type="number" groupingUsed="true"/> đ
+                </span>
+              </div>
 
               <div class="mt-3 d-grid">
                 <c:choose>
