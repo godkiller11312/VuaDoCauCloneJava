@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 14, 2025 lúc 02:50 AM
+-- Thời gian đã tạo: Th10 14, 2025 lúc 03:46 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -264,7 +264,8 @@ INSERT INTO `chitietdh` (`MaDH`, `MaSP`, `SoLuong`, `Gia`) VALUES
 (14, 15, 1, 1750000.00),
 (15, 15, 1, 1750000.00),
 (16, 15, 1, 1750000.00),
-(17, 15, 1, 1750000.00);
+(17, 15, 1, 1750000.00),
+(18, 18, 5, 1850000.00);
 
 -- --------------------------------------------------------
 
@@ -318,7 +319,8 @@ INSERT INTO `donhang` (`MaDH`, `MaND`, `NgayDH`, `TrangThai`, `GhiChu`) VALUES
 (14, 3, '2025-11-14 07:21:52', 'DONE', 'Tên: SơnTesst | SDT: 0886214922 | Email: thson1602@gmail.com | Địa chỉ: Tổ 13 Thị Trấn Na Hang - Tuyên Quang | Note: Na Hang-Tuyên Quang'),
 (15, 3, '2025-11-14 08:18:35', 'DONE', 'Tên: SơnTesst | SDT: 0886214922 | Email: thson1602@gmail.com | Địa chỉ: Tổ 13 Thị Trấn Na Hang - Tuyên Quang | Note: sss'),
 (16, 3, '2025-11-14 08:35:52', 'DONE', 'Tên: SơnTesst | SDT: 0886214922 | Email: thson1602@gmail.com | Địa chỉ: Tổ 13 Thị Trấn Na Hang - Tuyên Quang | Note: á'),
-(17, 3, '2025-11-14 08:49:40', 'CANCELED', 'Tên: SơnTesst | SDT: 0886214922 | Email: thson1602@gmail.com | Địa chỉ: Tổ 13 Thị Trấn Na Hang - Tuyên Quang | Note: ');
+(17, 3, '2025-11-14 08:49:40', 'CANCELED', 'Tên: SơnTesst | SDT: 0886214922 | Email: thson1602@gmail.com | Địa chỉ: Tổ 13 Thị Trấn Na Hang - Tuyên Quang | Note: '),
+(18, 2, '2025-11-14 09:44:58', 'DONE', 'Tên: Khách A | SDT: 0886214922 | Email: user@vuadocau.vn | Địa chỉ: Tổ 13 Thị Trấn Na Hang - Tuyên Quang | Note: fff');
 
 -- --------------------------------------------------------
 
@@ -381,7 +383,8 @@ CREATE TABLE `review` (
 --
 
 INSERT INTO `review` (`Id`, `MaSP`, `MaND`, `Rating`, `Comment`, `CreatedAt`) VALUES
-(1, 15, 3, 5, 'testtt', '2025-11-14 08:36:18');
+(1, 15, 3, 5, 'testtt', '2025-11-14 08:36:18'),
+(2, 18, 2, 4, 'dung duoc', '2025-11-14 09:45:47');
 
 -- --------------------------------------------------------
 
@@ -446,7 +449,7 @@ INSERT INTO `sanpham` (`MaSP`, `TenSP`, `MaDM`, `MaTH`, `Gia`, `GiaCu`, `Anh`, `
 (15, 'Cần câu Shimano Scimitar 2m1', 1, NULL, 1750000.00, 2068000.00, 'can4.jpg', 'Cần carbon độ nảy cao, cảm giác tốt.', 8, 5.0, 2, 1, '2025-10-25 14:27:42'),
 (16, 'Cần câu SeaKnight Rapid 2m4', 1, NULL, 1590000.00, 1617000.00, 'can5.jpg', 'Phù hợp cả nước ngọt và nước mặn.', 9, 0.0, 0, 1, '2025-10-25 14:27:42'),
 (17, 'Cần tay Mitchel Travel 2m1', 1, NULL, 950000.00, 989000.00, 'can6.jpg', 'Nhỏ gọn, dễ mang đi du lịch.', 7, 0.0, 0, 1, '2025-10-25 14:27:42'),
-(18, 'Cần Shimano Catana 2m7', 1, NULL, 1850000.00, 2133000.00, 'can7.jpg', 'Độ cứng M–MH, câu lóc/chẽm.', 10, 0.0, 0, 1, '2025-10-25 14:27:42'),
+(18, 'Cần Shimano Catana 2m7', 1, NULL, 1850000.00, 2133000.00, 'can7.jpg', 'Độ cứng M–MH, câu lóc/chẽm.', 5, 4.0, 10, 1, '2025-10-25 14:27:42'),
 (19, 'Máy câu Shimano FX 2500HG', 2, NULL, 890000.00, 1018000.00, 'may1.jpg', 'Trục quay êm, bền, dùng cho cần trung.', 20, 0.0, 0, 1, '2025-10-25 14:27:42'),
 (20, 'Máy Daiwa Crossfire 3000', 2, NULL, 1090000.00, 1098000.00, 'may2.jpg', 'Tỉ số truyền 5.3:1, phù hợp sông hồ.', 14, 0.0, 0, 1, '2025-10-25 14:27:42'),
 (21, 'Máy Penn Battle III 4000', 2, NULL, 2450000.00, 2707000.00, 'may3.jpg', 'Thân kim loại toàn phần, mạnh mẽ.', 5, 0.0, 0, 1, '2025-10-25 14:27:42'),
@@ -664,7 +667,7 @@ ALTER TABLE `danhmuc`
 -- AUTO_INCREMENT cho bảng `donhang`
 --
 ALTER TABLE `donhang`
-  MODIFY `MaDH` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `MaDH` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT cho bảng `nguoidung`
@@ -682,7 +685,7 @@ ALTER TABLE `product_review`
 -- AUTO_INCREMENT cho bảng `review`
 --
 ALTER TABLE `review`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `roles`

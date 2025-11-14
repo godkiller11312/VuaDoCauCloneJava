@@ -26,6 +26,8 @@
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/model/User.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/controller/CheckoutController.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/controller/LogoutController.java</file>
+            <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/controller/ProductDetailController.java</file>
+            <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/model/Review.java</file>
             <file>file:/D:/Netbean/VuaDoCau/web/asset/css/site.css</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/controller/CartController.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/model/CartItem.java</file>
@@ -37,6 +39,7 @@
             <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/auth/register.jsp</file>
             <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/admin/order-detail.jsp</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/controller/AdminProductController.java</file>
+            <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/dao/ReviewDAO.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/controller/AdminUserController.java</file>
             <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/checkout.jsp</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/util/Db.java</file>
@@ -52,6 +55,7 @@
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/controller/HomeController.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/controller/DebugDbServlet.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/filter/AdminFilter.java</file>
+            <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/product_detail.jsp</file>
             <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/order_detail.jsp</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/dao/OrderDAO.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/model/Product.java</file>
