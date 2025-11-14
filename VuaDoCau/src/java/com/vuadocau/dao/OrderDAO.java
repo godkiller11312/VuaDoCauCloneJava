@@ -339,4 +339,21 @@ public class OrderDAO {
             throw new RuntimeException("delete order failed: " + e.getMessage(), e);
         }
     }
+        /** Tăng Purchased cho tất cả sản phẩm trong 1 đơn (dùng khi đơn DONE) */
+    public void increasePurchasedForOrder(int orderId) {
+        final String sql =
+            "UPDATE sanpham sp " +
+            "JOIN chitietdh ct ON sp.MaSP = ct.MaSP " +
+            "SET sp.Purchased = sp.Purchased + ct.SoLuong " +
+            "WHERE ct.MaDH = ?";
+
+        try (Connection con = Db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, orderId);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException(
+                "increasePurchasedForOrder failed for MaDH=" + orderId, e);
+        }
+    }
 }

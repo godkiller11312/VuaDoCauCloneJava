@@ -53,7 +53,36 @@
                     <fmt:formatNumber value="${o.total}" type="number" groupingUsed="true"/> đ
                   </td>
                   <td class="text-end">
-                    <a class="btn btn-sm btn-outline-primary" href="${cxt}/order?id=${o.id}">Xem chi tiết</a>
+                    <!-- Xem chi tiết luôn luôn có -->
+                    <a class="btn btn-sm btn-outline-primary mb-1" href="${cxt}/order?id=${o.id}">
+                      Xem chi tiết
+                    </a>
+
+                    <!-- Nếu đơn đang NEW -> cho hủy -->
+                    <c:if test="${o.status == 'NEW'}">
+                      <form action="${cxt}/order" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="${o.id}" />
+                        <input type="hidden" name="action" value="cancel" />
+                        <button type="submit"
+                                class="btn btn-sm btn-outline-danger mb-1"
+                                onclick="return confirm('Bạn chắc chắn muốn hủy đơn #${o.id}?');">
+                          Hủy đơn
+                        </button>
+                      </form>
+                    </c:if>
+
+                    <!-- Nếu đơn đang SHIPPING -> cho xác nhận đã nhận hàng -->
+                    <c:if test="${o.status == 'SHIPPING'}">
+                      <form action="${cxt}/order" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="${o.id}" />
+                        <input type="hidden" name="action" value="received" />
+                        <button type="submit"
+                                class="btn btn-sm btn-outline-success mb-1"
+                                onclick="return confirm('Xác nhận bạn đã nhận đủ hàng của đơn #${o.id}?');">
+                          Đã nhận hàng
+                        </button>
+                      </form>
+                    </c:if>
                   </td>
                 </tr>
               </c:forEach>

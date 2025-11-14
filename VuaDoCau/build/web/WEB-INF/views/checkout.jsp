@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <c:set var="cxt" value="${pageContext.request.contextPath}" />
 <c:set var="cart" value="${requestScope.cart}" />
 
@@ -9,7 +10,9 @@
 <c:if test="${not empty errors}">
   <div class="alert alert-danger">
     <ul class="mb-0">
-      <c:forEach var="e" items="${errors}"><li>${e}</li></c:forEach>
+      <c:forEach var="e" items="${errors}">
+        <li>${e}</li>
+      </c:forEach>
     </ul>
   </div>
 </c:if>
@@ -21,7 +24,7 @@
         <div class="col-md-6">
           <label class="form-label">Họ tên</label>
           <input class="form-control" name="fullName"
-                 value="${not empty prefillName ? prefillName : prefillName}"/>
+                 value="${prefillName}"/>
         </div>
         <div class="col-md-6">
           <label class="form-label">Số điện thoại</label>
@@ -42,7 +45,7 @@
       </div>
       <div class="d-flex gap-2 mt-3">
         <a class="btn btn-outline-secondary" href="${cxt}/cart">Quay lại giỏ</a>
-        <button class="btn btn-teal ms-auto">Đặt hàng</button>
+        <button class="btn btn-teal ms-auto" type="submit">Đặt hàng</button>
       </div>
     </form>
   </div>
@@ -66,11 +69,15 @@
         </ul>
         <div class="d-flex justify-content-between">
           <span>Tạm tính</span>
-          <strong><fmt:formatNumber value="${cart.totalAmount}" type="currency" currencySymbol="₫" maxFractionDigits="0"/></strong>
+          <strong>
+            <fmt:formatNumber value="${cart.totalAmount}" type="currency" currencySymbol="₫" maxFractionDigits="0"/>
+          </strong>
         </div>
         <div class="d-flex justify-content-between">
           <span>Phí vận chuyển</span>
-          <strong><fmt:formatNumber value="${shipFee}" type="currency" currencySymbol="₫" maxFractionDigits="0"/></strong>
+          <strong>
+            <fmt:formatNumber value="${shipFee}" type="currency" currencySymbol="₫" maxFractionDigits="0"/>
+          </strong>
         </div>
         <hr/>
         <div class="d-flex justify-content-between fs-5">

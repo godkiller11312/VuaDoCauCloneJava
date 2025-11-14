@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 12, 2025 lúc 06:01 PM
+-- Thời gian đã tạo: Th10 14, 2025 lúc 02:50 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -225,7 +225,15 @@ INSERT INTO `activity_log` (`Id`, `UserId`, `Type`, `Message`, `Meta`, `IP`, `Cr
 (181, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-12 23:46:43'),
 (182, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-12 23:57:05'),
 (183, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-12 23:57:08'),
-(184, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-12 23:57:09');
+(184, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-12 23:57:09'),
+(185, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-13 00:02:54'),
+(186, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-13 00:02:57'),
+(187, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-13 00:02:59'),
+(188, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-13 00:56:58'),
+(189, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-14 08:37:07'),
+(190, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-14 08:37:16'),
+(191, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-14 08:39:02'),
+(192, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-14 08:39:11');
 
 -- --------------------------------------------------------
 
@@ -250,7 +258,13 @@ INSERT INTO `chitietdh` (`MaDH`, `MaSP`, `SoLuong`, `Gia`) VALUES
 (5, 29, 1, 120000.00),
 (8, 21, 4, 2450000.00),
 (9, 15, 4, 1750000.00),
-(11, 29, 1, 120000.00);
+(11, 29, 1, 120000.00),
+(12, 16, 1, 1590000.00),
+(13, 15, 1, 1750000.00),
+(14, 15, 1, 1750000.00),
+(15, 15, 1, 1750000.00),
+(16, 15, 1, 1750000.00),
+(17, 15, 1, 1750000.00);
 
 -- --------------------------------------------------------
 
@@ -298,7 +312,13 @@ INSERT INTO `donhang` (`MaDH`, `MaND`, `NgayDH`, `TrangThai`, `GhiChu`) VALUES
 (5, 3, '2025-11-08 15:32:25', 'DONE', 'Tên: SơnTesst | SDT: 0886214922 | Email: thson1602@gmail.com | Địa chỉ: Tổ 13 Thị Trấn Na Hang - Tuyên Quang | Note: ádasd'),
 (8, 3, '2025-11-10 11:21:01', 'DONE', 'Tên: SơnTesst | SDT: 0123456789 | Email: thson1602@gmail.com | Địa chỉ: hn | Note: gay'),
 (9, 3, '2025-11-10 16:43:18', 'DONE', 'Tên: SơnTesst | SDT: 0886214922 | Email: thson1602@gmail.com | Địa chỉ: Tổ 13 Thị Trấn Na Hang - Tuyên Quang | Note: xzc'),
-(11, 3, '2025-11-12 23:11:48', 'CANCELED', 'Tên: SơnTesst | SDT: 0886214922 | Email: thson1602@gmail.com | Địa chỉ: Tổ 13 Thị Trấn Na Hang - Tuyên Quang | Note: tsd');
+(11, 3, '2025-11-12 23:11:48', 'CANCELED', 'Tên: SơnTesst | SDT: 0886214922 | Email: thson1602@gmail.com | Địa chỉ: Tổ 13 Thị Trấn Na Hang - Tuyên Quang | Note: tsd'),
+(12, 3, '2025-11-13 00:56:41', 'DONE', 'Tên: SơnTesst | SDT: 0886214922 | Email: thson1602@gmail.com | Địa chỉ: Tổ 13 Thị Trấn Na Hang - Tuyên Quang | Note: á'),
+(13, 3, '2025-11-13 01:53:50', 'DONE', 'Tên: SơnTesst | SDT: 0886214922 | Email: thson1602@gmail.com | Địa chỉ: Tổ 13 Thị Trấn Na Hang - Tuyên Quang | Note: sa'),
+(14, 3, '2025-11-14 07:21:52', 'DONE', 'Tên: SơnTesst | SDT: 0886214922 | Email: thson1602@gmail.com | Địa chỉ: Tổ 13 Thị Trấn Na Hang - Tuyên Quang | Note: Na Hang-Tuyên Quang'),
+(15, 3, '2025-11-14 08:18:35', 'DONE', 'Tên: SơnTesst | SDT: 0886214922 | Email: thson1602@gmail.com | Địa chỉ: Tổ 13 Thị Trấn Na Hang - Tuyên Quang | Note: sss'),
+(16, 3, '2025-11-14 08:35:52', 'DONE', 'Tên: SơnTesst | SDT: 0886214922 | Email: thson1602@gmail.com | Địa chỉ: Tổ 13 Thị Trấn Na Hang - Tuyên Quang | Note: á'),
+(17, 3, '2025-11-14 08:49:40', 'CANCELED', 'Tên: SơnTesst | SDT: 0886214922 | Email: thson1602@gmail.com | Địa chỉ: Tổ 13 Thị Trấn Na Hang - Tuyên Quang | Note: ');
 
 -- --------------------------------------------------------
 
@@ -324,6 +344,44 @@ INSERT INTO `nguoidung` (`MaND`, `TenND`, `Email`, `MatKhau`, `RoleID`, `TrangTh
 (1, 'Quản trị', 'admin@vuadocau.vn', '38FE9AA0297FA5B1DC9EFBB6C0868F8C84FE24BE5C4A534B3E10A94D025029EA', 1, 1, '2025-10-25 13:28:44'),
 (2, 'Khách A', 'user@vuadocau.vn', '206270D6BD289E17432993D79DA37FF3F28C61924085BFFFA77EC0BC137C1EBD', 2, 1, '2025-10-25 13:28:44'),
 (3, 'SơnTesst', 'thson1602@gmail.com', 'AB690C343513E3555C510E808D98C14BF65305696502BF7D9888ECFD6A7B4447', 2, 1, '2025-10-25 16:12:42');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `product_review`
+--
+
+CREATE TABLE `product_review` (
+  `Id` int(11) NOT NULL,
+  `MaDH` bigint(20) NOT NULL,
+  `MaSP` int(11) NOT NULL,
+  `MaND` int(11) NOT NULL,
+  `Stars` tinyint(4) NOT NULL CHECK (`Stars` between 1 and 5),
+  `Comment` varchar(1000) DEFAULT NULL,
+  `CreatedAt` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `review`
+--
+
+CREATE TABLE `review` (
+  `Id` int(11) NOT NULL,
+  `MaSP` int(11) NOT NULL,
+  `MaND` int(11) NOT NULL,
+  `Rating` tinyint(4) NOT NULL,
+  `Comment` text DEFAULT NULL,
+  `CreatedAt` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `review`
+--
+
+INSERT INTO `review` (`Id`, `MaSP`, `MaND`, `Rating`, `Comment`, `CreatedAt`) VALUES
+(1, 15, 3, 5, 'testtt', '2025-11-14 08:36:18');
 
 -- --------------------------------------------------------
 
@@ -371,6 +429,65 @@ CREATE TABLE `sanpham` (
 --
 
 INSERT INTO `sanpham` (`MaSP`, `TenSP`, `MaDM`, `MaTH`, `Gia`, `GiaCu`, `Anh`, `MoTa`, `TonKho`, `Rating`, `Purchased`, `TrangThai`, `NgayTao`) VALUES
+(1, 'Cần Daiwa Crossfire 2.1m', 1, 2, 890000.00, 1075000.00, 'can-2.jpg', 'Cần câu phổ thông, độ cứng M', 20, 0.0, 0, 1, '2025-10-25 13:28:44'),
+(2, 'Cần Shimano Sojourn 2.4m', 1, 1, 1790000.00, 1796000.00, 'can-4.jpg', 'Cần câu nước ngọt đa dụng', 10, 0.0, 0, 1, '2025-10-25 13:28:44'),
+(3, 'Máy Daiwa Revros 2500', 2, 2, 1490000.00, 1707000.00, 'may-1.jpg', 'Máy câu êm, drag ổn định', 15, 0.0, 0, 1, '2025-10-25 13:28:44'),
+(4, 'Máy Okuma Ceymar 1000', 2, 3, 990000.00, 1204000.00, 'may-0.jpg', 'Nhẹ, phù hợp lure nhẹ', 12, 0.0, 0, 1, '2025-10-25 13:28:44'),
+(5, 'Dây PE 8X YGK 150m', 3, 4, 329000.00, 377000.00, 'day-1.jpg', 'Dây bện 8 lõi, bền', 50, 0.0, 0, 1, '2025-10-25 13:28:44'),
+(6, 'Dây Fluorocarbon 100m', 3, NULL, 159000.00, 172000.00, 'day-2.jpg', 'Chìm nhanh, khó nhìn', 40, 0.0, 0, 1, '2025-10-25 13:28:44'),
+(7, 'Mồi giả cá nhái Jump Frog', 4, NULL, 59000.00, 71000.00, 'moi-1.jpg', 'Hiệu quả săn hàng', 60, 0.0, 0, 1, '2025-10-25 13:28:44'),
+(8, 'Lưỡi câu Mustad số 8', 5, 5, 49000.00, 52000.00, 'phukien-2.jpg', 'Lưỡi cứng, bền', 80, 0.0, 0, 1, '2025-10-25 13:28:44'),
+(9, 'Kìm gỡ cá inox 15cm', 5, NULL, 99000.00, 113000.00, 'kimgo.jpg', 'Thép không gỉ, cầm chắc tay.', 35, 0.0, 0, 1, '2025-10-25 13:28:44'),
+(10, 'Túi cần câu du lịch 1.2m', 5, NULL, 259000.00, 268000.00, 'phukien-1.jpg', 'Gấp gọn, tiện mang theo', 25, 0.0, 0, 1, '2025-10-25 13:28:44'),
+(11, 'Hộp đựng mồi lure đa năng', 4, NULL, 129000.00, 130000.00, 'hopmoi.jpg', 'Nhiều ngăn, chống nước.', 30, 0.0, 0, 1, '2025-10-25 13:28:44'),
+(12, 'Cần câu Shimano Vengeance 2m1', 1, NULL, 1250000.00, 1499000.00, 'can1.jpg', 'Cần carbon bền nhẹ, phù hợp câu cá nước ngọt.', 12, 0.0, 0, 1, '2025-10-25 14:27:42'),
+(13, 'Cần câu Daiwa Sweepfire 2m4', 1, NULL, 1350000.00, 1636000.00, 'can2.jpg', 'Thân cần composite, tay cầm EVA chống trơn.', 10, 0.0, 0, 1, '2025-10-25 14:27:42'),
+(14, 'Cần câu Sunfish Telescopic 2m7', 1, NULL, 890000.00, 1080000.00, 'can3.jpg', 'Cần rút gọn tiện lợi, thiết kế gọn nhẹ.', 15, 0.0, 0, 1, '2025-10-25 14:27:42'),
+(15, 'Cần câu Shimano Scimitar 2m1', 1, NULL, 1750000.00, 2068000.00, 'can4.jpg', 'Cần carbon độ nảy cao, cảm giác tốt.', 8, 5.0, 2, 1, '2025-10-25 14:27:42'),
+(16, 'Cần câu SeaKnight Rapid 2m4', 1, NULL, 1590000.00, 1617000.00, 'can5.jpg', 'Phù hợp cả nước ngọt và nước mặn.', 9, 0.0, 0, 1, '2025-10-25 14:27:42'),
+(17, 'Cần tay Mitchel Travel 2m1', 1, NULL, 950000.00, 989000.00, 'can6.jpg', 'Nhỏ gọn, dễ mang đi du lịch.', 7, 0.0, 0, 1, '2025-10-25 14:27:42'),
+(18, 'Cần Shimano Catana 2m7', 1, NULL, 1850000.00, 2133000.00, 'can7.jpg', 'Độ cứng M–MH, câu lóc/chẽm.', 10, 0.0, 0, 1, '2025-10-25 14:27:42'),
+(19, 'Máy câu Shimano FX 2500HG', 2, NULL, 890000.00, 1018000.00, 'may1.jpg', 'Trục quay êm, bền, dùng cho cần trung.', 20, 0.0, 0, 1, '2025-10-25 14:27:42'),
+(20, 'Máy Daiwa Crossfire 3000', 2, NULL, 1090000.00, 1098000.00, 'may2.jpg', 'Tỉ số truyền 5.3:1, phù hợp sông hồ.', 14, 0.0, 0, 1, '2025-10-25 14:27:42'),
+(21, 'Máy Penn Battle III 4000', 2, NULL, 2450000.00, 2707000.00, 'may3.jpg', 'Thân kim loại toàn phần, mạnh mẽ.', 5, 0.0, 0, 1, '2025-10-25 14:27:42'),
+(22, 'Máy Shimano Sahara 2500', 2, NULL, 1890000.00, 1897000.00, 'may4.jpg', 'Máy đa dụng, nhẹ và bền.', 10, 0.0, 0, 1, '2025-10-25 14:27:42'),
+(23, 'Máy Okuma Ceymar 3000', 2, NULL, 990000.00, 1191000.00, 'may5.jpg', 'Giá tốt, vận hành mượt.', 13, 0.0, 0, 1, '2025-10-25 14:27:42'),
+(24, 'Máy Abu Garcia BlackMax', 2, NULL, 1390000.00, 1398000.00, 'may6.jpg', 'Baitcasting cho cần ngang.', 9, 0.0, 0, 1, '2025-10-25 14:27:42'),
+(25, 'Máy KastKing Sharky III', 2, NULL, 1650000.00, 1926000.00, 'may7.jpg', 'Chống nước, phù hợp câu biển.', 11, 0.0, 0, 1, '2025-10-25 14:27:42'),
+(26, 'Dây PE 8 lõi Shimano 100m 1.5', 3, NULL, 230000.00, 246000.00, 'day1.jpg', 'Dây PE 8 lõi chịu tải cao.', 40, 0.0, 0, 1, '2025-10-25 14:27:42'),
+(27, 'Mồi giả cá nhái Surface 7cm', 4, NULL, 45000.00, 50000.00, 'moi1.jpg', 'Mồi nổi dạng nhái, hiệu quả câu lóc.', 60, 0.0, 0, 1, '2025-10-25 14:27:42'),
+(28, 'Mồi giả Minnow 9cm', 4, NULL, 55000.00, 55000.00, 'moi2.jpg', 'Mồi giả cá nhỏ, thích hợp câu sông.', 50, 0.0, 0, 1, '2025-10-25 14:27:42'),
+(29, 'Phao câu cảm biến điện tử', 3, NULL, 120000.00, 139000.00, 'phao1.jpg', 'Tự động báo cắn, dùng được ban đêm.', 25, 0.0, 0, 1, '2025-10-25 14:27:42'),
+(30, 'Hộp đồ câu đa năng 3 tầng', 5, NULL, 175000.00, 206000.00, 'phukien1.jpg', 'Chứa phụ kiện, mồi, chì, lưỡi.', 15, 0.0, 0, 1, '2025-10-25 14:27:42'),
+(31, 'Lưỡi câu Mustad số 6 (100 cái)', 5, NULL, 9900000.00, 11524000.00, 'luoi1.jpg', 'Thép carbon cao cấp, chống gỉ.', 99, 0.0, 0, 1, '2025-10-25 14:27:42');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `sanpham_backup_reset`
+--
+
+CREATE TABLE `sanpham_backup_reset` (
+  `MaSP` int(11) NOT NULL DEFAULT 0,
+  `TenSP` varchar(200) NOT NULL,
+  `MaDM` int(11) NOT NULL,
+  `MaTH` int(11) DEFAULT NULL,
+  `Gia` decimal(12,2) NOT NULL DEFAULT 0.00,
+  `GiaCu` decimal(12,2) DEFAULT NULL,
+  `Anh` varchar(255) DEFAULT NULL,
+  `MoTa` text DEFAULT NULL,
+  `TonKho` int(11) NOT NULL DEFAULT 0,
+  `Rating` decimal(2,1) DEFAULT 0.0,
+  `Purchased` int(11) DEFAULT 0,
+  `TrangThai` tinyint(1) DEFAULT 1,
+  `NgayTao` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `sanpham_backup_reset`
+--
+
+INSERT INTO `sanpham_backup_reset` (`MaSP`, `TenSP`, `MaDM`, `MaTH`, `Gia`, `GiaCu`, `Anh`, `MoTa`, `TonKho`, `Rating`, `Purchased`, `TrangThai`, `NgayTao`) VALUES
 (1, 'Cần Daiwa Crossfire 2.1m', 1, 2, 890000.00, 1075000.00, 'can-2.jpg', 'Cần câu phổ thông, độ cứng M', 20, 4.0, 0, 1, '2025-10-25 13:28:44'),
 (2, 'Cần Shimano Sojourn 2.4m', 1, 1, 1790000.00, 1796000.00, 'can-4.jpg', 'Cần câu nước ngọt đa dụng', 10, 4.2, 0, 1, '2025-10-25 13:28:44'),
 (3, 'Máy Daiwa Revros 2500', 2, 2, 1490000.00, 1707000.00, 'may-1.jpg', 'Máy câu êm, drag ổn định', 15, 4.6, 0, 1, '2025-10-25 13:28:44'),
@@ -402,64 +519,6 @@ INSERT INTO `sanpham` (`MaSP`, `TenSP`, `MaDM`, `MaTH`, `Gia`, `GiaCu`, `Anh`, `
 (29, 'Phao câu cảm biến điện tử', 3, NULL, 120000.00, 139000.00, 'phao1.jpg', 'Tự động báo cắn, dùng được ban đêm.', 25, 4.0, 7, 1, '2025-10-25 14:27:42'),
 (30, 'Hộp đồ câu đa năng 3 tầng', 5, NULL, 175000.00, 206000.00, 'phukien1.jpg', 'Chứa phụ kiện, mồi, chì, lưỡi.', 15, 4.3, 9, 1, '2025-10-25 14:27:42'),
 (31, 'Lưỡi câu Mustad số 6 (100 cái)', 5, NULL, 9900000.00, 11524000.00, 'luoi1.jpg', 'Thép carbon cao cấp, chống gỉ.', 99, 4.5, 22, 1, '2025-10-25 14:27:42');
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `sanpham_backup_yyyymmddhhmm`
---
-
-CREATE TABLE `sanpham_backup_yyyymmddhhmm` (
-  `MaSP` int(11) NOT NULL,
-  `TenSP` varchar(200) NOT NULL,
-  `MaDM` int(11) NOT NULL,
-  `MaTH` int(11) DEFAULT NULL,
-  `Gia` decimal(12,2) NOT NULL DEFAULT 0.00,
-  `Anh` varchar(255) DEFAULT NULL,
-  `MoTa` text DEFAULT NULL,
-  `TonKho` int(11) NOT NULL DEFAULT 0,
-  `Rating` decimal(2,1) DEFAULT 0.0,
-  `Purchased` int(11) DEFAULT 0,
-  `TrangThai` tinyint(1) DEFAULT 1,
-  `NgayTao` datetime DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Đang đổ dữ liệu cho bảng `sanpham_backup_yyyymmddhhmm`
---
-
-INSERT INTO `sanpham_backup_yyyymmddhhmm` (`MaSP`, `TenSP`, `MaDM`, `MaTH`, `Gia`, `Anh`, `MoTa`, `TonKho`, `Rating`, `Purchased`, `TrangThai`, `NgayTao`) VALUES
-(1, 'Cần Daiwa Crossfire 2.1m', 1, 2, 890000.00, 'can-2.jpg', 'Cần câu phổ thông, độ cứng M', 20, 4.0, 0, 1, '2025-10-25 13:28:44'),
-(2, 'Cần Shimano Sojourn 2.4m', 1, 1, 1790000.00, 'can-4.jpg', 'Cần câu nước ngọt đa dụng', 10, 4.2, 0, 1, '2025-10-25 13:28:44'),
-(3, 'Máy Daiwa Revros 2500', 2, 2, 1490000.00, 'may-1.jpg', 'Máy câu êm, drag ổn định', 15, 4.6, 0, 1, '2025-10-25 13:28:44'),
-(4, 'Máy Okuma Ceymar 1000', 2, 3, 990000.00, 'may-0.jpg', 'Nhẹ, phù hợp lure nhẹ', 12, 4.7, 0, 1, '2025-10-25 13:28:44'),
-(5, 'Dây PE 8X YGK 150m', 3, 4, 329000.00, 'day-1.jpg', 'Dây bện 8 lõi, bền', 50, 4.8, 0, 1, '2025-10-25 13:28:44'),
-(6, 'Dây Fluorocarbon 100m', 3, NULL, 159000.00, 'day-2.jpg', 'Chìm nhanh, khó nhìn', 40, 4.4, 0, 1, '2025-10-25 13:28:44'),
-(7, 'Mồi giả cá nhái Jump Frog', 4, NULL, 59000.00, 'moi-1.jpg', 'Hiệu quả săn hàng', 60, 4.1, 0, 1, '2025-10-25 13:28:44'),
-(8, 'Lưỡi câu Mustad số 8', 5, 5, 49000.00, 'phukien-2.jpg', 'Lưỡi cứng, bền', 80, 4.5, 2, 1, '2025-10-25 13:28:44'),
-(9, 'Kìm gỡ cá inox 15cm', 3, NULL, 99000.00, 'kimgo.jpg', 'Thép không gỉ, cầm chắc tay.', 35, 4.6, 12, 1, '2025-10-25 13:28:44'),
-(10, 'Túi cần câu du lịch 1.2m', 5, NULL, 259000.00, 'phukien-1.jpg', 'Gấp gọn, tiện mang theo', 25, 4.0, 2, 1, '2025-10-25 13:28:44'),
-(11, 'Hộp đựng mồi lure đa năng', 3, NULL, 129000.00, 'hopmoi.jpg', 'Nhiều ngăn, chống nước.', 30, 4.2, 11, 1, '2025-10-25 13:28:44'),
-(12, 'Cần câu Shimano Vengeance 2m1', 1, NULL, 1250000.00, 'can1.jpg', 'Cần carbon bền nhẹ, phù hợp câu cá nước ngọt.', 12, 4.3, 5, 1, '2025-10-25 14:27:42'),
-(13, 'Cần câu Daiwa Sweepfire 2m4', 1, NULL, 1350000.00, 'can2.jpg', 'Thân cần composite, tay cầm EVA chống trơn.', 10, 4.2, 4, 1, '2025-10-25 14:27:42'),
-(14, 'Cần câu Sunfish Telescopic 2m7', 1, NULL, 890000.00, 'can3.jpg', 'Cần rút gọn tiện lợi, thiết kế gọn nhẹ.', 15, 4.0, 3, 1, '2025-10-25 14:27:42'),
-(15, 'Cần câu Shimano Scimitar 2m1', 1, NULL, 1750000.00, 'can4.jpg', 'Cần carbon độ nảy cao, cảm giác tốt.', 8, 4.5, 6, 1, '2025-10-25 14:27:42'),
-(16, 'Cần câu SeaKnight Rapid 2m4', 1, NULL, 1590000.00, 'can5.jpg', 'Phù hợp cả nước ngọt và nước mặn.', 9, 4.4, 2, 1, '2025-10-25 14:27:42'),
-(17, 'Cần tay Mitchel Travel 2m1', 1, NULL, 950000.00, 'can6.jpg', 'Nhỏ gọn, dễ mang đi du lịch.', 7, 4.1, 1, 1, '2025-10-25 14:27:42'),
-(18, 'Cần Shimano Catana 2m7', 1, NULL, 1850000.00, 'can7.jpg', 'Độ cứng M–MH, câu lóc/chẽm.', 10, 4.6, 3, 1, '2025-10-25 14:27:42'),
-(19, 'Máy câu Shimano FX 2500HG', 2, NULL, 890000.00, 'may1.jpg', 'Trục quay êm, bền, dùng cho cần trung.', 20, 4.4, 10, 1, '2025-10-25 14:27:42'),
-(20, 'Máy Daiwa Crossfire 3000', 2, NULL, 1090000.00, 'may2.jpg', 'Tỉ số truyền 5.3:1, phù hợp sông hồ.', 14, 4.3, 7, 1, '2025-10-25 14:27:42'),
-(21, 'Máy Penn Battle III 4000', 2, NULL, 2450000.00, 'may3.jpg', 'Thân kim loại toàn phần, mạnh mẽ.', 5, 4.7, 4, 1, '2025-10-25 14:27:42'),
-(22, 'Máy Shimano Sahara 2500', 2, NULL, 1890000.00, 'may4.jpg', 'Máy đa dụng, nhẹ và bền.', 10, 4.5, 6, 1, '2025-10-25 14:27:42'),
-(23, 'Máy Okuma Ceymar 3000', 2, NULL, 990000.00, 'may5.jpg', 'Giá tốt, vận hành mượt.', 13, 4.6, 12, 1, '2025-10-25 14:27:42'),
-(24, 'Máy Abu Garcia BlackMax', 2, NULL, 1390000.00, 'may6.jpg', 'Baitcasting cho cần ngang.', 9, 4.2, 5, 1, '2025-10-25 14:27:42'),
-(25, 'Máy KastKing Sharky III', 2, NULL, 1650000.00, 'may7.jpg', 'Chống nước, phù hợp câu biển.', 11, 4.4, 8, 1, '2025-10-25 14:27:42'),
-(26, 'Dây PE 8 lõi Shimano 100m 1.5', 3, NULL, 230000.00, 'day1.jpg', 'Dây PE 8 lõi chịu tải cao.', 40, 4.6, 15, 1, '2025-10-25 14:27:42'),
-(27, 'Mồi giả cá nhái Surface 7cm', 3, NULL, 45000.00, 'moi1.jpg', 'Mồi nổi dạng nhái, hiệu quả câu lóc.', 60, 4.1, 20, 1, '2025-10-25 14:27:42'),
-(28, 'Mồi giả Minnow 9cm', 3, NULL, 55000.00, 'moi2.jpg', 'Mồi giả cá nhỏ, thích hợp câu sông.', 50, 4.2, 18, 1, '2025-10-25 14:27:42'),
-(29, 'Phao câu cảm biến điện tử', 3, NULL, 120000.00, 'phao1.jpg', 'Tự động báo cắn, dùng được ban đêm.', 25, 4.0, 7, 1, '2025-10-25 14:27:42'),
-(30, 'Hộp đồ câu đa năng 3 tầng', 3, NULL, 175000.00, 'phukien1.jpg', 'Chứa phụ kiện, mồi, chì, lưỡi.', 15, 4.3, 9, 1, '2025-10-25 14:27:42'),
-(31, 'Lưỡi câu Mustad số 6 (100 cái)', 3, NULL, 9900000.00, 'luoi1.jpg', 'Thép carbon cao cấp, chống gỉ.', 99, 4.5, 22, 1, '2025-10-25 14:27:42');
 
 -- --------------------------------------------------------
 
@@ -545,6 +604,23 @@ ALTER TABLE `nguoidung`
   ADD KEY `RoleID` (`RoleID`);
 
 --
+-- Chỉ mục cho bảng `product_review`
+--
+ALTER TABLE `product_review`
+  ADD PRIMARY KEY (`Id`),
+  ADD UNIQUE KEY `uq_review` (`MaDH`,`MaSP`,`MaND`),
+  ADD KEY `idx_sp` (`MaSP`),
+  ADD KEY `fk_pr_nd` (`MaND`);
+
+--
+-- Chỉ mục cho bảng `review`
+--
+ALTER TABLE `review`
+  ADD PRIMARY KEY (`Id`),
+  ADD UNIQUE KEY `uq_review` (`MaSP`,`MaND`),
+  ADD KEY `fk_review_user` (`MaND`);
+
+--
 -- Chỉ mục cho bảng `roles`
 --
 ALTER TABLE `roles`
@@ -555,16 +631,6 @@ ALTER TABLE `roles`
 -- Chỉ mục cho bảng `sanpham`
 --
 ALTER TABLE `sanpham`
-  ADD PRIMARY KEY (`MaSP`),
-  ADD UNIQUE KEY `uq_sanpham_tensp` (`TenSP`),
-  ADD KEY `idx_sp_tensp` (`TenSP`),
-  ADD KEY `idx_sp_madm` (`MaDM`),
-  ADD KEY `idx_sp_math` (`MaTH`);
-
---
--- Chỉ mục cho bảng `sanpham_backup_yyyymmddhhmm`
---
-ALTER TABLE `sanpham_backup_yyyymmddhhmm`
   ADD PRIMARY KEY (`MaSP`),
   ADD UNIQUE KEY `uq_sanpham_tensp` (`TenSP`),
   ADD KEY `idx_sp_tensp` (`TenSP`),
@@ -586,7 +652,7 @@ ALTER TABLE `thuonghieu`
 -- AUTO_INCREMENT cho bảng `activity_log`
 --
 ALTER TABLE `activity_log`
-  MODIFY `Id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=185;
+  MODIFY `Id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=193;
 
 --
 -- AUTO_INCREMENT cho bảng `danhmuc`
@@ -598,13 +664,25 @@ ALTER TABLE `danhmuc`
 -- AUTO_INCREMENT cho bảng `donhang`
 --
 ALTER TABLE `donhang`
-  MODIFY `MaDH` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `MaDH` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT cho bảng `nguoidung`
 --
 ALTER TABLE `nguoidung`
   MODIFY `MaND` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT cho bảng `product_review`
+--
+ALTER TABLE `product_review`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT cho bảng `review`
+--
+ALTER TABLE `review`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT cho bảng `roles`
@@ -617,12 +695,6 @@ ALTER TABLE `roles`
 --
 ALTER TABLE `sanpham`
   MODIFY `MaSP` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
-
---
--- AUTO_INCREMENT cho bảng `sanpham_backup_yyyymmddhhmm`
---
-ALTER TABLE `sanpham_backup_yyyymmddhhmm`
-  MODIFY `MaSP` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT cho bảng `thuonghieu`
@@ -658,6 +730,21 @@ ALTER TABLE `donhang`
 --
 ALTER TABLE `nguoidung`
   ADD CONSTRAINT `nguoidung_ibfk_1` FOREIGN KEY (`RoleID`) REFERENCES `roles` (`RoleID`);
+
+--
+-- Các ràng buộc cho bảng `product_review`
+--
+ALTER TABLE `product_review`
+  ADD CONSTRAINT `fk_pr_dh` FOREIGN KEY (`MaDH`) REFERENCES `donhang` (`MaDH`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_pr_nd` FOREIGN KEY (`MaND`) REFERENCES `nguoidung` (`MaND`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_pr_sp` FOREIGN KEY (`MaSP`) REFERENCES `sanpham` (`MaSP`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `review`
+--
+ALTER TABLE `review`
+  ADD CONSTRAINT `fk_review_product` FOREIGN KEY (`MaSP`) REFERENCES `sanpham` (`MaSP`),
+  ADD CONSTRAINT `fk_review_user` FOREIGN KEY (`MaND`) REFERENCES `nguoidung` (`MaND`);
 
 --
 -- Các ràng buộc cho bảng `sanpham`

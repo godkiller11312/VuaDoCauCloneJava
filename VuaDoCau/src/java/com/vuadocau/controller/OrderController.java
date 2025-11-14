@@ -38,7 +38,7 @@ public class OrderController extends HttpServlet {
         req.getRequestDispatcher("/WEB-INF/views/_layout/main.jsp").forward(req, resp);
     }
 
-    @Override
+       @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         HttpSession ss = req.getSession();
@@ -47,19 +47,51 @@ public class OrderController extends HttpServlet {
 
         String action = req.getParameter("action");
         int id;
-        try { id = Integer.parseInt(req.getParameter("id")); }
-        catch (Exception ex) { ss.setAttribute("flash_error", "Yêu cầu không hợp lệ."); resp.sendRedirect(req.getContextPath()+"/profile"); return; }
-
-        boolean ok = false;
         try {
+            id = Integer.parseInt(req.getParameter("id"));
+        } catch (Exception ex) {
+            ss.setAttribute("flash_error", "Yêu cầu không hợp lệ.");
+            resp.sendRedirect(req.getContextPath() + "/profile");
+            return;
+        }
+
+        try {
+            boolean ok = false;
+
             if ("cancel".equalsIgnoreCase(action)) {
                 ok = orderDAO.userCancelIfNew(id, u.getId());
                 ss.setAttribute(ok ? "flash_success" : "flash_error",
                         ok ? ("Đã hủy đơn #" + id) : ("Không thể hủy đơn #" + id));
+
             } else if ("received".equalsIgnoreCase(action)) {
+                // user xác nhận đã nhận hàng → DONE
                 ok = orderDAO.userMarkDoneIfShipping(id, u.getId());
-                ss.setAttribute(ok ? "flash_success" : "flash_error",
-                        ok ? ("Cảm ơn bạn! Đơn #" + id + " đã hoàn tất.") : ("Không thể xác nhận nhận hàng cho đơn #" + id));
+                if (ok) {
+                    // 1) tăng Purchased cho các sản phẩm trong đơn
+                    orderDAO.increasePurchasedForOrder(id);
+
+                    // 2) lấy sản phẩm đầu tiên trong đơn để chuyển sang trang đánh giá
+                    Order o = orderDAO.findById(id, u.getId());
+                    Integer firstProductId = null;
+                    if (o != null && o.getItems() != null && !o.getItems().isEmpty()) {
+                        firstProductId = o.getItems().get(0).getProductId();
+                    }
+
+                    ss.setAttribute("flash_success",
+                            "Cảm ơn bạn! Đơn #" + id + " đã hoàn tất.");
+
+                    // nếu lấy được productId thì chuyển sang trang chi tiết sản phẩm
+                    if (firstProductId != null) {
+                        resp.sendRedirect(req.getContextPath()
+                                + "/product?id=" + firstProductId
+                                + "&fromOrder=" + id);
+                        return; // KẾT THÚC ở đây, không redirect về profile nữa
+                    }
+                } else {
+                    ss.setAttribute("flash_error",
+                            "Không thể xác nhận nhận hàng cho đơn #" + id);
+                }
+
             } else {
                 ss.setAttribute("flash_error", "Action không hợp lệ.");
             }
@@ -67,6 +99,8 @@ public class OrderController extends HttpServlet {
             ss.setAttribute("flash_error", "Lỗi: " + e.getMessage());
         }
 
+        // mặc định quay lại hồ sơ nếu không redirect ở trên
         resp.sendRedirect(req.getContextPath() + "/profile");
     }
+
 }
