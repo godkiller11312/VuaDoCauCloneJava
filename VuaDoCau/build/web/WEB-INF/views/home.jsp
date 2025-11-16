@@ -69,6 +69,7 @@
 
   <c:otherwise>
 
+    <!-- BANNER FULL SCREEN -->
     <div class="banner-wrapper mb-4">
       <div class="banner-slides">
         <div class="banner-slide active" style="background-image:url('${cxt}/asset/images/banner1.jpg')"></div>
@@ -81,14 +82,16 @@
         <p class="banner-subtitle">
           Cần câu – Máy câu – Phụ kiện chính hãng – đồng hành mọi chuyến đi câu của bạn.
         </p>
-       <a href="${cxt}/products"
-   class="hero-btn">
-   Khám phá →
-</a>
+        <a href="${cxt}/products"
+           class="btn btn-outline-light rounded-pill px-4 py-2 mt-2 fw-semibold"
+           style="border-width:2px; box-shadow:0 3px 12px rgba(0,0,0,.4);">
+          Khám phá
+        </a>
       </div>
     </div>
 
     <script>
+      // slideshow banner
       (function () {
         var slides = document.querySelectorAll('.banner-slide');
         if (!slides.length) return;
@@ -97,28 +100,37 @@
           slides[index].classList.remove('active');
           index = (index + 1) % slides.length;
           slides[index].classList.add('active');
-        }, 8000); // đổi ảnh mỗi 8 giây
+        }, 8000);
       })();
     </script>
 
-    <c:forEach var="entry" items="${sections}">
-      <c:set var="cat"  value="${entry.key}" />
-      <c:set var="list" value="${entry.value}" />
+    <!-- ====== TOP SELLER (BÁN CHẠY) – dùng list của category đầu tiên ====== -->
+    <c:set var="topList" value="${null}" />
+    <c:forEach var="entry" items="${sections}" varStatus="stTop">
+      <c:if test="${stTop.first}">
+        <c:set var="topList" value="${entry.value}" />
+      </c:if>
+    </c:forEach>
 
-      <div class="d-flex align-items-baseline mb-2 mt-4">
-        <h4 class="me-auto fw-bold">${cat.name}</h4>
-        <a class="text-decoration-none" href="${cxt}/products?cat=${cat.id}">Xem tất cả →</a>
-      </div>
+    <c:if test="${not empty topList}">
+      <div class="container top-seller-section mb-4">
+        <div class="d-flex align-items-center mb-3">
+          <h3 class="fw-bold mb-0 d-flex align-items-center">
+            <span class="top-seller-fire me-2">🔥</span>
+            TOP Seller
+          </h3>
+          <!-- cho Xem tất cả sát phải -->
+          <a href="${cxt}/products"
+             class="text-decoration-none fw-semibold ms-auto">
+            Xem tất cả sản phẩm →
+          </a>
+        </div>
 
-      <c:choose>
-        <c:when test="${empty list}">
-          <div class="alert alert-light border">Chưa có sản phẩm.</div>
-        </c:when>
-
-        <c:otherwise>
-          <div class="row g-4">
-            <c:forEach items="${list}" var="p">
-              <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+        <div class="row flex-nowrap overflow-auto top-seller-row g-4">
+          <c:forEach var="p" items="${topList}" varStatus="ts">
+            <c:if test="${ts.index < 8}">
+              <div class="col-8 col-sm-5 col-md-4 col-lg-3 top-seller-item">
+                <!-- Card giống hệt layout dưới -->
                 <div class="card h-100 shadow-sm rounded-4 border-0">
                   <div class="ratio ratio-1x1 rounded-top-4 d-flex align-items-center justify-content-center thumb">
                     <a href="${cxt}/product?id=${p.id}" class="d-block">
@@ -188,10 +200,136 @@
                   </div>
                 </div>
               </div>
-            </c:forEach>
-          </div>
-        </c:otherwise>
-      </c:choose>
+            </c:if>
+          </c:forEach>
+        </div>
+      </div>
+
+      <!-- Auto dịch top seller sang phải -->
+      <script>
+        (function () {
+          var row = document.querySelector('.top-seller-row');
+          if (!row) return;
+          var firstItem = row.querySelector('.top-seller-item');
+          if (!firstItem) return;
+
+          function getStep() {
+            var rect = firstItem.getBoundingClientRect();
+            // cộng thêm gap giữa các col (g-4 ~ 1.5rem ≈ 24px, lấy tạm 20)
+            return rect.width + 20;
+          }
+
+          setInterval(function () {
+            if (row.scrollWidth <= row.clientWidth) return;
+
+            var step = getStep();
+            var maxScroll = row.scrollWidth - row.clientWidth;
+            var next = row.scrollLeft + step;
+
+            if (next >= maxScroll + 4) {
+              row.scrollTo({ left: 0, behavior: 'smooth' });
+            } else {
+              row.scrollBy({ left: step, behavior: 'smooth' });
+            }
+          }, 7000);
+        })();
+      </script>
+    </c:if>
+
+    <!-- ====== CÁC SECTION THEO DANH MỤC (giữ nguyên) ====== -->
+    <c:forEach var="entry" items="${sections}">
+      <c:set var="cat"  value="${entry.key}" />
+      <c:set var="list" value="${entry.value}" />
+
+      <div class="container">
+        <div class="d-flex align-items-baseline mb-2 mt-4">
+          <h4 class="me-auto fw-bold">${cat.name}</h4>
+          <a class="text-decoration-none" href="${cxt}/products?cat=${cat.id}">Xem tất cả →</a>
+        </div>
+
+        <c:choose>
+          <c:when test="${empty list}">
+            <div class="alert alert-light border">Chưa có sản phẩm.</div>
+          </c:when>
+
+          <c:otherwise>
+            <div class="row g-4">
+              <c:forEach items="${list}" var="p">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                  <div class="card h-100 shadow-sm rounded-4 border-0">
+                    <div class="ratio ratio-1x1 rounded-top-4 d-flex align-items-center justify-content-center thumb">
+                      <a href="${cxt}/product?id=${p.id}" class="d-block">
+                        <img class="p-4"
+                             src="${cxt}/asset/images/${p.image != null ? p.image : 'no-image.png'}"
+                             alt="${p.name}"
+                             onerror="this.src='${cxt}/asset/images/no-image.png'">
+                      </a>
+                    </div>
+                    <div class="card-body">
+                      <span class="badge bg-light text-dark mb-2">${p.categoryName}</span>
+
+                      <h6 class="card-title" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+                        <a class="text-decoration-none text-dark" href="${cxt}/product?id=${p.id}">
+                          ${p.name}
+                        </a>
+                      </h6>
+
+                      <c:set var="r" value="${p.rating}" />
+                      <div class="small text-muted d-flex align-items-center gap-2">
+                        <span class="stars-outer">
+                          <span class="stars-inner" style="width:${r * 20}%"></span>
+                        </span>
+                        <small>
+                          <fmt:formatNumber value="${r}" minFractionDigits="1" maxFractionDigits="1"/>
+                        </small>
+                        · Đã mua: ${p.purchased}
+                      </div>
+
+                      <div class="small mt-1">
+                        <c:choose>
+                          <c:when test="${p.stock <= 0}">
+                            <span class="text-danger">Hết hàng</span>
+                          </c:when>
+                          <c:otherwise>
+                            Còn: <strong>${p.stock}</strong>
+                          </c:otherwise>
+                        </c:choose>
+                      </div>
+
+                      <div class="mt-2">
+                        <c:if test="${p.oldPrice != null && p.oldPrice > 0 && p.oldPrice > p.price}">
+                          <span class="price-old">
+                            <fmt:formatNumber value="${p.oldPrice}" type="number" groupingUsed="true"/> đ
+                          </span>
+                        </c:if>
+                        <span class="fw-bold text-danger">
+                          <fmt:formatNumber value="${p.price}" type="number" groupingUsed="true"/> đ
+                        </span>
+                      </div>
+
+                      <div class="mt-3 d-grid">
+                        <c:choose>
+                          <c:when test="${p.stock <= 0}">
+                            <button class="btn btn-secondary rounded-pill" disabled>Hết hàng</button>
+                          </c:when>
+                          <c:otherwise>
+                            <a class="btn btn-teal rounded-pill btn-add-to-cart"
+                               href="${cxt}/cart?action=add&id=${p.id}"
+                               data-id="${p.id}" data-qty="1">
+                              Thêm vào giỏ
+                            </a>
+                          </c:otherwise>
+                        </c:choose>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </c:forEach>
+            </div>
+          </c:otherwise>
+        </c:choose>
+      </div>
     </c:forEach>
 
   </c:otherwise>

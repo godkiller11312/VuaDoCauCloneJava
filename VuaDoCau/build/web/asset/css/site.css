@@ -1,4 +1,5 @@
 :root { --teal:#22b8a7 }
+
 .btn-teal{ background:var(--teal); color:#fff }
 .btn-teal:hover{ filter:brightness(.95); color:#fff }
 .nav-admin .navbar-nav{flex-direction:row;margin-left:0!important}
@@ -6,7 +7,6 @@
 .nav-admin .nav-link{padding-left:.75rem;padding-right:.75rem}
 .badge.bg-soft-gray { background:#eef2ff; }
 .thumb { background:#f6f7ff; }
-
 
 /* ===== Navbar fixed-top fix spacing ===== */
 body {
@@ -23,7 +23,7 @@ body {
   height: 64px;
   border-radius: 50%;
   border: none;
-  background: var(--teal, #009688); /* xanh cũ */
+  background: var(--teal, #009688);
   color: white;
   display: flex;
   align-items: center;
@@ -67,10 +67,10 @@ body {
 /* Notify cơ bản */
 .notify-lite {
   position: fixed;
-  right: 24px;           /* nằm gần nút giỏ bay bay */
-  bottom: 96px;          /* cách nút giỏ ~32px */
+  right: 24px;
+  bottom: 96px;
   z-index: 2200;
-  background: #198754;   /* xanh success */
+  background: #198754;
   color: #fff;
   padding: 10px 14px;
   border-radius: 12px;
@@ -114,60 +114,92 @@ body {
 .thumb img{
   width: 100%;
   height: 100%;
-  object-fit: contain;  /* giữ tỉ lệ, không bị méo */
+  object-fit: contain;
 }
+
+/* =================== HERO BANNER =================== */
+
 .banner-wrapper {
-  width: 100%;
+  position: relative;
+  width: 100vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
   height: 100vh;
   overflow: hidden;
-  position: relative;
 }
 
 .banner-slides {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .banner-slide {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
+  filter: brightness(0.85);
   opacity: 0;
-  transition: opacity 1.2s ease-in-out;
+  transition: opacity 1s ease-in-out;
 }
-
 .banner-slide.active {
   opacity: 1;
 }
 
+/* PHẦN CHỮ TRONG BANNER */
 .banner-content {
   position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: 6vw;
-  padding-right: 6vw;
+  top: 50%;
+  left: 8%;
+  transform: translateY(-50%);
+  z-index: 5;
   color: #fff;
-  background: rgba(0,0,0,.45);
+  max-width: 520px;
 }
 
-.hero-btn {
-  display: inline-block;
-  padding: 10px 32px;
-  border: 2px solid #fff;
-  border-radius: 50px;
-  color: #fff;
-  font-weight: 600;
-  letter-spacing: .5px;
-  font-size: 18px;
-  text-decoration: none;
-  backdrop-filter: blur(2px);
-  transition: .25s ease;
+/* Tiêu đề & mô tả rõ hơn */
+.banner-title {
+  font-size: 3.2rem;
+  font-weight: 800;
+  line-height: 1.1;
+  text-shadow: 0 3px 12px rgba(0,0,0,.75);
 }
 
-.hero-btn:hover {
-  background: rgba(255,255,255,.18);
-  transform: translateY(-2px);
+.banner-subtitle {
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 8px rgba(0,0,0,.7);
+}
+
+/* =================== TOP SELLER =================== */
+
+.top-seller-section {
+  margin-top: 1rem;
+}
+
+.top-seller-row {
+  padding-bottom: .5rem;
+}
+
+/* icon lửa cho TOP Seller */
+.top-seller-fire{
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+/* nhẹ scrollbar ngang */
+.top-seller-row::-webkit-scrollbar {
+  height: 6px;
+}
+.top-seller-row::-webkit-scrollbar-track {
+  background: transparent;
+}
+.top-seller-row::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,.1);
+  border-radius: 999px;
 }
