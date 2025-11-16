@@ -152,3 +152,22 @@ body {
   color: #fff;
   background: rgba(0,0,0,.45);
 }
+
+.hero-btn {
+  display: inline-block;
+  padding: 10px 32px;
+  border: 2px solid #fff;
+  border-radius: 50px;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: .5px;
+  font-size: 18px;
+  text-decoration: none;
+  backdrop-filter: blur(2px);
+  transition: .25s ease;
+}
+
+.hero-btn:hover {
+  background: rgba(255,255,255,.18);
+  transform: translateY(-2px);
+}

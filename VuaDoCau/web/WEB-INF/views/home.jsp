@@ -81,7 +81,10 @@
         <p class="banner-subtitle">
           Cần câu – Máy câu – Phụ kiện chính hãng – đồng hành mọi chuyến đi câu của bạn.
         </p>
-       
+       <a href="${cxt}/products"
+   class="hero-btn">
+   Khám phá →
+</a>
       </div>
     </div>
 
