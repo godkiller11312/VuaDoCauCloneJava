@@ -105,7 +105,117 @@
       })();
     </script>
 
-    <!-- ====== TOP SELLER ====== -->
+    <%-- ====== TÌM THEO THỂ LOẠI ====== --%>
+    <div class="browse-wrapper">
+      <div class="container-xxl">
+        <div class="row align-items-start g-4">
+
+          <!-- Cột tiêu đề bên trái -->
+          <div class="col-12 col-lg-3">
+            <div class="browse-left">
+              <h3 class="browse-title">Tìm theo thể loại</h3>
+              <a href="${cxt}/products"
+                 class="browse-view-all">
+                Xem tất cả sản phẩm →
+              </a>
+            </div>
+          </div>
+
+          <!-- Cột các thẻ thể loại bên phải -->
+          <div class="col-12 col-lg-9">
+            <div class="row g-4 browse-grid">
+
+              <div class="col-6 col-md-4 col-lg">
+                <a href="${cxt}/products?q=Cần câu" class="browse-card text-decoration-none">
+                  <div class="browse-thumb">
+                    <img src="${cxt}/asset/images/browse-rod.jpg" alt="Cần câu">
+                  </div>
+                  <div class="browse-name">Cần câu</div>
+                </a>
+              </div>
+
+              <div class="col-6 col-md-4 col-lg">
+                <a href="${cxt}/products?q=Máy câu" class="browse-card text-decoration-none">
+                  <div class="browse-thumb">
+                    <img src="${cxt}/asset/images/browse-reel.jpg" alt="Máy câu">
+                  </div>
+                  <div class="browse-name">Máy câu</div>
+                </a>
+              </div>
+
+              <div class="col-6 col-md-4 col-lg">
+                <a href="${cxt}/products?q=Dây câu" class="browse-card text-decoration-none">
+                  <div class="browse-thumb">
+                    <img src="${cxt}/asset/images/browse-line.jpg" alt="Dây câu">
+                  </div>
+                  <div class="browse-name">Dây câu</div>
+                </a>
+              </div>
+
+              <div class="col-6 col-md-4 col-lg">
+                <a href="${cxt}/products?q=Mồi câu" class="browse-card text-decoration-none">
+                  <div class="browse-thumb">
+                    <img src="${cxt}/asset/images/browse-bait.jpg" alt="Mồi câu">
+                  </div>
+                  <div class="browse-name">Mồi câu</div>
+                </a>
+              </div>
+
+              <div class="col-6 col-md-4 col-lg">
+                <a href="${cxt}/products?q=Phụ kiện câu" class="browse-card text-decoration-none">
+                  <div class="browse-thumb">
+                    <img src="${cxt}/asset/images/browse-accessories.jpg" alt="Phụ kiện">
+                  </div>
+                  <div class="browse-name">Phụ kiện</div>
+                </a>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <%-- ====== 2 BANNER NGANG LỚN ====== --%>
+    <div class="two-banner-wrapper" style="padding:0 3vw">
+      <div class="container-xxl">
+        <div class="row g-4">
+
+          <div class="col-12 col-lg-6">
+            <div class="home-promo-card home-promo-left">
+              <div class="home-promo-content">
+                <p class="home-promo-tag">COMBO HOT</p>
+                <h2 class="home-promo-title">Bộ Đồ Câu<br>Cho Người Mới</h2>
+                <p class="home-promo-text">Full set cần – máy – dây sẵn sàng đi câu!</p>
+                <a href="${cxt}/products"
+                   class="btn btn-outline-light rounded-pill px-4 py-2 fw-semibold home-promo-btn">
+                  Khám phá →
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-lg-6">
+            <div class="home-promo-card home-promo-right">
+              <div class="home-promo-content">
+                <p class="home-promo-tag">GIẢM 25%</p>
+                <h2 class="home-promo-title">Phụ kiện câu cá</h2>
+                <p class="home-promo-text">Phao – lưỡi – chì – hộp phụ kiện giảm SỐC</p>
+                <a href="${cxt}/products"
+                   class="btn btn-outline-light rounded-pill px-4 py-2 fw-semibold home-promo-btn">
+                  Xem ngay →
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <%-- ====== END 2 BANNER ====== --%>
+
+    <%-- ====== TOP SELLER (sau 2 banner) ====== --%>
     <c:set var="topList" value="${null}" />
     <c:forEach var="entry" items="${sections}" varStatus="stTop">
       <c:if test="${stTop.first}">
@@ -233,48 +343,7 @@
       </script>
     </c:if>
 
-<div class="two-banner-wrapper" style="padding:0 3vw">
-  <div class="row g-4">
-
-    <div class="row g-4">
-
-      <div class="col-12 col-lg-6">
-        <div class="home-promo-card home-promo-left">
-          <div class="home-promo-content">
-            <p class="home-promo-tag">COMBO HOT</p>
-            <h2 class="home-promo-title">Bộ Đồ Câu<br>Cho Người Mới</h2>
-            <p class="home-promo-text">Full set cần – máy – dây sẵn sàng đi câu!</p>
-            <a href="${cxt}/products"
-   class="btn btn-outline-light rounded-pill px-4 py-2 fw-semibold home-promo-btn">
-  Khám phá →
-</a>
-
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 col-lg-6">
-        <div class="home-promo-card home-promo-right">
-          <div class="home-promo-content">
-            <p class="home-promo-tag">GIẢM 25%</p>
-            <h2 class="home-promo-title">Phụ kiện câu cá</h2>
-            <p class="home-promo-text">Phao – lưỡi – chì – hộp phụ kiện giảm SỐC</p>
-         <a href="${cxt}/products"
-   class="btn btn-outline-light rounded-pill px-4 py-2 fw-semibold home-promo-btn">
-  Xem ngay →
-</a>
-
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-    <!-- ====== END 2 BANNER ====== -->
-
-    <!-- ====== CÁC SECTION THEO DANH MỤC ====== -->
+    <%-- ====== CÁC SECTION THEO DANH MỤC ====== --%>
     <c:forEach var="entry" items="${sections}">
       <c:set var="cat"  value="${entry.key}" />
       <c:set var="list" value="${entry.value}" />

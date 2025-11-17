@@ -300,3 +300,122 @@ body {
 }
 
 
+/* ====== Browse by Category (Tìm theo thể loại) ====== */
+
+.browse-chip-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.5rem;
+}
+
+.browse-chip{
+  display:inline-flex;
+  align-items:center;
+  padding:8px 16px;
+  border-radius:999px;
+  background:#f4f4f5;
+  color:#111827;
+  font-size:.95rem;
+  font-weight:500;
+  text-decoration:none;
+  transition:.2s ease;
+}
+
+.browse-chip:hover{
+  background:#111827;
+  color:#f9fafb;
+  transform:translateY(-1px);
+  box-shadow:0 8px 20px rgba(0,0,0,.15);
+}
+
+
+.browse-wrapper {
+  width: 100vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  padding: 40px 3vw 20px;
+}
+
+.browse-left{
+  padding-top: 8px;
+}
+
+.browse-title{
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: #124117;   /* xanh đậm kiểu trà */
+  margin-bottom: .5rem;
+}
+
+.browse-view-all{
+  font-weight: 600;
+  font-size: .95rem;
+  color: #3b7f1c;
+  text-decoration: none;
+}
+
+.browse-view-all:hover{
+  text-decoration: underline;
+}
+
+/* lưới các card thể loại */
+.browse-grid{
+  align-items: stretch;
+}
+
+.browse-card{
+  display: block;
+  text-align: center;
+  color: #111827;
+  text-decoration: none;
+}
+
+/* Hover: khung nổi lên + đổ bóng mạnh hơn */
+.browse-card:hover .browse-thumb{
+  transform: translateY(-8px);
+  box-shadow: 0 16px 35px rgba(0,0,0,.18);
+}
+
+/* Khung ảnh – cho overflow hidden để bo tròn ảnh bên trong */
+.browse-thumb{
+  background: #f5f7ff;
+  border-radius: 24px;
+  overflow: hidden;              /* ⭐ quan trọng để bo tròn ảnh */
+  padding: 0;                    /* bỏ padding để ảnh fill full */
+  box-shadow: 0 6px 18px rgba(0,0,0,.08);
+  margin-bottom: .75rem;
+  height: 200px;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  transition: .25s ease;         /* để hover mượt hơn */
+}
+
+/* Ảnh fill full khung */
+.browse-thumb img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;             /* cắt cho đầy khung */
+  border-radius: 0;              /* không cần, vì đã bo ở parent */
+}
+
+
+.browse-name{
+  font-weight: 600;
+  font-size: .98rem;
+}
+
+/* desktop: khung cao hơn chút */
+@media (min-width: 992px){
+  .browse-thumb{
+    height: 220px;
+  }
+}
+
+/* mobile */
+@media (max-width: 768px){
+  .browse-thumb{
+    height: 140px;
+  }
+}
+
