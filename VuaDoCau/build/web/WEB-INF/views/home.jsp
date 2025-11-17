@@ -240,7 +240,7 @@
           <c:forEach var="p" items="${topList}" varStatus="ts">
             <c:if test="${ts.index < 8}">
               <div class="col-8 col-sm-5 col-md-4 col-lg-3 top-seller-item">
-                <div class="card h-100 shadow-sm rounded-4 border-0">
+               <div class="card h-100 shadow-sm rounded-4 border-0 product-card-hover">
                   <div class="ratio ratio-1x1 rounded-top-4 d-flex align-items-center justify-content-center thumb">
                     <a href="${cxt}/product?id=${p.id}" class="d-block">
                       <img class="p-4"
@@ -342,7 +342,25 @@
         })();
       </script>
     </c:if>
+        <%-- ====== BANNER LỚN DƯỚI TOP SELLER ====== --%>
+<div class="container single-promo-section">
+  <div class="single-promo-card">
+    <div class="single-promo-content">
+      <p class="single-promo-tag">ƯU ĐÃI MÙA CÂU</p>
+      <h2 class="single-promo-title">Combo Đồ Câu<br>Mùa Lễ Hội</h2>
+      <p class="single-promo-text">
+        Bộ cần – máy – phụ kiện đồng bộ, thiết kế riêng cho những chuyến đi câu dài ngày.
+      </p>
+      <a href="${cxt}/products"
+         class="btn btn-outline-light rounded-pill px-4 py-2 fw-semibold home-promo-btn">
+        Xem combo →
+      </a>
+    </div>
+  </div>
+</div>
 
+
+    <%-- ====== END BANNER LỚN ====== --%>
     <%-- ====== CÁC SECTION THEO DANH MỤC ====== --%>
     <c:forEach var="entry" items="${sections}">
       <c:set var="cat"  value="${entry.key}" />
