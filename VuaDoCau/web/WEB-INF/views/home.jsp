@@ -69,6 +69,8 @@
 
   <c:otherwise>
 
+    <%-- ================= USER HOME ================= --%>
+
     <!-- BANNER FULL SCREEN -->
     <div class="banner-wrapper mb-4">
       <div class="banner-slides">
@@ -91,7 +93,6 @@
     </div>
 
     <script>
-      // slideshow banner
       (function () {
         var slides = document.querySelectorAll('.banner-slide');
         if (!slides.length) return;
@@ -104,7 +105,7 @@
       })();
     </script>
 
-    <!-- ====== TOP SELLER (BÁN CHẠY) – dùng list của category đầu tiên ====== -->
+    <!-- ====== TOP SELLER ====== -->
     <c:set var="topList" value="${null}" />
     <c:forEach var="entry" items="${sections}" varStatus="stTop">
       <c:if test="${stTop.first}">
@@ -119,7 +120,6 @@
             <span class="top-seller-fire me-2">🔥</span>
             TOP Seller
           </h3>
-          <!-- cho Xem tất cả sát phải -->
           <a href="${cxt}/products"
              class="text-decoration-none fw-semibold ms-auto">
             Xem tất cả sản phẩm →
@@ -130,7 +130,6 @@
           <c:forEach var="p" items="${topList}" varStatus="ts">
             <c:if test="${ts.index < 8}">
               <div class="col-8 col-sm-5 col-md-4 col-lg-3 top-seller-item">
-                <!-- Card giống hệt layout dưới -->
                 <div class="card h-100 shadow-sm rounded-4 border-0">
                   <div class="ratio ratio-1x1 rounded-top-4 d-flex align-items-center justify-content-center thumb">
                     <a href="${cxt}/product?id=${p.id}" class="d-block">
@@ -205,7 +204,6 @@
         </div>
       </div>
 
-      <!-- Auto dịch top seller sang phải -->
       <script>
         (function () {
           var row = document.querySelector('.top-seller-row');
@@ -215,7 +213,6 @@
 
           function getStep() {
             var rect = firstItem.getBoundingClientRect();
-            // cộng thêm gap giữa các col (g-4 ~ 1.5rem ≈ 24px, lấy tạm 20)
             return rect.width + 20;
           }
 
@@ -236,7 +233,48 @@
       </script>
     </c:if>
 
-    <!-- ====== CÁC SECTION THEO DANH MỤC (giữ nguyên) ====== -->
+<div class="two-banner-wrapper" style="padding:0 3vw">
+  <div class="row g-4">
+
+    <div class="row g-4">
+
+      <div class="col-12 col-lg-6">
+        <div class="home-promo-card home-promo-left">
+          <div class="home-promo-content">
+            <p class="home-promo-tag">COMBO HOT</p>
+            <h2 class="home-promo-title">Bộ Đồ Câu<br>Cho Người Mới</h2>
+            <p class="home-promo-text">Full set cần – máy – dây sẵn sàng đi câu!</p>
+            <a href="${cxt}/products"
+   class="btn btn-outline-light rounded-pill px-4 py-2 fw-semibold home-promo-btn">
+  Khám phá →
+</a>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-6">
+        <div class="home-promo-card home-promo-right">
+          <div class="home-promo-content">
+            <p class="home-promo-tag">GIẢM 25%</p>
+            <h2 class="home-promo-title">Phụ kiện câu cá</h2>
+            <p class="home-promo-text">Phao – lưỡi – chì – hộp phụ kiện giảm SỐC</p>
+         <a href="${cxt}/products"
+   class="btn btn-outline-light rounded-pill px-4 py-2 fw-semibold home-promo-btn">
+  Xem ngay →
+</a>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+    <!-- ====== END 2 BANNER ====== -->
+
+    <!-- ====== CÁC SECTION THEO DANH MỤC ====== -->
     <c:forEach var="entry" items="${sections}">
       <c:set var="cat"  value="${entry.key}" />
       <c:set var="list" value="${entry.value}" />
@@ -274,13 +312,13 @@
                         </a>
                       </h6>
 
-                      <c:set var="r" value="${p.rating}" />
+                      <c:set var="r2" value="${p.rating}" />
                       <div class="small text-muted d-flex align-items-center gap-2">
                         <span class="stars-outer">
-                          <span class="stars-inner" style="width:${r * 20}%"></span>
+                          <span class="stars-inner" style="width:${r2 * 20}%"></span>
                         </span>
                         <small>
-                          <fmt:formatNumber value="${r}" minFractionDigits="1" maxFractionDigits="1"/>
+                          <fmt:formatNumber value="${r2}" minFractionDigits="1" maxFractionDigits="1"/>
                         </small>
                         · Đã mua: ${p.purchased}
                       </div>
