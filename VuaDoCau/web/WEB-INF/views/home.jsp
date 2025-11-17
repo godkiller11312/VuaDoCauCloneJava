@@ -7,11 +7,25 @@
 <c:set var="isAdmin" value="${not empty auth and auth.roleId == 1}" />
 
 <c:choose>
+  <%-- ================== ADMIN HOME ================== --%>
   <c:when test="${isAdmin}">
     <div class="container py-4">
       <h4 class="fw-bold mb-4">Bảng điều khiển Admin</h4>
 
-      <div class="row g-4">
+      <div class="position-relative">
+
+  <!-- Nút NEXT -->
+  <button class="np-arrow np-next">
+    ➜
+  </button>
+
+  <!-- Nút PREV -->
+  <button class="np-arrow np-prev">
+    ➜
+  </button>
+
+  <div class="row flex-nowrap overflow-auto g-4 np-scroll-row">
+
         <div class="col-12 col-md-6">
           <a href="${cxt}/admin/products" class="text-decoration-none">
             <div class="card shadow-sm border-0 rounded-4 p-3 d-flex flex-row align-items-center">
@@ -67,11 +81,10 @@
     </div>
   </c:when>
 
+  <%-- ================== USER HOME ================== --%>
   <c:otherwise>
 
-    <%-- ================= USER HOME ================= --%>
-
-    <!-- BANNER FULL SCREEN -->
+    <%-- ===== HERO BANNER FULL WIDTH ===== --%>
     <div class="banner-wrapper mb-4">
       <div class="banner-slides">
         <div class="banner-slide active" style="background-image:url('${cxt}/asset/images/banner1.jpg')"></div>
@@ -105,23 +118,22 @@
       })();
     </script>
 
-    <%-- ====== TÌM THEO THỂ LOẠI ====== --%>
+    <%-- ===== TÌM THEO THỂ LOẠI ===== --%>
     <div class="browse-wrapper">
       <div class="container-xxl">
         <div class="row align-items-start g-4">
 
-          <!-- Cột tiêu đề bên trái -->
+          <%-- Cột tiêu đề bên trái --%>
           <div class="col-12 col-lg-3">
             <div class="browse-left">
               <h3 class="browse-title">Tìm theo thể loại</h3>
-              <a href="${cxt}/products"
-                 class="browse-view-all">
+              <a href="${cxt}/products" class="section-view-all">
                 Xem tất cả sản phẩm →
               </a>
             </div>
           </div>
 
-          <!-- Cột các thẻ thể loại bên phải -->
+          <%-- Cột thẻ thể loại bên phải --%>
           <div class="col-12 col-lg-9">
             <div class="row g-4 browse-grid">
 
@@ -177,7 +189,7 @@
       </div>
     </div>
 
-    <%-- ====== 2 BANNER NGANG LỚN ====== --%>
+    <%-- ===== 2 BANNER NGANG LỚN ===== --%>
     <div class="two-banner-wrapper" style="padding:0 3vw">
       <div class="container-xxl">
         <div class="row g-4">
@@ -213,9 +225,9 @@
         </div>
       </div>
     </div>
-    <%-- ====== END 2 BANNER ====== --%>
+    <%-- ===== END 2 BANNER ===== --%>
 
-    <%-- ====== TOP SELLER (sau 2 banner) ====== --%>
+    <%-- Lấy list đầu tiên từ sections làm TOP / NEW demo --%>
     <c:set var="topList" value="${null}" />
     <c:forEach var="entry" items="${sections}" varStatus="stTop">
       <c:if test="${stTop.first}">
@@ -223,15 +235,14 @@
       </c:if>
     </c:forEach>
 
+    <%-- ===== TOP SELLER (sau 2 banner) ===== --%>
     <c:if test="${not empty topList}">
       <div class="container top-seller-section mb-4">
         <div class="d-flex align-items-center mb-3">
-          <h3 class="fw-bold mb-0 d-flex align-items-center">
-            <span class="top-seller-fire me-2">🔥</span>
-            TOP Seller
-          </h3>
-          <a href="${cxt}/products"
-             class="text-decoration-none fw-semibold ms-auto">
+          <h2 class="section-title mb-0">
+            <span class="sec-ico">🔥</span> TOP Seller
+          </h2>
+          <a href="${cxt}/products" class="section-view-all ms-auto">
             Xem tất cả sản phẩm →
           </a>
         </div>
@@ -240,7 +251,7 @@
           <c:forEach var="p" items="${topList}" varStatus="ts">
             <c:if test="${ts.index < 8}">
               <div class="col-8 col-sm-5 col-md-4 col-lg-3 top-seller-item">
-               <div class="card h-100 shadow-sm rounded-4 border-0 product-card-hover">
+                <div class="card h-100 shadow-sm rounded-4 border-0 product-card-hover">
                   <div class="ratio ratio-1x1 rounded-top-4 d-flex align-items-center justify-content-center thumb">
                     <a href="${cxt}/product?id=${p.id}" class="d-block">
                       <img class="p-4"
@@ -342,26 +353,124 @@
         })();
       </script>
     </c:if>
-        <%-- ====== BANNER LỚN DƯỚI TOP SELLER ====== --%>
-<div class="container single-promo-section">
-  <div class="single-promo-card">
-    <div class="single-promo-content">
-      <p class="single-promo-tag">ƯU ĐÃI MÙA CÂU</p>
-      <h2 class="single-promo-title">Combo Đồ Câu<br>Mùa Lễ Hội</h2>
-      <p class="single-promo-text">
-        Bộ cần – máy – phụ kiện đồng bộ, thiết kế riêng cho những chuyến đi câu dài ngày.
-      </p>
-      <a href="${cxt}/products"
-         class="btn btn-outline-light rounded-pill px-4 py-2 fw-semibold home-promo-btn">
-        Xem combo →
-      </a>
+
+    <%-- ===== BANNER LỚN DƯỚI TOP SELLER ===== --%>
+    <div class="container single-promo-section">
+      <div class="single-promo-card">
+        <div class="single-promo-content">
+          <p class="single-promo-tag">ƯU ĐÃI MÙA CÂU</p>
+          <h2 class="single-promo-title">Combo Đồ Câu<br>Mùa Lễ Hội</h2>
+          <p class="single-promo-text">
+            Bộ cần – máy – phụ kiện đồng bộ, thiết kế riêng cho những chuyến đi câu dài ngày.
+          </p>
+          <a href="${cxt}/products"
+             class="btn btn-outline-light rounded-pill px-4 py-2 fw-semibold home-promo-btn">
+            Xem combo →
+          </a>
+        </div>
+      </div>
     </div>
+    <%-- ===== END BANNER LỚN ===== --%>
+
+<%-- ===== SẢN PHẨM MỚI (dùng lại card chuẩn) ===== --%>
+<div class="container new-products-section my-5">
+
+  <div class="text-center mb-4">
+    <h2 class="section-title">
+      <span class="sec-ico">🔥</span> Sản phẩm mới
+    </h2>
+  </div>
+
+  <%-- Hàng ngang, cuộn giống TOP Seller --%>
+  <div class="row flex-nowrap overflow-auto g-4 new-products-row">
+    <c:forEach var="p" items="${topList}" varStatus="st">
+      <c:if test="${st.index < 8}"> <%-- cho nhiều hơn 4 nếu muốn --%>
+        <div class="col-8 col-sm-5 col-md-4 col-lg-3 np-item">
+          <div class="card h-100 shadow-sm rounded-4 border-0 product-card-hover np-card-wrapper">
+
+            <div class="ratio ratio-1x1 rounded-top-4 d-flex align-items-center justify-content-center thumb">
+              <a href="${cxt}/product?id=${p.id}" class="d-block">
+                <img class="p-4"
+                     src="${cxt}/asset/images/${p.image != null ? p.image : 'no-image.png'}"
+                     alt="${p.name}"
+                     onerror="this.src='${cxt}/asset/images/no-image.png'">
+              </a>
+            </div>
+
+            <div class="card-body">
+              <span class="badge bg-light text-dark mb-2">${p.categoryName}</span>
+
+              <h6 class="card-title" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+                <a class="text-decoration-none text-dark" href="${cxt}/product?id=${p.id}">
+                  ${p.name}
+                </a>
+              </h6>
+
+              <c:set var="rNew" value="${p.rating}" />
+              <div class="small text-muted d-flex align-items-center gap-2 mb-1">
+                <span class="stars-outer">
+                  <span class="stars-inner" style="width:${rNew * 20}%"></span>
+                </span>
+                <small>
+                  <fmt:formatNumber value="${rNew}" minFractionDigits="1" maxFractionDigits="1"/>
+                </small>
+                · Đã mua: ${p.purchased}
+              </div>
+
+              <div class="small">
+                <c:choose>
+                  <c:when test="${p.stock <= 0}">
+                    <span class="text-danger">Hết hàng</span>
+                  </c:when>
+                  <c:otherwise>
+                    Còn: <strong>${p.stock}</strong>
+                  </c:otherwise>
+                </c:choose>
+              </div>
+
+              <div class="mt-2 mb-3">
+                <c:if test="${p.oldPrice != null && p.oldPrice > 0 && p.oldPrice > p.price}">
+                  <span class="price-old">
+                    <fmt:formatNumber value="${p.oldPrice}" type="number" groupingUsed="true"/> đ
+                  </span>
+                </c:if>
+                <span class="fw-bold text-danger">
+                  <fmt:formatNumber value="${p.price}" type="number" groupingUsed="true"/> đ
+                </span>
+              </div>
+
+              <div class="mt-1 d-grid">
+                <c:choose>
+                  <c:when test="${p.stock <= 0}">
+                    <button class="btn btn-secondary rounded-pill" disabled>Hết hàng</button>
+                  </c:when>
+                  <c:otherwise>
+                    <a class="btn btn-teal rounded-pill btn-add-to-cart"
+                       href="${cxt}/cart?action=add&id=${p.id}"
+                       data-id="${p.id}" data-qty="1">
+                      Thêm vào giỏ
+                    </a>
+                  </c:otherwise>
+                </c:choose>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </c:if>
+    </c:forEach>
+  </div>
+
+  <div class="text-center mt-4">
+    <a href="${cxt}/products" class="section-view-all">
+      Xem tất cả sản phẩm →
+    </a>
   </div>
 </div>
+<%-- ===== END SẢN PHẨM MỚI ===== --%>
 
 
-    <%-- ====== END BANNER LỚN ====== --%>
-    <%-- ====== CÁC SECTION THEO DANH MỤC ====== --%>
+    <%-- ===== CÁC SECTION THEO DANH MỤC ===== --%>
     <c:forEach var="entry" items="${sections}">
       <c:set var="cat"  value="${entry.key}" />
       <c:set var="list" value="${entry.value}" />
@@ -369,7 +478,9 @@
       <div class="container">
         <div class="d-flex align-items-baseline mb-2 mt-4">
           <h4 class="me-auto fw-bold">${cat.name}</h4>
-          <a class="text-decoration-none" href="${cxt}/products?cat=${cat.id}">Xem tất cả →</a>
+          <a class="section-view-all" href="${cxt}/products?cat=${cat.id}">
+            Xem tất cả →
+          </a>
         </div>
 
         <c:choose>
@@ -381,7 +492,7 @@
             <div class="row g-4">
               <c:forEach items="${list}" var="p">
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                  <div class="card h-100 shadow-sm rounded-4 border-0">
+                  <div class="card h-100 shadow-sm rounded-4 border-0 product-card-hover">
                     <div class="ratio ratio-1x1 rounded-top-4 d-flex align-items-center justify-content-center thumb">
                       <a href="${cxt}/product?id=${p.id}" class="d-block">
                         <img class="p-4"

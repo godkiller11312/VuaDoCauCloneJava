@@ -1,13 +1,20 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<!-- Bootstrap JS bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
 (function () {
-  const CXT = '<c:out value="${pageContext.request.contextPath}"/>';
-  const IS_AUTH = <c:out value="${not empty sessionScope.authUser}"/>; // true/false
+  // =========================================================
+  // 1. GLOBAL CONSTANTS
+  // =========================================================
+  const CXT     = '<c:out value="${pageContext.request.contextPath}"/>';   // context path /VuaDoCau
+  const IS_AUTH = <c:out value="${not empty sessionScope.authUser}"/>;     // true / false
 
-  // ====== Guest Prompt Modal (chỉ tạo 1 lần) ======
+  // =========================================================
+  // 2. GUEST PROMPT MODAL (chỉ tạo 1 lần khi cần)
+  // =========================================================
   function ensureGuestModal() {
     if (document.getElementById('guestPromptModal')) return;
 
@@ -26,8 +33,8 @@
           hoặc liên hệ <strong>Zalo: 0886214922</strong> để đặt nhanh.
         </p>
         <div class="d-grid gap-2">
-          <a class="btn btn-teal fw-semibold" href="${pageContext.request.contextPath}/login">Đăng nhập</a>
-          <a class="btn btn-outline-secondary" href="${pageContext.request.contextPath}/register">Đăng ký</a>
+          <a class="btn btn-teal fw-semibold" href="${CXT}/login">Đăng nhập</a>
+          <a class="btn btn-outline-secondary" href="${CXT}/register">Đăng ký</a>
           <a class="btn btn-outline-primary" target="_blank" rel="noopener"
              href="https://zalo.me/0886214922">Liên hệ Zalo 0886214922</a>
         </div>
@@ -43,75 +50,107 @@
     document.body.appendChild(wrap.firstElementChild);
   }
 
-  function openGuestModal(){
+  function openGuestModal() {
     ensureGuestModal();
     const el = document.getElementById('guestPromptModal');
-    const m = bootstrap.Modal.getOrCreateInstance(el, {backdrop:'static'});
+    const m  = bootstrap.Modal.getOrCreateInstance(el, { backdrop: 'static' });
     m.show();
   }
 
-  // ===== Notify nhỏ đơn giản (giữ nguyên) =====
+  // =========================================================
+  // 3. TOAST THÔNG BÁO NHỎ (note)
+  // =========================================================
   function note(msg, ok = true) {
     let wrap = document.getElementById('note-wrap');
     if (!wrap) {
       wrap = document.createElement('div');
       wrap.id = 'note-wrap';
-      Object.assign(wrap.style, {position:'fixed',right:'20px',bottom:'20px',zIndex:'20000'});
+      Object.assign(wrap.style, {
+        position: 'fixed',
+        right: '20px',
+        bottom: '20px',
+        zIndex: '20000'
+      });
       document.body.appendChild(wrap);
     }
+
     const el = document.createElement('div');
     el.textContent = msg;
     Object.assign(el.style, {
-      minWidth:'220px',maxWidth:'320px',marginTop:'8px',padding:'10px 12px',
-      borderRadius:'10px',boxShadow:'0 6px 24px rgba(0,0,0,.15)',color:'#fff',
-      background: ok ? '#2fa684' : '#e55353', fontSize:'14px'
+      minWidth: '220px',
+      maxWidth: '320px',
+      marginTop: '8px',
+      padding: '10px 12px',
+      borderRadius: '10px',
+      boxShadow: '0 6px 24px rgba(0,0,0,.15)',
+      color: '#fff',
+      background: ok ? '#2fa684' : '#e55353',
+      fontSize: '14px'
     });
+
     wrap.appendChild(el);
-    setTimeout(() => { el.style.opacity='0'; el.style.transition='opacity .3s'; }, 2200);
+
+    setTimeout(() => {
+      el.style.opacity = '0';
+      el.style.transition = 'opacity .3s';
+    }, 2200);
+
     setTimeout(() => el.remove(), 2600);
   }
 
-  // Làm tươi phần body của mini-cart (fragment)
+  // =========================================================
+  // 4. MINI-CART – LOAD FRAGMENT + POST HELPER
+  // =========================================================
+  // Load lại phần body của mini cart (offcanvas)
   async function refreshMiniCart() {
     const body = document.getElementById('miniCartBody');
     if (!body) return;
+
     try {
-      const html = await fetch(CXT + '/cart?fragment=1', {cache:'no-store'}).then(r => r.text());
+      const html = await fetch(CXT + '/cart?fragment=1', { cache: 'no-store' })
+        .then(r => r.text());
       body.innerHTML = html;
-    } catch (_) { /* ignore */ }
+    } catch (_) {
+      // im lặng, không cần báo lỗi
+    }
   }
 
-  // POST form x-www-form-urlencoded
+  // Gửi POST x-www-form-urlencoded, trả về JSON
   async function postForm(url, obj) {
     const prms = new URLSearchParams();
     Object.keys(obj).forEach(k => prms.set(k, obj[k]));
+
     const res = await fetch(url, {
       method: 'POST',
-      headers: {'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
       body: prms.toString()
     });
     return res.json();
   }
 
-  // ====== NÚT "THÊM VÀO GIỎ" Ở HOME/PRODUCTS ======
+  // =========================================================
+  // 5. NÚT "THÊM VÀO GIỎ" Ở HOME / PRODUCTS
+  // =========================================================
   document.addEventListener('click', async function (e) {
     const btn = e.target.closest('.btn-add-to-cart');
     if (!btn) return;
 
-    // Nếu CHƯA đăng nhập -> bật modal & không add
+    // Chưa đăng nhập → bật modal login
     if (!IS_AUTH) {
       e.preventDefault();
       openGuestModal();
       return;
     }
 
-    // ĐÃ đăng nhập -> chạy cơ chế thêm vào giỏ như hiện tại
+    // Đã đăng nhập → gọi API thêm vào giỏ
     const id = btn.dataset.id;
-    if (!id) return; // fallback về reload mặc định
+    if (!id) return;            // thiếu data-id thì để browser xử lý mặc định
+
     e.preventDefault();
 
     try {
-      const d = await postForm(CXT + '/cart', { action:'add', id });
+      const d = await postForm(CXT + '/cart', { action: 'add', id });
+
       if (d && (d.ok || typeof d.count !== 'undefined' || typeof d.totalQty !== 'undefined')) {
         if (typeof window.setMiniCartCount === 'function') {
           window.setMiniCartCount(d.count ?? d.totalQty ?? 0);
@@ -126,60 +165,142 @@
     }
   });
 
-  // ====== MINI-CART: set qty / remove (AJAX) ======
-  function updateBadges(data){
+  // =========================================================
+  // 6. MINI-CART: + / - / XÓA / NHẬP SỐ LƯỢNG
+  // =========================================================
+  function updateBadges(data) {
     const count = (data.count ?? data.totalQty ?? 0);
-    if (typeof window.setMiniCartCount === 'function') window.setMiniCartCount(count);
-  }
-  async function setQty(id, qty){
-    const d = await postForm(CXT + '/cart', { action:'set', id, qty });
-    if (d && d.ok){ updateBadges(d); await refreshMiniCart(); }
-  }
-  async function removeItem(id){
-    const d = await postForm(CXT + '/cart', { action:'remove', id });
-    if (d && d.ok){ updateBadges(d); await refreshMiniCart(); }
+    if (typeof window.setMiniCartCount === 'function') {
+      window.setMiniCartCount(count);
+    }
   }
 
-  // Click -, +, Xóa
-  document.addEventListener('click', async function(e){
+  async function setQty(id, qty) {
+    const d = await postForm(CXT + '/cart', { action: 'set', id, qty });
+    if (d && d.ok) {
+      updateBadges(d);
+      await refreshMiniCart();
+    }
+  }
+
+  async function removeItem(id) {
+    const d = await postForm(CXT + '/cart', { action: 'remove', id });
+    if (d && d.ok) {
+      updateBadges(d);
+      await refreshMiniCart();
+    }
+  }
+
+  // Click -, +, Xóa trong mini-cart
+  document.addEventListener('click', async function (e) {
     const minus = e.target.closest('.mc-minus');
     const plus  = e.target.closest('.mc-plus');
     const del   = e.target.closest('.mc-remove');
+
     if (!minus && !plus && !del) return;
 
     const wrap = e.target.closest('.qty-actions');
-    const id   = wrap ? parseInt(wrap.dataset.id,10) : NaN;
+    const id   = wrap ? parseInt(wrap.dataset.id, 10) : NaN;
     if (!id) return;
+
     const input = wrap.querySelector('.mc-qty');
 
-    if (minus){
-      const v = Math.max(0, (parseInt(input.value,10)||0) - 1);
-      if (v === 0) await removeItem(id); else await setQty(id, v);
+    if (minus) {
+      const v = Math.max(0, (parseInt(input.value, 10) || 0) - 1);
+      if (v === 0) {
+        await removeItem(id);
+      } else {
+        await setQty(id, v);
+      }
       return;
     }
-    if (plus){
-      const v = Math.max(0, (parseInt(input.value,10)||0) + 1);
+
+    if (plus) {
+      const v = Math.max(0, (parseInt(input.value, 10) || 0) + 1);
       await setQty(id, v);
       return;
     }
-    if (del){
+
+    if (del) {
       await removeItem(id);
     }
   });
 
   // Nhập số trực tiếp
-  document.addEventListener('change', async function(e){
+  document.addEventListener('change', async function (e) {
     const inp = e.target.closest('.mc-qty');
     if (!inp) return;
+
     const wrap = inp.closest('.qty-actions');
-    const id   = wrap ? parseInt(wrap.dataset.id,10) : NaN;
+    const id   = wrap ? parseInt(wrap.dataset.id, 10) : NaN;
     if (!id) return;
-    const v = Math.max(0, parseInt(inp.value,10)||0);
-    if (v === 0) await removeItem(id); else await setQty(id, v);
+
+    const v = Math.max(0, parseInt(inp.value, 10) || 0);
+    if (v === 0) {
+      await removeItem(id);
+    } else {
+      await setQty(id, v);
+    }
   });
 
-  // Expose
+  // Cho chỗ khác dùng được
   window.refreshMiniCart = refreshMiniCart;
 
-})();
+  // =========================================================
+  // 7. HIỆU ỨNG GIAO DIỆN TRANG HOME
+  //    - Hero banner auto-slide
+  //    - Auto scroll TOP Seller / Sản phẩm mới
+  // =========================================================
+
+  // --- Hero banner full màn hình ---
+  function initHeroBanner() {
+    const slides = document.querySelectorAll('.banner-slide');
+    if (!slides.length) return;
+
+    let index = 0;
+    setInterval(function () {
+      slides[index].classList.remove('active');
+      index = (index + 1) % slides.length;
+      slides[index].classList.add('active');
+    }, 8000);
+  }
+
+  // --- Auto scroll hàng ngang (Top seller / New products) ---
+  function initAutoScrollRow(selector, intervalMs) {
+    const row       = document.querySelector(selector);
+    if (!row) return;
+
+    const firstItem = row.querySelector('.top-seller-item, .np-item');
+    if (!firstItem) return;
+
+    function getStep() {
+      const rect = firstItem.getBoundingClientRect();
+      return rect.width + 20; // thêm khoảng cách gutter
+    }
+
+    setInterval(function () {
+      if (row.scrollWidth <= row.clientWidth) return;
+
+      const step     = getStep();
+      const maxLeft  = row.scrollWidth - row.clientWidth;
+      const nextLeft = row.scrollLeft + step;
+
+      if (nextLeft >= maxLeft + 4) {
+        row.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        row.scrollBy({ left: step, behavior: 'smooth' });
+      }
+    }, intervalMs);
+  }
+
+  // Chỉ chạy sau khi DOM sẵn sàng
+  document.addEventListener('DOMContentLoaded', function () {
+    initHeroBanner();
+    // Top Seller: .top-seller-row đã có sẵn
+    initAutoScrollRow('.top-seller-row', 7000);
+    // Sản phẩm mới: nhớ đặt class .new-products-row & .np-item trong home.jsp
+    initAutoScrollRow('.new-products-row', 7500);
+  });
+
+})();  // end IIFE
 </script>
