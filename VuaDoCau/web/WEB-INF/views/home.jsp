@@ -469,6 +469,41 @@
 </div>
 <%-- ===== END SẢN PHẨM MỚI ===== --%>
 
+<!-- ================= VIP LEGENDARY ROD BANNER ================= -->
+<div class="container my-5">
+  <div class="legend-banner">
+
+    <div class="legend-text">
+      <p class="legend-tag">
+        100% ĐẲNG CẤP – CHÍNH HÃNG
+      </p>
+
+  <h2 class="legend-title">
+  Cần Câu Huyền Thoại<br>
+  VIP & Chất Lượng Cao
+</h2>
+
+      <p class="legend-sub">
+        Những mẫu cần cao cấp – độ bền tuyệt đối, thiết kế sang trọng, hiệu năng vượt trội.
+        Lựa chọn số 1 của các cần thủ chuyên nghiệp.
+      </p>
+
+      <a href="${cxt}/products?vip=1"
+         class="btn btn-outline-light legend-btn rounded-pill px-4 py-2 fw-semibold">
+        Xem bộ sưu tập VIP →
+      </a>
+    </div>
+
+  </div>
+</div>
+<!-- ================= END VIP LEGENDARY ROD BANNER ============= -->
+
+
+
+
+
+
+
 
     <%-- ===== CÁC SECTION THEO DANH MỤC ===== --%>
     <c:forEach var="entry" items="${sections}">
