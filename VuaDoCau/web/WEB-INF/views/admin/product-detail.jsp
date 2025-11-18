@@ -15,6 +15,9 @@
       <input type="hidden" name="action" value="update"/>
       <input type="hidden" name="id" value="${p.id}"/>
 
+      <!-- GIỮ NGUYÊN DANH MỤC: gửi categoryId hiện tại lên để controller dùng -->
+      <input type="hidden" name="categoryId" value="${p.categoryId}"/>
+
       <div class="row g-3">
         <!-- Tên -->
         <div class="col-md-8">

@@ -95,9 +95,16 @@ public class AdminProductController extends HttpServlet {
         if (dir == null) dir = "desc";
 
         switch (sort) {
-            case "id": case "name": case "price": case "oldPrice":
-            case "stock": case "rating": case "purchased": break;
-            default: sort = "id";
+            case "id":
+            case "name":
+            case "price":
+            case "oldPrice":
+            case "stock":
+            case "rating":
+            case "purchased":
+                break;
+            default:
+                sort = "id";
         }
         dir = "asc".equalsIgnoreCase(dir) ? "asc" : "desc";
 
@@ -115,7 +122,8 @@ public class AdminProductController extends HttpServlet {
                 );
                 actDAO.logOnce(req, admin, "PRODUCT_LIST", msg, 2000);
             }
-        } catch (Exception ignore) {}
+        } catch (Exception ignore) {
+        }
 
         req.setAttribute("products", products);
         req.setAttribute("categories", categoryDAO.findAll());
@@ -147,41 +155,60 @@ public class AdminProductController extends HttpServlet {
                 Product p = new Product();
                 if ("update".equalsIgnoreCase(action)) {
                     Integer id = tryParseInt(req.getParameter("id"));
-                    if (id == null) throw new IllegalArgumentException("Thiếu mã sản phẩm để cập nhật");
+                    if (id == null)
+                        throw new IllegalArgumentException("Thiếu mã sản phẩm để cập nhật");
                     p.setId(id);
                 }
+
                 p.setName(req.getParameter("name"));
+
+                // BẮT BUỘC phải có categoryId, không default về 0 nữa (tránh lỗi FK)
                 Integer catId = tryParseInt(req.getParameter("categoryId"));
-                p.setCategoryId(catId == null ? 0 : catId);
+                if (catId == null) {
+                    throw new IllegalArgumentException("Thiếu danh mục sản phẩm.");
+                }
+                p.setCategoryId(catId);
+
                 p.setBrandId(tryParseInt(req.getParameter("brandId")));
                 p.setPrice(tryParseDecimal(req.getParameter("price")));
                 p.setOldPrice(tryParseNullableDecimal(req.getParameter("oldPrice")));
                 p.setImage(req.getParameter("image"));
                 p.setDescription(req.getParameter("description"));
+
                 Integer stock = tryParseInt(req.getParameter("stock"));
                 p.setStock(stock == null ? 0 : stock);
+
                 try {
                     String r = req.getParameter("rating");
                     p.setRating((r == null || r.isBlank()) ? 0 : Double.parseDouble(r));
-                } catch (Exception ignore) { p.setRating(0); }
+                } catch (Exception ignore) {
+                    p.setRating(0);
+                }
+
                 Integer purchased = tryParseInt(req.getParameter("purchased"));
                 p.setPurchased(purchased == null ? 0 : purchased);
 
                 boolean ok = "create".equalsIgnoreCase(action)
-                        ? productDAO.insert(p) : productDAO.update(p);
+                        ? productDAO.insert(p)
+                        : productDAO.update(p);
 
                 if (ok) {
-                    req.getSession().setAttribute("flash_success",
-                            ("create".equalsIgnoreCase(action)
-                                    ? "Đã thêm" : "Đã cập nhật") + " sản phẩm thành công.");
+                    req.getSession().setAttribute(
+                            "flash_success",
+                            ("create".equalsIgnoreCase(action) ? "Đã thêm" : "Đã cập nhật")
+                                    + " sản phẩm thành công."
+                    );
                     if (admin != null) {
                         try {
                             String type = "create".equalsIgnoreCase(action)
-                                    ? "PRODUCT_CREATE" : "PRODUCT_UPDATE";
+                                    ? "PRODUCT_CREATE"
+                                    : "PRODUCT_UPDATE";
                             String msg = ("create".equalsIgnoreCase(action)
-                                    ? "Thêm" : "Cập nhật") + " SP: " + p.getName();
+                                    ? "Thêm"
+                                    : "Cập nhật") + " SP: " + p.getName();
                             actDAO.log(req, admin, type, msg);
-                        } catch (Exception ignore) {}
+                        } catch (Exception ignore) {
+                        }
                     }
                 } else {
                     req.getSession().setAttribute("flash_error", "Thao tác không thành công.");
@@ -199,7 +226,8 @@ public class AdminProductController extends HttpServlet {
                 boolean ok = productDAO.delete(id);
                 if (ok) {
                     req.getSession().setAttribute("flash_success", "Đã xóa sản phẩm #" + id);
-                    if (admin != null) actDAO.log(req, admin, "PRODUCT_DELETE", "Xóa sản phẩm #" + id);
+                    if (admin != null)
+                        actDAO.log(req, admin, "PRODUCT_DELETE", "Xóa sản phẩm #" + id);
                 } else {
                     req.getSession().setAttribute("flash_error", "Không thể xóa sản phẩm #" + id);
                 }
@@ -218,7 +246,8 @@ public class AdminProductController extends HttpServlet {
                 try {
                     actDAO.log(req, admin, "ERROR",
                             "AdminProductController: " + e.getMessage());
-                } catch (Exception ignore) {}
+                } catch (Exception ignore) {
+                }
             }
             req.getSession().setAttribute("flash_error", "Lỗi: " + e.getMessage());
             resp.sendRedirect(req.getContextPath() + "/admin/products");
