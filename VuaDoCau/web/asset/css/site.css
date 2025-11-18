@@ -1063,3 +1063,22 @@ body {
   }
 }
 
+/* ====== LAYOUT CHUNG: FOOTER LUÔN Ở DƯỚI ====== */
+.layout-body {
+    min-height: 100vh;       /* body luôn cao >= chiều cao màn hình */
+    display: flex;
+    flex-direction: column;  /* xếp header - main - footer theo cột */
+}
+
+.layout-body main.flex-grow-1 {
+    flex: 1 0 auto;          /* main chiếm hết phần trống, đẩy footer xuống dưới */
+}
+
+
+/* ====== TRANG ĐĂNG NHẬP / ĐĂNG KÝ: CANH GIỮA FORM ====== */
+.auth-page {
+    min-height: calc(100vh - 160px);  /* trừ bớt chiều cao header + footer, có thể chỉnh */
+    display: flex;
+    align-items: center;
+    padding: 3rem 0;
+}

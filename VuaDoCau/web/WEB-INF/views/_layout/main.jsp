@@ -14,17 +14,22 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
   <link rel="stylesheet" href="${cxt}/asset/css/site.css"/>
 </head>
-<body class="bg-soft">
+<body class="bg-soft layout-body">
 
+  <%-- HEADER --%>
   <%@ include file="/WEB-INF/views/partials/header.jspf" %>
 
-  <main class="container py-4">
+  <%-- MAIN CONTENT (auto push footer) --%>
+  <main class="container py-4 flex-grow-1">
     <jsp:include page="${view}"/>
   </main>
 
-  <%@ include file="/WEB-INF/views/partials/footer.jspf" %>
+  <%-- FOOTER: CHỈ HIỆN NẾU KHÔNG PHẢI ADMIN --%>
+  <c:if test="${not isAdmin}">
+      <%@ include file="/WEB-INF/views/partials/footer.jspf" %>
+  </c:if>
 
-  <%-- ✅ Mini-cart: include MỘT LẦN ở cuối body --%>
+  <%-- MINI CART (luôn có) --%>
   <jsp:include page="/WEB-INF/views/partials/mini-cart.jsp"/>
 
   <%@ include file="/WEB-INF/views/partials/scripts.jspf" %>

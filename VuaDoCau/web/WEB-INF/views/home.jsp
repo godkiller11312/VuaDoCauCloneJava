@@ -8,78 +8,72 @@
 
 <c:choose>
   <%-- ================== ADMIN HOME ================== --%>
-  <c:when test="${isAdmin}">
-    <div class="container py-4">
-      <h4 class="fw-bold mb-4">Bảng điều khiển Admin</h4>
+<c:when test="${isAdmin}">
+  <div class="container py-4">
+    <h4 class="fw-bold mb-4">Bảng điều khiển Admin</h4>
 
-      <div class="position-relative">
+    <!-- GRID, KHÔNG CÒN SCROLL NGANG -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
 
-  <!-- Nút NEXT -->
-  <button class="np-arrow np-next">
-    ➜
-  </button>
-
-  <!-- Nút PREV -->
-  <button class="np-arrow np-prev">
-    ➜
-  </button>
-
-  <div class="row flex-nowrap overflow-auto g-4 np-scroll-row">
-
-        <div class="col-12 col-md-6">
-          <a href="${cxt}/admin/products" class="text-decoration-none">
-            <div class="card shadow-sm border-0 rounded-4 p-3 d-flex flex-row align-items-center">
-              <div class="me-3 rounded-circle d-flex align-items-center justify-content-center"
-                   style="width:56px;height:56px;background:#e8f7f1">
-                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="#16a085" viewBox="0 0 16 16">
-                  <path d="M6 2a1 1 0 0 0-1 1v1H3.5A1.5 1.5 0 0 0 2 5.5v6A1.5 1.5 0 0 0 3.5 13h9A1.5 1.5 0 0 0 14 11.5v-6A1.5 1.5 0 0 0 12.5 4H11V3a1 1 0 0 0-1-1H6z"/>
-                </svg>
-              </div>
-              <div class="flex-grow-1">
-                <div class="fw-semibold text-dark">Quản lý sản phẩm</div>
-                <div class="text-muted small">Thêm / sửa / xoá</div>
-              </div>
+      <!-- QUẢN LÝ SẢN PHẨM -->
+      <div class="col">
+        <a href="${cxt}/admin/products" class="text-decoration-none">
+          <div class="card shadow-sm border-0 rounded-4 p-3 d-flex flex-row align-items-center">
+            <div class="me-3 rounded-circle d-flex align-items-center justify-content-center"
+                 style="width:56px;height:56px;background:#e8f7f1">
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="#16a085" viewBox="0 0 16 16">
+                <path d="M6 2a1 1 0 0 0-1 1v1H3.5A1.5 1.5 0 0 0 2 5.5v6A1.5 1.5 0 0 0 3.5 13h9A1.5 1.5 0 0 0 14 11.5v-6A1.5 1.5 0 0 0 12.5 4H11V3a1 1 0 0 0-1-1H6z"/>
+              </svg>
             </div>
-          </a>
-        </div>
-
-        <div class="col-12 col-md-6">
-          <a href="${cxt}/admin/orders" class="text-decoration-none">
-            <div class="card shadow-sm border-0 rounded-4 p-3 d-flex flex-row align-items-center">
-              <div class="me-3 rounded-circle d-flex align-items-center justify-content-center"
-                   style="width:56px;height:56px;background:#eef5ff">
-                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="#2563eb" viewBox="0 0 16 16">
-                  <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5z"/>
-                </svg>
-              </div>
-              <div class="flex-grow-1">
-                <div class="fw-semibold text-dark">Quản lý đơn hàng</div>
-                <div class="text-muted small">Cập nhật trạng thái</div>
-              </div>
+            <div class="flex-grow-1">
+              <div class="fw-semibold text-dark">Quản lý sản phẩm</div>
+              <div class="text-muted small">Thêm / sửa / xoá</div>
             </div>
-          </a>
-        </div>
-
-        <div class="col-12 col-md-6">
-          <a href="${cxt}/admin/users" class="text-decoration-none">
-            <div class="card shadow-sm border-0 rounded-4 p-3 d-flex flex-row align-items-center">
-              <div class="me-3 rounded-circle d-flex align-items-center justify-content-center"
-                   style="width:56px;height:56px;background:#fff4e5">
-                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="#f59e0b" viewBox="0 0 16 16">
-                  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3z"/>
-                  <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                </svg>
-              </div>
-              <div class="flex-grow-1">
-                <div class="fw-semibold text-dark">Quản lý tài khoản</div>
-                <div class="text-muted small">Sửa / đổi mật khẩu</div>
-              </div>
-            </div>
-          </a>
-        </div>
+          </div>
+        </a>
       </div>
-    </div>
-  </c:when>
+
+      <!-- QUẢN LÝ ĐƠN HÀNG -->
+      <div class="col">
+        <a href="${cxt}/admin/orders" class="text-decoration-none">
+          <div class="card shadow-sm border-0 rounded-4 p-3 d-flex flex-row align-items-center">
+            <div class="me-3 rounded-circle d-flex align-items-center justify-content-center"
+                 style="width:56px;height:56px;background:#eef5ff">
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="#2563eb" viewBox="0 0 16 16">
+                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5z"/>
+              </svg>
+            </div>
+            <div class="flex-grow-1">
+              <div class="fw-semibold text-dark">Quản lý đơn hàng</div>
+              <div class="text-muted small">Cập nhật trạng thái</div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- QUẢN LÝ TÀI KHOẢN -->
+      <div class="col">
+        <a href="${cxt}/admin/users" class="text-decoration-none">
+          <div class="card shadow-sm border-0 rounded-4 p-3 d-flex flex-row align-items-center">
+            <div class="me-3 rounded-circle d-flex align-items-center justify-content-center"
+                 style="width:56px;height:56px;background:#fff4e5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="#f59e0b" viewBox="0 0 16 16">
+                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3z"/>
+                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+              </svg>
+            </div>
+            <div class="flex-grow-1">
+              <div class="fw-semibold text-dark">Quản lý tài khoản</div>
+              <div class="text-muted small">Sửa / đổi mật khẩu</div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+    </div> <!-- END ROW -->
+  </div>
+</c:when>
+
 
   <%-- ================== USER HOME ================== --%>
   <c:otherwise>

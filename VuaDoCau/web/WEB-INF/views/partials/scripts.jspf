@@ -301,6 +301,23 @@
     // Sản phẩm mới: nhớ đặt class .new-products-row & .np-item trong home.jsp
     initAutoScrollRow('.new-products-row', 7500);
   });
+  // =========================================================
+  // 6.1. MINI-CART: CHẶN NAV KHI CHƯA ĐĂNG NHẬP (CHECKOUT / GIỎ HÀNG)
+  // =========================================================
+  document.addEventListener('click', function (e) {
+    const btnCheckout = e.target.closest('#btnMiniCheckout');
+    const btnGoCart   = e.target.closest('#btnGoCart');
+
+    // Không phải 2 nút trong mini-cart thì bỏ qua
+    if (!btnCheckout && !btnGoCart) return;
+
+    // Nếu đã đăng nhập -> cho đi bình thường
+    if (IS_AUTH) return;
+
+    // Chưa đăng nhập -> chặn điều hướng + note đỏ
+    e.preventDefault();
+    note('Bạn chưa đăng nhập.', false);
+  });
 
 })();  // end IIFE
 </script>

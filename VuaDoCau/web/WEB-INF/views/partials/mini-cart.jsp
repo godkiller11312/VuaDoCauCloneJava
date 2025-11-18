@@ -136,12 +136,19 @@
         </c:choose>
       </div>
 
-      <div class="offcanvas-footer p-3 border-top">
-        <a class="btn btn-success w-100 mb-2" href="${pageContext.request.contextPath}/checkout">Thanh toán</a>
-        <a id="btnGoCart" class="btn btn-outline-secondary w-100"
-           href="${pageContext.request.contextPath}/cart">Xem giỏ hàng</a>
-      </div>
-    </div>
+    <div class="offcanvas-footer p-3 border-top">
+  <a id="btnMiniCheckout"
+     class="btn btn-success w-100 mb-2"
+     href="${pageContext.request.contextPath}/checkout">
+    Thanh toán
+  </a>
+
+  <a id="btnGoCart"
+     class="btn btn-outline-secondary w-100"
+     href="${pageContext.request.contextPath}/cart">
+    Xem giỏ hàng
+  </a>
+</div>
 
     <script>
       window.setMiniCartCount = function(n){
