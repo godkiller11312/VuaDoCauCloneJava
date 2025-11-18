@@ -500,108 +500,200 @@
 
 
 
+<!-- ============= CUSTOMER REVIEWS SECTION ============= -->
+<div class="container my-5 review-section">
 
+  <div class="text-center mb-4">
+    <h2 class="review-heading">
+      3.000+ Cần thủ tin dùng VuaĐồCâu!
+    </h2>
+    <p class="review-sub">
+      Hơn 200.000+ đánh giá (4.9/5 sao). Dưới đây là vài cảm nhận tiêu biểu của anh em cần thủ.
+    </p>
+  </div>
 
+  <div class="row g-4 align-items-stretch position-relative">
 
-
-
-    <%-- ===== CÁC SECTION THEO DANH MỤC ===== --%>
-    <c:forEach var="entry" items="${sections}">
-      <c:set var="cat"  value="${entry.key}" />
-      <c:set var="list" value="${entry.value}" />
-
-      <div class="container">
-        <div class="d-flex align-items-baseline mb-2 mt-4">
-          <h4 class="me-auto fw-bold">${cat.name}</h4>
-          <a class="section-view-all" href="${cxt}/products?cat=${cat.id}">
-            Xem tất cả →
-          </a>
+    <!-- Card 1 -->
+    <div class="col-12 col-md-4">
+      <div class="review-card h-100">
+        <div class="review-avatar">
+          <img src="${cxt}/asset/images/review-angler-1.jpg" alt="Cần thủ 1">
         </div>
-
-        <c:choose>
-          <c:when test="${empty list}">
-            <div class="alert alert-light border">Chưa có sản phẩm.</div>
-          </c:when>
-
-          <c:otherwise>
-            <div class="row g-4">
-              <c:forEach items="${list}" var="p">
-                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                  <div class="card h-100 shadow-sm rounded-4 border-0 product-card-hover">
-                    <div class="ratio ratio-1x1 rounded-top-4 d-flex align-items-center justify-content-center thumb">
-                      <a href="${cxt}/product?id=${p.id}" class="d-block">
-                        <img class="p-4"
-                             src="${cxt}/asset/images/${p.image != null ? p.image : 'no-image.png'}"
-                             alt="${p.name}"
-                             onerror="this.src='${cxt}/asset/images/no-image.png'">
-                      </a>
-                    </div>
-                    <div class="card-body">
-                      <span class="badge bg-light text-dark mb-2">${p.categoryName}</span>
-
-                      <h6 class="card-title" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
-                        <a class="text-decoration-none text-dark" href="${cxt}/product?id=${p.id}">
-                          ${p.name}
-                        </a>
-                      </h6>
-
-                      <c:set var="r2" value="${p.rating}" />
-                      <div class="small text-muted d-flex align-items-center gap-2">
-                        <span class="stars-outer">
-                          <span class="stars-inner" style="width:${r2 * 20}%"></span>
-                        </span>
-                        <small>
-                          <fmt:formatNumber value="${r2}" minFractionDigits="1" maxFractionDigits="1"/>
-                        </small>
-                        · Đã mua: ${p.purchased}
-                      </div>
-
-                      <div class="small mt-1">
-                        <c:choose>
-                          <c:when test="${p.stock <= 0}">
-                            <span class="text-danger">Hết hàng</span>
-                          </c:when>
-                          <c:otherwise>
-                            Còn: <strong>${p.stock}</strong>
-                          </c:otherwise>
-                        </c:choose>
-                      </div>
-
-                      <div class="mt-2">
-                        <c:if test="${p.oldPrice != null && p.oldPrice > 0 && p.oldPrice > p.price}">
-                          <span class="price-old">
-                            <fmt:formatNumber value="${p.oldPrice}" type="number" groupingUsed="true"/> đ
-                          </span>
-                        </c:if>
-                        <span class="fw-bold text-danger">
-                          <fmt:formatNumber value="${p.price}" type="number" groupingUsed="true"/> đ
-                        </span>
-                      </div>
-
-                      <div class="mt-3 d-grid">
-                        <c:choose>
-                          <c:when test="${p.stock <= 0}">
-                            <button class="btn btn-secondary rounded-pill" disabled>Hết hàng</button>
-                          </c:when>
-                          <c:otherwise>
-                            <a class="btn btn-teal rounded-pill btn-add-to-cart"
-                               href="${cxt}/cart?action=add&id=${p.id}"
-                               data-id="${p.id}" data-qty="1">
-                              Thêm vào giỏ
-                            </a>
-                          </c:otherwise>
-                        </c:choose>
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-              </c:forEach>
-            </div>
-          </c:otherwise>
-        </c:choose>
+        <div class="review-body">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">
+            “Cần và máy rất chắc chắn, đóng cá lớn vẫn tự tin. Giao hàng nhanh,
+            đóng gói kỹ càng, mình sẽ tiếp tục ủng hộ.”
+          </p>
+          <p class="review-name mb-0">Nguyễn Minh Anh</p>
+          <p class="review-tag mb-0">Verified Purchaser</p>
+        </div>
       </div>
-    </c:forEach>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="col-12 col-md-4">
+      <div class="review-card h-100">
+        <div class="review-avatar">
+          <img src="${cxt}/asset/images/review-angler-2.jpg" alt="Cần thủ 2">
+        </div>
+        <div class="review-body">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">
+            “Combo đồ câu cho người mới quá ổn so với giá. Tư vấn nhiệt tình,
+            đi chuyến đầu tiên đã có cá mang về rồi!”
+          </p>
+          <p class="review-name mb-0">Trần Hoàng Phúc</p>
+          <p class="review-tag mb-0">Khách hàng thân thiết</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="col-12 col-md-4">
+      <div class="review-card h-100">
+        <div class="review-avatar">
+          <img src="${cxt}/asset/images/review-angler-3.jpg" alt="Cần thủ 3">
+        </div>
+        <div class="review-body">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">
+            “Shop có nhiều phụ kiện hiếm, giá mềm. Đặt online nhưng nhận hàng
+            đúng như hình, rất hài lòng.”
+          </p>
+          <p class="review-name mb-0">Lê Hữu Tài</p>
+          <p class="review-tag mb-0">Verified Purchaser</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Hàng logo hãng cần câu / phụ kiện -->
+  <div class="review-logo-row mt-5 d-flex flex-wrap justify-content-center align-items-center gap-4 gap-md-5">
+    <div class="review-logo-wrap">
+      <img src="${cxt}/asset/images/logo-shimano.png" alt="Shimano" class="review-logo">
+    </div>
+    <div class="review-logo-wrap">
+      <img src="${cxt}/asset/images/logo-daiwa.png" alt="Daiwa" class="review-logo">
+    </div>
+    <div class="review-logo-wrap">
+      <img src="${cxt}/asset/images/logo-abu-garcia.png" alt="Abu Garcia" class="review-logo">
+    </div>
+    <div class="review-logo-wrap">
+      <img src="${cxt}/asset/images/logo-rapala.png" alt="Rapala" class="review-logo">
+    </div>
+    <div class="review-logo-wrap">
+      <img src="${cxt}/asset/images/logo-owner.png" alt="Owner" class="review-logo">
+    </div>
+  </div>
+</div>
+<!-- =========== END CUSTOMER REVIEWS SECTION =========== -->
+
+<!-- ============= FISHING BLOG / NEWS SECTION ============= -->
+<div class="container blog-section my-5">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="blog-heading mb-0">Tin tức & Kinh nghiệm câu cá</h2>
+    <a href="#" class="blog-view-all">Xem tất cả bài viết →</a>
+  </div>
+
+  <div class="row g-4">
+    <!-- Card 1 -->
+    <div class="col-12 col-md-6 col-lg-3">
+      <article class="blog-card h-100">
+        <div class="blog-thumb">
+          <img src="${cxt}/asset/images/blog-fishing-1.jpg" alt="Đi câu sớm bình minh">
+          <div class="blog-badge">
+            <span class="blog-day">22</span>
+            <span class="blog-month">THÁNG 5</span>
+          </div>
+        </div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            MẸO CÂU CÁ · POST BY ADMIN
+          </div>
+          <h3 class="blog-title">
+            5 mẹo đơn giản để tăng tỉ lệ dính cá mỗi buổi sáng
+          </h3>
+          <a href="#" class="blog-link">Đọc tiếp →</a>
+        </div>
+      </article>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="col-12 col-md-6 col-lg-3">
+      <article class="blog-card h-100">
+        <div class="blog-thumb">
+          <img src="${cxt}/asset/images/blog-fishing-2.jpg" alt="Chọn cần câu cho người mới">
+          <div class="blog-badge">
+            <span class="blog-day">19</span>
+            <span class="blog-month">THÁNG 6</span>
+          </div>
+        </div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            HƯỚNG DẪN · POST BY ADMIN
+          </div>
+          <h3 class="blog-title">
+            Cách chọn cần & máy câu phù hợp cho người mới bắt đầu
+          </h3>
+          <a href="#" class="blog-link">Đọc tiếp →</a>
+        </div>
+      </article>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="col-12 col-md-6 col-lg-3">
+      <article class="blog-card h-100">
+        <div class="blog-thumb">
+          <img src="${cxt}/asset/images/blog-fishing-3.jpg" alt="Mồi câu tự trộn">
+          <div class="blog-badge">
+            <span class="blog-day">18</span>
+            <span class="blog-month">THÁNG 7</span>
+          </div>
+        </div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            MỒI CÂU · POST BY ADMIN
+          </div>
+          <h3 class="blog-title">
+            3 công thức mồi câu tự trộn siêu thơm, cá chép mê tít
+          </h3>
+          <a href="#" class="blog-link">Đọc tiếp →</a>
+        </div>
+      </article>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="col-12 col-md-6 col-lg-3">
+      <article class="blog-card h-100">
+        <div class="blog-thumb">
+          <img src="${cxt}/asset/images/blog-fishing-4.jpg" alt="Chuyến câu hồ dịch vụ">
+          <div class="blog-badge">
+            <span class="blog-day">14</span>
+            <span class="blog-month">THÁNG 8</span>
+          </div>
+        </div>
+        <div class="blog-body">
+          <div class="blog-meta">
+            TRẢI NGHIỆM · POST BY ADMIN
+          </div>
+          <h3 class="blog-title">
+            Nhật ký một ngày câu hồ dịch vụ: set đồ, chiến thuật & cảm xúc
+          </h3>
+          <a href="#" class="blog-link">Đọc tiếp →</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</div>
+<!-- =========== END FISHING BLOG / NEWS SECTION =========== -->
+
+
+
 
   </c:otherwise>
 </c:choose>
+

@@ -1,6 +1,122 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
-<footer class="border-top py-4 mt-5">
-  <div class="container text-center text-muted small">
-    © <script>document.write(new Date().getFullYear())</script> Vua Đồ Câu · All rights reserved
+<c:set var="cxt" value="${pageContext.request.contextPath}" />
+
+<footer class="site-footer mt-5">
+
+  <!-- ==== NEWSLETTER BAR ==== -->
+  <div class="footer-newsletter">
+    <div class="container d-flex flex-column flex-lg-row align-items-center gap-3">
+      <div class="flex-grow-1">
+        <h3 class="fw-bold mb-1">Tham gia Câu lạc bộ VuaĐồCâu</h3>
+        <p class="mb-0 small text-muted">
+          Nhận ưu đãi độc quyền, mã giảm giá và mẹo câu cá mới mỗi tuần.
+        </p>
+      </div>
+      <form class="footer-newsletter-form d-flex flex-column flex-sm-row gap-2">
+        <input type="email" class="form-control footer-input" placeholder="Nhập email của bạn">
+        <button type="button" class="btn btn-teal fw-semibold px-4 footer-subscribe-btn">
+          Đăng ký
+        </button>
+      </form>
+    </div>
   </div>
+
+  <!-- ==== SERVICE ICON ROW (FREE SHIP, PAYMENT, …) ==== -->
+  <div class="footer-features">
+    <div class="container">
+      <div class="row text-center g-4">
+        <div class="col-6 col-md-3">
+          <div class="footer-feature-ico">🚚</div>
+          <div class="footer-feature-title">Giao hàng toàn quốc</div>
+          <div class="footer-feature-sub">Nhanh & đúng hẹn</div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="footer-feature-ico">🎣</div>
+          <div class="footer-feature-title">Đồ câu chính hãng</div>
+          <div class="footer-feature-sub">100% có nguồn gốc</div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="footer-feature-ico">🔒</div>
+          <div class="footer-feature-title">Thanh toán an toàn</div>
+          <div class="footer-feature-sub">Nhiều hình thức</div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="footer-feature-ico">🎧</div>
+          <div class="footer-feature-title">Hỗ trợ tận tâm</div>
+          <div class="footer-feature-sub">Tư vấn 8:00–22:00</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==== MAIN FOOTER COLUMNS ==== -->
+  <div class="footer-main py-5">
+    <div class="container">
+      <div class="row gy-4">
+        <!-- Logo + intro -->
+        <div class="col-12 col-lg-3">
+          <div class="footer-brand mb-3">
+            <span class="footer-logo-icon">🎏</span>
+            <span class="footer-logo-text">VuaĐồCâu</span>
+          </div>
+          <p class="small text-muted mb-3">
+            Shop đồ câu dành cho mọi cần thủ – từ người mới đến chuyên nghiệp. 
+            Cần, máy, dây, mồi & phụ kiện luôn được cập nhật.
+          </p>
+        </div>
+
+        <!-- About -->
+        <div class="col-6 col-lg-3">
+          <h6 class="footer-title">Về VuaĐồCâu</h6>
+          <ul class="footer-links">
+            <li><a href="#">Giới thiệu</a></li>
+            <li><a href="#">Chính sách bảo hành</a></li>
+            <li><a href="#">Chính sách đổi trả</a></li>
+            <li><a href="#">Liên hệ</a></li>
+          </ul>
+        </div>
+
+        <!-- Shop -->
+        <div class="col-6 col-lg-3">
+          <h6 class="footer-title">Mua sắm</h6>
+          <ul class="footer-links">
+            <li><a href="${cxt}/products?cat=can">Cần câu</a></li>
+            <li><a href="${cxt}/products?cat=may">Máy câu</a></li>
+            <li><a href="${cxt}/products?cat=moi">Mồi & phụ kiện</a></li>
+            <li><a href="${cxt}/products">Tất cả sản phẩm</a></li>
+          </ul>
+        </div>
+
+        <!-- Help -->
+        <div class="col-6 col-lg-3">
+          <h6 class="footer-title">Hỗ trợ</h6>
+          <ul class="footer-links">
+            <li><a href="#">Hướng dẫn đặt hàng</a></li>
+            <li><a href="#">Câu hỏi thường gặp</a></li>
+            <li><a href="#">Phương thức thanh toán</a></li>
+            <li><a href="#">Chính sách vận chuyển</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==== BOTTOM STRIP: PAYMENTS + COPYRIGHT ==== -->
+  <div class="footer-bottom py-3">
+    <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+      <div class="footer-payments d-flex flex-wrap align-items-center gap-2">
+        <span class="footer-pay-label small text-muted me-2">Chấp nhận thanh toán:</span>
+        <span class="badge rounded-pill bg-light text-muted">VNPay</span>
+        <span class="badge rounded-pill bg-light text-muted">Momo</span>
+        <span class="badge rounded-pill bg-light text-muted">Visa</span>
+        <span class="badge rounded-pill bg-light text-muted">Mastercard</span>
+        <span class="badge rounded-pill bg-light text-muted">COD</span>
+      </div>
+
+      <div class="small text-muted text-center text-md-end">
+        © <script>document.write(new Date().getFullYear())</script> Vua Đồ Câu. All rights reserved.
+      </div>
+    </div>
+  </div>
+
 </footer>
