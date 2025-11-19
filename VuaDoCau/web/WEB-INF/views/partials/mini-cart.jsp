@@ -45,7 +45,17 @@
                        value="${it.quantity}" style="width:60px;text-align:center">
                 <button class="btn btn-sm btn-outline-secondary mc-plus" type="button"
                         aria-label="Tăng" <c:if test="${it.quantity >= it.stock}">disabled</c:if>>+</button>
-                <button class="btn btn-sm btn-link text-danger mc-remove ms-2" type="button" aria-label="Xóa">Xóa</button>
+
+                <!-- Xóa -->
+                <button class="btn btn-sm btn-link text-danger mc-remove ms-2" type="button" aria-label="Xóa">
+                  Xóa
+                </button>
+
+                <!-- Đặt nhanh 1 sản phẩm (style giống nút Xóa, text "Đặt") -->
+                <button class="btn btn-sm btn-link text-success mc-only ms-1" type="button"
+                        aria-label="Đặt nhanh">
+                  Đặt
+                </button>
               </div>
             </div>
 
@@ -116,7 +126,17 @@
                            value="${it.quantity}" style="width:60px;text-align:center">
                     <button class="btn btn-sm btn-outline-secondary mc-plus" type="button"
                             aria-label="Tăng" <c:if test="${it.quantity >= it.stock}">disabled</c:if>>+</button>
-                    <button class="btn btn-sm btn-link text-danger mc-remove ms-2" type="button" aria-label="Xóa">Xóa</button>
+
+                    <!-- Xóa -->
+                    <button class="btn btn-sm btn-link text-danger mc-remove ms-2" type="button" aria-label="Xóa">
+                      Xóa
+                    </button>
+
+                    <!-- Đặt nhanh 1 sản phẩm (style giống nút Xóa, text "Đặt") -->
+                    <button class="btn btn-sm btn-link text-success mc-only ms-1" type="button"
+                            aria-label="Đặt nhanh">
+                      Đặt
+                    </button>
                   </div>
                 </div>
 
@@ -136,19 +156,20 @@
         </c:choose>
       </div>
 
-    <div class="offcanvas-footer p-3 border-top">
-  <a id="btnMiniCheckout"
-     class="btn btn-success w-100 mb-2"
-     href="${pageContext.request.contextPath}/checkout">
-    Thanh toán
-  </a>
+      <div class="offcanvas-footer p-3 border-top">
+        <a id="btnMiniCheckout"
+           class="btn btn-success w-100 mb-2"
+           href="${pageContext.request.contextPath}/checkout">
+          Thanh toán
+        </a>
 
-  <a id="btnGoCart"
-     class="btn btn-outline-secondary w-100"
-     href="${pageContext.request.contextPath}/cart">
-    Xem giỏ hàng
-  </a>
-</div>
+        <a id="btnGoCart"
+           class="btn btn-outline-secondary w-100"
+           href="${pageContext.request.contextPath}/cart">
+          Xem giỏ hàng
+        </a>
+      </div>
+    </div>
 
     <script>
       window.setMiniCartCount = function(n){

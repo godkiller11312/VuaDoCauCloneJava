@@ -183,6 +183,22 @@ public class CartController extends HttpServlet {
             return;
         }
 
+        // === AJAX ONLY: giữ lại sản phẩm này, xóa hết sản phẩm khác ===
+        if ("only".equals(action)) {
+            int id = parseInt(req.getParameter("id"), -1);
+            cart.keepOnly(id);
+            syncBadge(session, cart);
+
+            String body = String.format(
+                "{\"ok\":true,\"id\":%d,\"totalAmount\":%s,\"totalQty\":%d}",
+                id,
+                cart.getTotalAmount().toPlainString(),
+                cart.getTotalQty()
+            );
+            json(resp, body);
+            return;
+        }
+
         // Fallback: cập nhật hàng loạt từ form
         req.getParameterMap().forEach((name, values) -> {
             if (name.startsWith("qty[")) {

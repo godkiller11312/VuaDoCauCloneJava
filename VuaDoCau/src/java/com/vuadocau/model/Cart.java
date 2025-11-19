@@ -37,6 +37,15 @@ public class Cart {
     public void remove(int productId) { items.remove(productId); }
     public void clear() { items.clear(); }
 
+    // Giữ lại duy nhất 1 sản phẩm trong giỏ, xóa các item khác
+    public void keepOnly(int productId) {
+        CartItem it = items.get(productId);
+        items.clear();
+        if (it != null) {
+            items.put(productId, it);
+        }
+    }
+
     public int getTotalQty() {
         return items.values().stream().mapToInt(CartItem::getQuantity).sum();
     }

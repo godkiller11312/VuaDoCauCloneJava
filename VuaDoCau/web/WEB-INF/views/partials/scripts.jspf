@@ -166,7 +166,7 @@
   });
 
   // =========================================================
-  // 6. MINI-CART: + / - / XÓA / NHẬP SỐ LƯỢNG
+  // 6. MINI-CART: + / - / XÓA / ĐẶT / NHẬP SỐ LƯỢNG
   // =========================================================
   function updateBadges(data) {
     const count = (data.count ?? data.totalQty ?? 0);
@@ -191,19 +191,43 @@
     }
   }
 
-  // Click -, +, Xóa trong mini-cart
+  // Click -, +, Xóa, Đặt trong mini-cart
   document.addEventListener('click', async function (e) {
     const minus = e.target.closest('.mc-minus');
     const plus  = e.target.closest('.mc-plus');
     const del   = e.target.closest('.mc-remove');
+    // hỗ trợ cả class mc-only và mc-payone cho nút "Đặt"
+    const only  = e.target.closest('.mc-only, .mc-payone');
 
-    if (!minus && !plus && !del) return;
+    if (!minus && !plus && !del && !only) return;
 
     const wrap = e.target.closest('.qty-actions');
     const id   = wrap ? parseInt(wrap.dataset.id, 10) : NaN;
     if (!id) return;
 
     const input = wrap.querySelector('.mc-qty');
+
+    // ĐẶT nhanh: giữ lại 1 sản phẩm, xoá sản phẩm khác rồi sang /checkout
+    if (only) {
+      if (!IS_AUTH) {
+        // Không đăng nhập → yêu cầu đăng nhập
+        openGuestModal();
+        return;
+      }
+
+      try {
+        const d = await postForm(CXT + '/cart', { action: 'only', id });
+        if (d && d.ok) {
+          // Cập nhật badge cho đồng bộ
+          updateBadges(d);
+          // Chuyển thẳng sang trang thanh toán
+          window.location.href = CXT + '/checkout';
+        }
+      } catch (_) {
+        // lỗi thì bỏ qua, không báo theo đúng yêu cầu "không cần thông báo"
+      }
+      return;
+    }
 
     if (minus) {
       const v = Math.max(0, (parseInt(input.value, 10) || 0) - 1);
@@ -301,8 +325,9 @@
     // Sản phẩm mới: nhớ đặt class .new-products-row & .np-item trong home.jsp
     initAutoScrollRow('.new-products-row', 7500);
   });
+
   // =========================================================
-  // 6.1. MINI-CART: CHẶN NAV KHI CHƯA ĐĂNG NHẬP (CHECKOUT / GIỎ HÀNG)
+  // 8. MINI-CART: CHẶN NAV CHECKOUT / CART KHI CHƯA ĐĂNG NHẬP
   // =========================================================
   document.addEventListener('click', function (e) {
     const btnCheckout = e.target.closest('#btnMiniCheckout');
