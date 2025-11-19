@@ -7,8 +7,12 @@
 
 <div class="container py-4">
   <div class="d-flex align-items-center mb-3">
-    <h3 class="fw-bold me-auto">Đơn hàng #${o.id}</h3>
-    <a class="btn btn-outline-secondary" href="${cxt}/profile">Về hồ sơ</a>
+    <h3 class="fw-bold me-auto">Đơn hàng #${o.id} đã đặt thành công!</h3>
+
+    <div class="d-flex gap-2">
+      <a class="btn btn-outline-primary" href="${cxt}/home">Về trang chủ</a>
+      <a class="btn btn-outline-secondary" href="${cxt}/profile">Về hồ sơ</a>
+    </div>
   </div>
 
   <div class="row g-4 mt-1">
