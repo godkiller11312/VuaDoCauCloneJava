@@ -6,6 +6,13 @@
 
 <h3 class="mb-3">Hồ sơ cá nhân</h3>
 
+<c:if test="${param.logCleared == '1'}">
+  <div class="alert alert-success">Đã xoá toàn bộ nhật ký hoạt động.</div>
+</c:if>
+<c:if test="${param.logCleared == '0'}">
+  <div class="alert alert-danger">Xoá nhật ký hoạt động thất bại. Vui lòng thử lại.</div>
+</c:if>
+
 <div class="row g-4">
   <!-- Thông tin tài khoản -->
   <div class="col-lg-4">
@@ -106,7 +113,19 @@
     <div class="col-lg-8">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title mb-3">Hoạt động gần đây</h5>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="card-title mb-0">Hoạt động gần đây</h5>
+
+            <!-- Nút xoá toàn bộ activity log -->
+            <form action="${cxt}/profile" method="post"
+                  onsubmit="return confirm('Bạn có chắc chắn muốn xoá toàn bộ nhật ký hoạt động?');">
+              <input type="hidden" name="action" value="clearLog" />
+              <button type="submit" class="btn btn-sm btn-outline-danger">
+                Xóa log
+              </button>
+            </form>
+          </div>
+
           <div class="table-responsive">
             <table class="table align-middle">
               <thead class="table-light">

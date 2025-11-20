@@ -20,6 +20,10 @@ public class ActivityLogDAO {
             "SELECT Id, UserId, Type, Message, Meta, IP, CreatedAt " +
             "FROM activity_log WHERE UserId=? ORDER BY CreatedAt DESC, Id DESC LIMIT ?";
 
+    // có thể dùng khi muốn xoá log theo user (nếu cần)
+    private static final String SQL_DELETE_ALL = "DELETE FROM activity_log";
+    // private static final String SQL_DELETE_BY_USER = "DELETE FROM activity_log WHERE UserId=?";
+
     // --- helpers ---
     private static String getClientIp(HttpServletRequest req) {
         String[] keys = {
@@ -87,4 +91,23 @@ public class ActivityLogDAO {
         } catch (Exception ignore) {}
         return list;
     }
+
+    // Xoá toàn bộ activity log (chỉ nên gọi cho ADMIN)
+    public void clearAll() throws Exception {
+        try (Connection cn = Db.getConnection();
+             PreparedStatement ps = cn.prepareStatement(SQL_DELETE_ALL)) {
+            ps.executeUpdate();
+        }
+    }
+
+    // Nếu muốn sau này xoá log theo user:
+    /*
+    public void clearByUser(int userId) throws Exception {
+        try (Connection cn = Db.getConnection();
+             PreparedStatement ps = cn.prepareStatement(SQL_DELETE_BY_USER)) {
+            ps.setInt(1, userId);
+            ps.executeUpdate();
+        }
+    }
+    */
 }
