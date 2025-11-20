@@ -195,14 +195,14 @@
           <td>${p.categoryName}</td>
 
           <!-- Giá cũ -->
- <td class="text-end text-muted" style="min-width:120px">
-  <c:choose>
-    <c:when test="${p.oldPrice != null && p.oldPrice > 0}">
-      <fmt:formatNumber value="${p.oldPrice}" type="currency" currencySymbol="₫" maxFractionDigits="0"/>
-    </c:when>
-    <c:otherwise>—</c:otherwise>
-  </c:choose>
-</td>
+          <td class="text-end text-muted" style="min-width:120px">
+            <c:choose>
+              <c:when test="${p.oldPrice != null && p.oldPrice > 0}">
+                <fmt:formatNumber value="${p.oldPrice}" type="currency" currencySymbol="₫" maxFractionDigits="0"/>
+              </c:when>
+              <c:otherwise>—</c:otherwise>
+            </c:choose>
+          </td>
 
           <!-- Giá -->
           <td class="text-end fw-semibold" style="min-width:120px">
@@ -258,8 +258,14 @@
           </div>
 
           <div class="col-md-4">
-            <label class="form-label">Thương hiệu (mã)</label>
-            <input class="form-control" name="brandId" placeholder="Có thể để trống"/>
+            <label class="form-label">Thương hiệu</label>
+            <select class="form-select" name="brandId">
+              <option value="">Không chọn</option>
+              <c:forEach var="b" items="${brands}">
+                <option value="${b.id}">${b.name}</option>
+              </c:forEach>
+            </select>
+            <div class="form-text">Có thể để trống nếu không thuộc thương hiệu nào.</div>
           </div>
           <div class="col-md-4">
             <label class="form-label">Giá</label>

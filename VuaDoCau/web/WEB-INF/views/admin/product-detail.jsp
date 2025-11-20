@@ -43,8 +43,16 @@
 
         <!-- Thương hiệu -->
         <div class="col-md-4">
-          <label class="form-label">Thương hiệu (mã)</label>
-          <input class="form-control" name="brandId" value="${p.brandId}"/>
+          <label class="form-label">Thương hiệu</label>
+          <select class="form-select" name="brandId">
+            <option value="">Không chọn</option>
+            <c:forEach var="b" items="${brands}">
+              <option value="${b.id}"
+                      <c:if test="${p.brandId != null && p.brandId == b.id}">selected</c:if>>
+                ${b.name}
+              </option>
+            </c:forEach>
+          </select>
         </div>
 
         <!-- Ảnh -->
@@ -83,7 +91,7 @@
         <div class="ratio ratio-1x1 mb-3" style="max-width:320px">
           <img id="imgPreview"
                src="${
-                 (not empty p.image and (fn:startsWith(p.image,'http') or fn:startsWith(p.image,'/')))
+                 (not empty p.image && (fn:startsWith(p.image,'http') or fn:startsWith(p.image,'/')))
                    ? p.image
                    : (empty p.image
                         ? cxt.concat('/asset/images/no-image.png')

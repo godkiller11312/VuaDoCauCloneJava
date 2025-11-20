@@ -3,6 +3,7 @@ package com.vuadocau.controller;
 import com.vuadocau.dao.ActivityLogDAO;
 import com.vuadocau.dao.ProductDAO;
 import com.vuadocau.dao.CategoryDAO;
+import com.vuadocau.dao.BrandDAO;
 import com.vuadocau.model.Product;
 import com.vuadocau.model.User;
 
@@ -18,6 +19,7 @@ public class AdminProductController extends HttpServlet {
 
     private final ProductDAO productDAO = new ProductDAO();
     private final CategoryDAO categoryDAO = new CategoryDAO();
+    private final BrandDAO brandDAO = new BrandDAO();
     private final ActivityLogDAO actDAO = new ActivityLogDAO();
 
     private boolean isAdmin(HttpServletRequest req) {
@@ -77,8 +79,10 @@ public class AdminProductController extends HttpServlet {
                 resp.sendRedirect(req.getContextPath() + "/admin/products");
                 return;
             }
+
             req.setAttribute("p", p);
             req.setAttribute("categories", categoryDAO.findAll());
+            req.setAttribute("brands", brandDAO.findAll());
             req.setAttribute("view", "/WEB-INF/views/admin/product-detail.jsp");
             req.setAttribute("pageTitle", "Quản trị · Sản phẩm · #" + id);
             req.getRequestDispatcher("/WEB-INF/views/_layout/main.jsp").forward(req, resp);
@@ -127,6 +131,7 @@ public class AdminProductController extends HttpServlet {
 
         req.setAttribute("products", products);
         req.setAttribute("categories", categoryDAO.findAll());
+        req.setAttribute("brands", brandDAO.findAll());
         req.setAttribute("q", q);
         req.setAttribute("cat", cat);
         req.setAttribute("sort", sort);
@@ -169,6 +174,7 @@ public class AdminProductController extends HttpServlet {
                 }
                 p.setCategoryId(catId);
 
+                // brandId lấy từ dropdown, có thể null
                 p.setBrandId(tryParseInt(req.getParameter("brandId")));
                 p.setPrice(tryParseDecimal(req.getParameter("price")));
                 p.setOldPrice(tryParseNullableDecimal(req.getParameter("oldPrice")));
