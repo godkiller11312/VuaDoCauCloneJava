@@ -236,7 +236,7 @@
 <!-- ============== Modal: Thêm sản phẩm ============== -->
 <div class="modal fade" id="modalCreate" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
-    <form class="modal-content" action="${cxt}/admin/products" method="post">
+    <form class="modal-content" action="${cxt}/admin/products" method="post" enctype="multipart/form-data">
       <input type="hidden" name="action" value="create"/>
       <div class="modal-header">
         <h5 class="modal-title">Thêm sản phẩm</h5>
@@ -281,10 +281,11 @@
             <input class="form-control" name="stock" value="0" required/>
           </div>
 
-          <div class="col-md-6">
-            <label class="form-label">Ảnh (URL hoặc tên file trong /asset/images)</label>
-            <input class="form-control" name="image"/>
-          </div>
+         <div class="col-md-6">
+  <label class="form-label">Ảnh sản phẩm</label>
+  <input type="file" class="form-control" name="imageFile" accept="image/*"/>
+  <div class="form-text">Chọn file ảnh, hệ thống sẽ tự lưu vào /asset/images.</div>
+</div>
           <div class="col-md-6">
             <label class="form-label">Rating</label>
             <input class="form-control" name="rating" value="0"/>

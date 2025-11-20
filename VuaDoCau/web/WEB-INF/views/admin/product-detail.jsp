@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" isELIgnored="false" %>
+<%@ page contentType="text/html; charset=UTF-8" isELIgnored="false" %> 
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
@@ -11,12 +11,16 @@
 
 <div class="row g-4">
   <div class="col-lg-8">
-    <form action="${cxt}/admin/products" method="post" class="card card-body">
+    <%-- PHẢI có enctype="multipart/form-data" để upload file --%>
+    <form action="${cxt}/admin/products" method="post" class="card card-body" enctype="multipart/form-data">
       <input type="hidden" name="action" value="update"/>
       <input type="hidden" name="id" value="${p.id}"/>
 
       <!-- GIỮ NGUYÊN DANH MỤC: gửi categoryId hiện tại lên để controller dùng -->
       <input type="hidden" name="categoryId" value="${p.categoryId}"/>
+
+      <%-- Lưu lại tên ảnh cũ, nếu không upload ảnh mới thì vẫn dùng ảnh này --%>
+      <input type="hidden" name="imageOld" value="${p.image}"/>
 
       <div class="row g-3">
         <!-- Tên -->
@@ -56,9 +60,14 @@
         </div>
 
         <!-- Ảnh -->
-        <div class="col-md-6">
-          <label class="form-label">Ảnh (URL hoặc tên file trong /asset/images)</label>
-          <input id="imgInput" class="form-control" name="image" value="${p.image}"/>
+        <div class="col-md-12">
+          <label class="form-label">Ảnh sản phẩm</label>
+          <input id="imgFileInput" type="file" class="form-control" name="imageFile" accept="image/*"/>
+          <div class="form-text">
+            Ảnh hiện tại:
+            <strong><c:out value="${p.image}"/></strong>
+            (nếu không chọn file mới thì giữ nguyên ảnh này)
+          </div>
         </div>
 
         <!-- Rating + Đã mua -->
@@ -121,24 +130,17 @@
 </div>
 
 <script>
-  // Live preview khi sửa ô Ảnh
+  // Live preview khi chọn file ảnh mới
   (function () {
-    var input = document.getElementById('imgInput');
+    var input = document.getElementById('imgFileInput');
     var img   = document.getElementById('imgPreview');
     if (!input || !img) return;
 
-    input.addEventListener('input', function () {
-      var v = (input.value || '').trim();
-      var cxt = '<c:out value="${cxt}"/>';
-      var src;
-      if (!v) {
-        src = cxt + '/asset/images/no-image.png';
-      } else if (v.startsWith('http') || v.startsWith('/')) {
-        src = v;
-      } else {
-        src = cxt + '/asset/images/' + v;
+    input.addEventListener('change', function () {
+      if (this.files && this.files[0]) {
+        var url = URL.createObjectURL(this.files[0]);
+        img.src = url;
       }
-      img.src = src;
     });
   })();
 </script>

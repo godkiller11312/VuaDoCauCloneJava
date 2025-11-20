@@ -8,13 +8,21 @@ import com.vuadocau.model.Product;
 import com.vuadocau.model.User;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
+import javax.servlet.http.Part;
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
 @WebServlet(name = "AdminProductController", urlPatterns = {"/admin/products"})
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024,      // 1MB
+        maxFileSize = 5 * 1024 * 1024,        // 5MB / file
+        maxRequestSize = 10 * 1024 * 1024     // 10MB / request
+)
 public class AdminProductController extends HttpServlet {
 
     private final ProductDAO productDAO = new ProductDAO();
@@ -53,6 +61,49 @@ public class AdminProductController extends HttpServlet {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    /**
+     * Lưu file upload vào /asset/images, trả về tên file.
+     * Nếu không chọn file mới thì trả lại oldValue.
+     */
+    private String saveUploadedImage(HttpServletRequest req, String fieldName, String oldValue)
+            throws Exception {
+
+        Part part = null;
+        try {
+            part = req.getPart(fieldName);
+        } catch (Exception ignore) {
+        }
+
+        if (part == null || part.getSize() == 0) {
+            // Không chọn file mới -> dùng ảnh cũ
+            return oldValue;
+        }
+
+        String submitted = part.getSubmittedFileName();
+        if (submitted == null || submitted.isBlank()) {
+            return oldValue;
+        }
+
+        // Lấy đúng tên file (bỏ path phía client)
+        submitted = submitted.replace("\\", "/");
+        if (submitted.contains("/")) {
+            submitted = submitted.substring(submitted.lastIndexOf('/') + 1);
+        }
+
+        // Thư mục /asset/images trong webapp
+        String uploadDirPath = req.getServletContext().getRealPath("/asset/images");
+        File uploadDir = new File(uploadDirPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
+
+        File destFile = new File(uploadDir, submitted);
+        part.write(destFile.getAbsolutePath());
+
+        // Chỉ lưu tên file vào DB
+        return submitted;
     }
 
     @Override
@@ -178,7 +229,15 @@ public class AdminProductController extends HttpServlet {
                 p.setBrandId(tryParseInt(req.getParameter("brandId")));
                 p.setPrice(tryParseDecimal(req.getParameter("price")));
                 p.setOldPrice(tryParseNullableDecimal(req.getParameter("oldPrice")));
-                p.setImage(req.getParameter("image"));
+
+                // Lấy tên ảnh cũ (update) – create không có thì sẽ là null
+                String oldImage = req.getParameter("imageOld");
+                if (oldImage != null && oldImage.isBlank()) oldImage = null;
+
+                // Lưu file upload (nếu có), trả về tên file để set vào Product
+                String imageName = saveUploadedImage(req, "imageFile", oldImage);
+                p.setImage(imageName);
+
                 p.setDescription(req.getParameter("description"));
 
                 Integer stock = tryParseInt(req.getParameter("stock"));

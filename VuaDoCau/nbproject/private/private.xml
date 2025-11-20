@@ -24,6 +24,7 @@
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/model/ActivityLog.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/controller/OrderController.java</file>
             <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/profile.jsp</file>
+            <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/model/User.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/controller/HomeController.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/controller/CheckoutController.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/controller/DebugDbServlet.java</file>
@@ -33,6 +34,7 @@
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/dao/OrderDAO.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/model/Product.java</file>
             <file>file:/D:/Netbean/VuaDoCau/src/java/com/vuadocau/controller/ProfileController.java</file>
+            <file>file:/D:/Netbean/VuaDoCau/web/asset/css/site.css</file>
             <file>file:/D:/Netbean/VuaDoCau/web/WEB-INF/views/partials/scripts.jspf</file>
         </group>
     </open-files>
