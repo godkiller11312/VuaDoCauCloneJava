@@ -228,7 +228,7 @@
             <span class="sec-ico">🔥</span> TOP Seller
           </h2>
           <a href="${cxt}/products?sortTop=1" class="section-view-all ms-auto">
-            Xem tất cả top seller →
+            Xem tất cả sản phẩm →
           </a>
         </div>
 
@@ -330,14 +330,24 @@
     <c:if test="${not empty newProducts}">
       <div class="container new-products-section my-5">
 
-        <div class="d-flex align-items-center mb-3">
-          <h2 class="section-title mb-0">
-            <span class="sec-ico">🔥</span> Sản phẩm mới
-          </h2>
-          <a href="${cxt}/products" class="section-view-all ms-auto">
-            Xem tất cả sản phẩm mới →
-          </a>
-        </div>
+     <div class="row align-items-center mb-3">
+
+  <!-- Căn giữa tiêu đề -->
+  <div class="col-12 text-center">
+    <h2 class="section-title mb-0">
+      <span class="sec-ico">🔥</span> Sản phẩm mới
+    </h2>
+  </div>
+
+  <!-- Nút xem tất cả sản phẩm (1 dòng) -->
+  <div class="col-12 text-end">
+    <a href="${cxt}/products" class="section-view-all">
+      Xem tất cả sản phẩm →
+    </a>
+  </div>
+
+</div>
+
 
         <div class="row flex-nowrap overflow-auto g-4 new-products-row">
           <c:forEach var="p" items="${newProducts}">

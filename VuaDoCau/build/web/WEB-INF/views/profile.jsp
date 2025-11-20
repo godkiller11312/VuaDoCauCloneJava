@@ -1,8 +1,23 @@
 <%@ page contentType="text/html; charset=UTF-8" isELIgnored="false" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <c:set var="cxt" value="${pageContext.request.contextPath}" />
-<c:set var="u" value="${user}" />
+<c:set var="u"   value="${user}" />
+
+<!-- Tính đường dẫn avatar cho profile -->
+<c:set var="avatarSrc" value="${cxt}/asset/images/avatars/default-avatar.png" />
+<c:if test="${not empty u and not empty u.avatar}">
+  <c:choose>
+    <c:when test="${fn:startsWith(u.avatar,'http') or fn:startsWith(u.avatar,'/')}">
+      <c:set var="avatarSrc" value="${u.avatar}" />
+    </c:when>
+    <c:otherwise>
+      <c:set var="avatarSrc" value="${cxt}/asset/images/avatars/${u.avatar}" />
+    </c:otherwise>
+  </c:choose>
+</c:if>
 
 <h3 class="mb-3">Hồ sơ cá nhân</h3>
 
@@ -16,10 +31,15 @@
 <div class="row g-4">
   <!-- Thông tin tài khoản -->
   <div class="col-lg-4">
-    <div class="card card-body">
+    <div class="card card-body text-center">
+      <div class="mb-3">
+        <img src="${avatarSrc}"
+             alt="avatar"
+             class="rounded-circle"
+             style="width:96px;height:96px;object-fit:cover">
+      </div>
       <div class="fs-5 fw-semibold mb-1">${u.name}</div>
-      <div class="text-muted">${u.email}</div>
-      <hr/>
+      <div class="text-muted mb-3">${u.email}</div>
       <a class="btn btn-outline-secondary w-100" href="${cxt}/logout">Đăng xuất</a>
     </div>
   </div>

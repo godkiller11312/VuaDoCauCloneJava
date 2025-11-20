@@ -22,6 +22,7 @@ public class User {
     private int roleId;        // 1: ADMIN, 2: USER
     private boolean active;    // tương ứng cột TrangThai (1/0)
 
+    private String avatar;     // tên file hoặc URL avatar
     private Timestamp createdAt; // nếu DB có (không bắt buộc)
 
     public User() {}
@@ -92,6 +93,13 @@ public class User {
         this.createdAt = createdAt;
     }
 
+    public String getAvatar() {
+        return avatar;
+    }
+    public void setAvatar(String avatar) {
+        this.avatar = avatar != null ? avatar.trim() : null;
+    }
+
     // ===== Helper =====
     public boolean isAdmin() {
         return roleId == 1;
@@ -108,6 +116,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", roleId=" + roleId +
                 ", active=" + active +
+                ", avatar='" + avatar + '\'' +
                 '}';
     }
 

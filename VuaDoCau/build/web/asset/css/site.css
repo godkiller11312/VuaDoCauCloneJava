@@ -353,6 +353,9 @@ body {
   background: rgba(0,0,0,.1);
   border-radius: 999px;
 }
+.white-nowrap {
+  white-space: nowrap;
+}
 
 
 

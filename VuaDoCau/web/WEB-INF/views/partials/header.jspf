@@ -37,38 +37,12 @@
                 Danh mục
               </a>
               <ul class="dropdown-menu">
-                <!-- tất cả -->
-                <li>
-                  <a class="dropdown-item" href="${cxt}/products">
-                    Tất cả sản phẩm
-                  </a>
-                </li>
-                <!-- từng danh mục theo MaDM -->
-                <li>
-                  <a class="dropdown-item" href="${cxt}/products?cat=1">
-                    Cần câu
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="${cxt}/products?cat=2">
-                    Máy câu
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="${cxt}/products?cat=3">
-                    Dây câu
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="${cxt}/products?cat=4">
-                    Mồi câu
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="${cxt}/products?cat=5">
-                    Phụ kiện
-                  </a>
-                </li>
+                <li><a class="dropdown-item" href="${cxt}/products">Tất cả sản phẩm</a></li>
+                <li><a class="dropdown-item" href="${cxt}/products?cat=1">Cần câu</a></li>
+                <li><a class="dropdown-item" href="${cxt}/products?cat=2">Máy câu</a></li>
+                <li><a class="dropdown-item" href="${cxt}/products?cat=3">Dây câu</a></li>
+                <li><a class="dropdown-item" href="${cxt}/products?cat=4">Mồi câu</a></li>
+                <li><a class="dropdown-item" href="${cxt}/products?cat=5">Phụ kiện</a></li>
               </ul>
             </li>
           </c:otherwise>
@@ -77,7 +51,7 @@
 
       <div class="flex-grow-1"></div>
 
-      <!-- Search (khách) -->
+      <!-- Search -->
       <c:if test="${!isAdmin}">
         <form class="d-none d-lg-flex me-2" style="max-width:520px" method="get" action="${cxt}/products">
           <input class="form-control me-2" type="search" name="q" placeholder="Tìm sản phẩm...">
@@ -89,10 +63,20 @@
       <c:choose>
         <c:when test="${not empty auth}">
           <div class="dropdown">
-            <button class="btn btn-outline-secondary rounded-pill dropdown-toggle px-3"
+
+            <button class="btn btn-outline-secondary rounded-pill dropdown-toggle px-3 d-flex align-items-center gap-2"
                     type="button" data-bs-toggle="dropdown">
-              <c:out value="${auth.email}"/>
+
+              <!-- AVATAR -->
+              <img
+                src="${cxt}/asset/images/avatars/${isAdmin ? 'avatar-admin.png' : 'default-avatar.png'}"
+                style="width:28px;height:28px;object-fit:cover"
+                class="rounded-circle"
+              />
+
+              <span>${auth.email}</span>
             </button>
+
             <ul class="dropdown-menu dropdown-menu-end shadow">
               <c:if test="${!isAdmin}">
                 <li>
@@ -105,17 +89,16 @@
                   </a>
                 </li>
               </c:if>
-              <li>
-                <a class="dropdown-item" href="${cxt}/profile">Hồ sơ cá nhân</a>
-              </li>
+
+              <li><a class="dropdown-item" href="${cxt}/profile">Hồ sơ cá nhân</a></li>
               <li><hr class="dropdown-divider" /></li>
-              <li>
-                <a class="dropdown-item text-danger" href="${cxt}/logout">Đăng xuất</a>
-              </li>
+              <li><a class="dropdown-item text-danger" href="${cxt}/logout">Đăng xuất</a></li>
             </ul>
           </div>
         </c:when>
+
         <c:otherwise>
+          <!-- Chưa đăng nhập -->
           <div class="ms-2 d-flex gap-2">
             <a class="btn btn-outline-success" href="${cxt}/login">Đăng nhập</a>
             <a class="btn btn-success" href="${cxt}/register">Đăng ký</a>

@@ -24,6 +24,7 @@ public class UserDAO {
 
     /** Đăng ký cho user thường (role=2, active=1) */
     public boolean create(String name, String email, String plainPassword) {
+        // Avatar để NULL, DB sẽ nhận giá trị mặc định (nếu có)
         String sql = "INSERT INTO nguoidung(TenND, Email, MatKhau, RoleID, TrangThai) VALUES (?,?,?,?,1)";
         try (Connection con = Db.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -39,7 +40,7 @@ public class UserDAO {
     }
 
     public User login(String email, String plainPassword) {
-        String sql = "SELECT MaND, TenND, Email, RoleID, TrangThai " +
+        String sql = "SELECT MaND, TenND, Email, Avatar, RoleID, TrangThai " +
                      "FROM nguoidung WHERE Email=? AND MatKhau=?";
         try (Connection con = Db.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -61,7 +62,7 @@ public class UserDAO {
         List<User> list = new ArrayList<>();
 
         StringBuilder sql = new StringBuilder(
-            "SELECT MaND, TenND, Email, RoleID, TrangThai, NgayTao FROM nguoidung WHERE 1=1 "
+            "SELECT MaND, TenND, Email, Avatar, RoleID, TrangThai, NgayTao FROM nguoidung WHERE 1=1 "
         );
 
         // lọc theo q
@@ -112,7 +113,8 @@ public class UserDAO {
     }
 
     public User findById(int id) {
-        String sql = "SELECT MaND, TenND, Email, RoleID, TrangThai, NgayTao FROM nguoidung WHERE MaND=?";
+        String sql = "SELECT MaND, TenND, Email, Avatar, RoleID, TrangThai, NgayTao " +
+                     "FROM nguoidung WHERE MaND=?";
         try (Connection con = Db.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
@@ -125,6 +127,7 @@ public class UserDAO {
 
     /** Tạo user theo tham số admin chọn */
     public boolean adminCreate(String name, String email, String plainPassword, int roleId, boolean active) {
+        // tạm thời chưa cho chọn avatar trong màn admin -> để NULL
         String sql = "INSERT INTO nguoidung(TenND, Email, MatKhau, RoleID, TrangThai) VALUES (?,?,?,?,?)";
         try (Connection con = Db.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -192,8 +195,10 @@ public class UserDAO {
         u.setId(rs.getInt("MaND"));
         u.setName(rs.getString("TenND"));
         u.setEmail(rs.getString("Email"));
+        u.setAvatar(rs.getString("Avatar"));
         u.setRoleId(rs.getInt("RoleID"));
         u.setActive(rs.getInt("TrangThai") == 1);
+        // createdAt nếu muốn thì thêm try-catch để lấy NgayTao (không bắt buộc)
         return u;
     }
 }
