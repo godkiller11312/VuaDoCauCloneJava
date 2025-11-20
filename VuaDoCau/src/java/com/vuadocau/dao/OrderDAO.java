@@ -9,14 +9,14 @@ import java.util.List;
 
 public class OrderDAO {
 
-    /** ===================== TẠO ĐƠN: TRỪ TỒN KHO + TĂNG PURCHASED ===================== */
+    /** ===================== TẠO ĐƠN: CHỈ TRỪ TỒN KHO ===================== */
     public int create(Order o, Cart cart) {
         String sqlOrder = "INSERT INTO donhang (MaND, NgayDH, TrangThai, GhiChu) VALUES (?, NOW(), ?, ?)";
         String sqlItem  = "INSERT INTO chitietdh (MaDH, MaSP, SoLuong, Gia) VALUES (?,?,?,?)";
 
-        // TRỪ tồn kho & TĂNG purchased ngay khi tạo đơn
+        // Chỉ TRỪ tồn kho, KHÔNG tăng Purchased ở bước tạo đơn
         String sqlStock =
-            "UPDATE sanpham SET TonKho = TonKho - ?, Purchased = Purchased + ? " +
+            "UPDATE sanpham SET TonKho = TonKho - ? " +
             "WHERE MaSP = ? AND TonKho >= ?";
 
         try (Connection con = Db.getConnection()) {
@@ -47,11 +47,10 @@ public class OrderDAO {
                         psi.setBigDecimal(4, it.getPrice());
                         psi.addBatch();
 
-                        // 2) cập nhật tồn kho + purchased
+                        // 2) cập nhật tồn kho
                         psStock.setInt(1, it.getQuantity());  // TonKho = TonKho - qty
-                        psStock.setInt(2, it.getQuantity());  // Purchased = Purchased + qty
-                        psStock.setInt(3, it.getProductId());
-                        psStock.setInt(4, it.getQuantity());  // điều kiện đủ tồn kho
+                        psStock.setInt(2, it.getProductId());
+                        psStock.setInt(3, it.getQuantity());  // điều kiện đủ tồn kho
                         int ok = psStock.executeUpdate();
                         if (ok == 0) {
                             con.rollback();
@@ -333,8 +332,20 @@ public class OrderDAO {
         }
     }
 
+    /** ===================== HÀM PHỤ: HOÀN TỒN KHO CHO 1 ĐƠN ===================== */
+    private void restoreStockForOrder(Connection con, int orderId) throws SQLException {
+        final String sql =
+            "UPDATE sanpham sp " +
+            "JOIN chitietdh ct ON sp.MaSP = ct.MaSP " +
+            "SET sp.TonKho = sp.TonKho + ct.SoLuong " +
+            "WHERE ct.MaDH = ?";
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, orderId);
+            ps.executeUpdate();
+        }
+    }
 
-    /** ===================== Action NEW → CANCELED ===================== */
+    /** ===================== Action NEW → CANCELED (USER HỦY) ===================== */
     public boolean userCancelIfNew(int orderId, int userId) {
         final String sql =
             "UPDATE donhang SET TrangThai='CANCELED' WHERE MaDH=? AND MaND=? AND TrangThai='NEW'";
@@ -342,10 +353,18 @@ public class OrderDAO {
         try (Connection con = Db.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
+            con.setAutoCommit(false);
             ps.setInt(1, orderId);
             ps.setInt(2, userId);
 
-            return ps.executeUpdate() > 0;
+            int rows = ps.executeUpdate();
+            if (rows > 0) {
+                // NEW -> CANCELED: hoàn tồn kho
+                restoreStockForOrder(con, orderId);
+            }
+            con.commit();
+            con.setAutoCommit(true);
+            return rows > 0;
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -368,7 +387,7 @@ public class OrderDAO {
         }
     }
 
-    /** ===================== Admin: NEW → CANCELED ===================== */
+    /** ===================== Admin: NEW → CANCELED (TỪ CHỐI) ===================== */
     public boolean adminRejectIfNew(int orderId) {
         final String sql =
             "UPDATE donhang SET TrangThai='CANCELED' WHERE MaDH=? AND TrangThai='NEW'";
@@ -376,8 +395,16 @@ public class OrderDAO {
         try (Connection con = Db.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
+            con.setAutoCommit(false);
             ps.setInt(1, orderId);
-            return ps.executeUpdate() > 0;
+            int rows = ps.executeUpdate();
+            if (rows > 0) {
+                // NEW -> CANCELED: hoàn tồn kho
+                restoreStockForOrder(con, orderId);
+            }
+            con.commit();
+            con.setAutoCommit(true);
+            return rows > 0;
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -460,12 +487,30 @@ public class OrderDAO {
     }
 
     public boolean delete(int orderId) {
+        final String sqlGetStatus  = "SELECT TrangThai FROM donhang WHERE MaDH=?";
         final String sqlDeleteItems = "DELETE FROM chitietdh WHERE MaDH=?";
         final String sqlDeleteOrder = "DELETE FROM donhang WHERE MaDH=?";
 
         try (Connection con = Db.getConnection()) {
             con.setAutoCommit(false);
 
+            // 1) Lấy trạng thái hiện tại
+            String status = null;
+            try (PreparedStatement psg = con.prepareStatement(sqlGetStatus)) {
+                psg.setInt(1, orderId);
+                try (ResultSet rs = psg.executeQuery()) {
+                    if (rs.next()) status = rs.getString(1);
+                }
+            }
+
+            // Nếu đơn chưa DONE và chưa CANCELED -> hoàn tồn kho trước khi xóa
+            if (status != null &&
+                !"DONE".equals(status) &&
+                !"CANCELED".equals(status)) {
+                restoreStockForOrder(con, orderId);
+            }
+
+            // 2) Xóa chi tiết + đơn
             try (PreparedStatement psi = con.prepareStatement(sqlDeleteItems);
                  PreparedStatement pso = con.prepareStatement(sqlDeleteOrder)) {
 
@@ -476,14 +521,8 @@ public class OrderDAO {
                 int rows = pso.executeUpdate();
 
                 con.commit();
-                return rows > 0;
-
-            } catch (Exception ex) {
-                con.rollback();
-                throw ex;
-
-            } finally {
                 con.setAutoCommit(true);
+                return rows > 0;
             }
 
         } catch (Exception e) {
@@ -492,7 +531,7 @@ public class OrderDAO {
     }
 
 
-    /** ===================== Hàm phụ tăng purchased (nếu dùng ở bước DONE) ===================== */
+    /** ===================== Purchased cho đơn DONE ===================== */
     public void increasePurchasedForOrder(int orderId) {
         final String sql =
             "UPDATE sanpham sp " +
