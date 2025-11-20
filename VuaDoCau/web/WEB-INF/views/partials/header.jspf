@@ -27,14 +27,48 @@
             </li>
           </c:when>
           <c:otherwise>
-            <li class="nav-item"><a class="nav-link" href="${cxt}/home">Trang chủ</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="${cxt}/home">Trang chủ</a>
+            </li>
+
+            <!-- Dropdown danh mục (client) -->
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Danh mục</a>
+              <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                Danh mục
+              </a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="${cxt}/products?g=all">Tất cả sản phẩm</a></li>
-                <li><a class="dropdown-item" href="${cxt}/products?g=can">Cần câu</a></li>
-                <li><a class="dropdown-item" href="${cxt}/products?g=may">Máy câu</a></li>
-                <li><a class="dropdown-item" href="${cxt}/products?g=khac">Dây, Mồi, Phụ kiện</a></li>
+                <!-- tất cả -->
+                <li>
+                  <a class="dropdown-item" href="${cxt}/products">
+                    Tất cả sản phẩm
+                  </a>
+                </li>
+                <!-- từng danh mục theo MaDM -->
+                <li>
+                  <a class="dropdown-item" href="${cxt}/products?cat=1">
+                    Cần câu
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="${cxt}/products?cat=2">
+                    Máy câu
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="${cxt}/products?cat=3">
+                    Dây câu
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="${cxt}/products?cat=4">
+                    Mồi câu
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="${cxt}/products?cat=5">
+                    Phụ kiện
+                  </a>
+                </li>
               </ul>
             </li>
           </c:otherwise>
@@ -55,7 +89,8 @@
       <c:choose>
         <c:when test="${not empty auth}">
           <div class="dropdown">
-            <button class="btn btn-outline-secondary rounded-pill dropdown-toggle px-3" type="button" data-bs-toggle="dropdown">
+            <button class="btn btn-outline-secondary rounded-pill dropdown-toggle px-3"
+                    type="button" data-bs-toggle="dropdown">
               <c:out value="${auth.email}"/>
             </button>
             <ul class="dropdown-menu dropdown-menu-end shadow">
@@ -63,15 +98,20 @@
                 <li>
                   <a class="dropdown-item d-flex align-items-center position-relative" href="${cxt}/cart">
                     Giỏ hàng
-                    <span class="badge bg-danger position-absolute top-0 start-100 translate-middle" id="headerCartCount">
+                    <span class="badge bg-danger position-absolute top-0 start-100 translate-middle"
+                          id="headerCartCount">
                       <c:out value="${empty sessionScope.cartCount ? 0 : sessionScope.cartCount}"/>
                     </span>
                   </a>
                 </li>
               </c:if>
-              <li><a class="dropdown-item" href="${cxt}/profile">Hồ sơ cá nhân</a></li>
+              <li>
+                <a class="dropdown-item" href="${cxt}/profile">Hồ sơ cá nhân</a>
+              </li>
               <li><hr class="dropdown-divider" /></li>
-              <li><a class="dropdown-item text-danger" href="${cxt}/logout">Đăng xuất</a></li>
+              <li>
+                <a class="dropdown-item text-danger" href="${cxt}/logout">Đăng xuất</a>
+              </li>
             </ul>
           </div>
         </c:when>
