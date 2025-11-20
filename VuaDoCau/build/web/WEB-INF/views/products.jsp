@@ -3,8 +3,42 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:set var="cxt" value="${pageContext.request.contextPath}" />
+<c:set var="sortMode" value="${sortMode}" />
 
-<h3 class="mb-3 fw-bold">Sản phẩm</h3>
+<%-- build URL giữ lại q,g cho 2 nút sort --%>
+<c:url var="urlDefault" value="/products">
+  <c:if test="${not empty q}">
+    <c:param name="q" value="${q}" />
+  </c:if>
+  <c:if test="${not empty g}">
+    <c:param name="g" value="${g}" />
+  </c:if>
+</c:url>
+
+<c:url var="urlTop" value="/products">
+  <c:if test="${not empty q}">
+    <c:param name="q" value="${q}" />
+  </c:if>
+  <c:if test="${not empty g}">
+    <c:param name="g" value="${g}" />
+  </c:if>
+  <c:param name="sort" value="top" />
+</c:url>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3 class="mb-0 fw-bold">Sản phẩm</h3>
+
+  <div class="btn-group btn-group-sm">
+    <a href="${urlDefault}"
+       class="btn btn-outline-secondary ${sortMode ne 'top' ? 'active' : ''}">
+      Mới nhất
+    </a>
+    <a href="${urlTop}"
+       class="btn btn-outline-secondary ${sortMode eq 'top' ? 'active' : ''}">
+      Bán chạy
+    </a>
+  </div>
+</div>
 
 <c:choose>
   <c:when test="${empty products}">
@@ -37,15 +71,25 @@
 
               <c:set var="r" value="${p.rating}" />
               <div class="small text-muted d-flex align-items-center gap-2">
-                <span class="stars-outer"><span class="stars-inner" style="width:${r * 20}%"></span></span>
-                <small><fmt:formatNumber value="${r}" minFractionDigits="1" maxFractionDigits="1"/></small>
+                <span class="stars-outer">
+                  <span class="stars-inner" style="width:${r * 20}%"></span>
+                </span>
+                <small>
+                  <fmt:formatNumber value="${r}"
+                                    minFractionDigits="1"
+                                    maxFractionDigits="1"/>
+                </small>
                 · Đã mua: ${p.purchased}
               </div>
 
               <div class="small mt-1">
                 <c:choose>
-                  <c:when test="${p.stock <= 0}"><span class="text-danger">Hết hàng</span></c:when>
-                  <c:otherwise>Còn: <strong>${p.stock}</strong></c:otherwise>
+                  <c:when test="${p.stock <= 0}">
+                    <span class="text-danger">Hết hàng</span>
+                  </c:when>
+                  <c:otherwise>
+                    Còn: <strong>${p.stock}</strong>
+                  </c:otherwise>
                 </c:choose>
               </div>
 
