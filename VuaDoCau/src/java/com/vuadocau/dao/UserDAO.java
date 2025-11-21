@@ -5,6 +5,7 @@ import com.vuadocau.util.Db;
 import com.vuadocau.util.PasswordUtil;
 
 import java.sql.*;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +18,12 @@ public class UserDAO {
         try (Connection con = Db.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, email);
-            try (ResultSet rs = ps.executeQuery()) { return rs.next(); }
-        } catch (Exception e) { e.printStackTrace(); }
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
@@ -35,13 +40,15 @@ public class UserDAO {
             return ps.executeUpdate() > 0;
         } catch (SQLIntegrityConstraintViolationException e) {
             return false; // email trùng
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
     public User login(String email, String plainPassword) {
         String sql = "SELECT MaND, TenND, Email, Avatar, RoleID, TrangThai " +
-                     "FROM nguoidung WHERE Email=? AND MatKhau=?";
+                "FROM nguoidung WHERE Email=? AND MatKhau=?";
         try (Connection con = Db.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, email);
@@ -51,7 +58,9 @@ public class UserDAO {
                     return mapRow(rs);
                 }
             }
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -62,7 +71,7 @@ public class UserDAO {
         List<User> list = new ArrayList<>();
 
         StringBuilder sql = new StringBuilder(
-            "SELECT MaND, TenND, Email, Avatar, RoleID, TrangThai, NgayTao FROM nguoidung WHERE 1=1 "
+                "SELECT MaND, TenND, Email, Avatar, RoleID, TrangThai, NgayTao FROM nguoidung WHERE 1=1 "
         );
 
         // lọc theo q
@@ -81,11 +90,20 @@ public class UserDAO {
         // sort
         String orderBy;
         switch (sort) {
-            case "name": orderBy = "TenND"; break;
-            case "email": orderBy = "Email"; break;
-            case "roleId": orderBy = "RoleID"; break;
-            case "active": orderBy = "TrangThai"; break;
-            default: orderBy = "MaND";
+            case "name":
+                orderBy = "TenND";
+                break;
+            case "email":
+                orderBy = "Email";
+                break;
+            case "roleId":
+                orderBy = "RoleID";
+                break;
+            case "active":
+                orderBy = "TrangThai";
+                break;
+            default:
+                orderBy = "MaND";
         }
         String direction = "asc".equalsIgnoreCase(dir) ? "ASC" : "DESC";
         sql.append(" ORDER BY ").append(orderBy).append(" ").append(direction);
@@ -114,14 +132,16 @@ public class UserDAO {
 
     public User findById(int id) {
         String sql = "SELECT MaND, TenND, Email, Avatar, RoleID, TrangThai, NgayTao " +
-                     "FROM nguoidung WHERE MaND=?";
+                "FROM nguoidung WHERE MaND=?";
         try (Connection con = Db.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return mapRow(rs);
             }
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -184,8 +204,30 @@ public class UserDAO {
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             return ps.executeUpdate() > 0;
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return false;
+    }
+
+    /** Cập nhật avatar cho user */
+    public boolean updateAvatar(int id, String avatar) {
+        String sql = "UPDATE nguoidung SET Avatar=? WHERE MaND=?";
+        try (Connection con = Db.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            if (avatar == null || avatar.trim().isEmpty()) {
+                ps.setNull(1, Types.VARCHAR);
+            } else {
+                ps.setString(1, avatar.trim());
+            }
+            ps.setInt(2, id);
+
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /* ========= Mapper ========= */

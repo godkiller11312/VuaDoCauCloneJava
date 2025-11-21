@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 20, 2025 lúc 07:31 AM
+-- Thời gian đã tạo: Th10 21, 2025 lúc 01:45 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -42,54 +42,8 @@ CREATE TABLE `activity_log` (
 --
 
 INSERT INTO `activity_log` (`Id`, `UserId`, `Type`, `Message`, `Meta`, `IP`, `CreatedAt`) VALUES
-(234, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 09:22:39'),
-(235, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 09:22:41'),
-(236, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 10:14:44'),
-(237, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 10:14:45'),
-(238, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=31', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 10:54:05'),
-(239, 1, 'PRODUCT_CREATE', 'Thêm SP: testnews', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 10:54:54'),
-(240, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=32', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 10:54:54'),
-(241, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=32', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:18:40'),
-(242, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:18:44'),
-(243, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=32', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:18:49'),
-(244, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'price\', dir=\'asc\', count=32', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:18:51'),
-(245, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'price\', dir=\'desc\', count=32', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:18:51'),
-(246, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:19:01'),
-(247, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=32', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:19:09'),
-(248, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'price\', dir=\'asc\', count=32', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:19:11'),
-(249, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'price\', dir=\'desc\', count=32', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:19:12'),
-(250, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=32', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:20:17'),
-(251, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=32', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:20:20'),
-(252, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:20:21'),
-(253, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=32', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:20:23'),
-(254, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=32', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:21:46'),
-(255, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:49:29'),
-(256, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=32', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:49:30'),
-(257, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=32', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:50:15'),
-(258, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=32', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:51:16'),
-(259, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:51:37'),
-(260, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=32', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:51:38'),
-(261, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=32', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:51:42'),
-(262, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=32', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:51:47'),
-(263, 1, 'PRODUCT_UPDATE', 'Cập nhật SP: testnews', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:51:54'),
-(264, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=32', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:51:54'),
-(265, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=32', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:51:59'),
-(266, 1, 'PRODUCT_CREATE', 'Thêm SP: tesstokuma', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:52:59'),
-(267, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=33', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 11:52:59'),
-(268, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 12:15:51'),
-(269, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=33', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 12:15:52'),
-(270, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 12:16:16'),
-(271, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=33', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 12:16:18'),
-(272, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=33', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 12:16:39'),
-(273, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=33', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 12:16:49'),
-(274, 1, 'PRODUCT_UPDATE', 'Cập nhật SP: tesstokuma', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 12:17:07'),
-(275, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=33', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 12:17:07'),
-(276, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=33', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 12:17:12'),
-(277, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 12:49:05'),
-(278, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=33', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 12:49:06'),
-(279, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 12:49:08'),
-(280, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=33', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 12:49:09'),
-(281, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=33', NULL, '0:0:0:0:0:0:0:1', '2025-11-20 12:49:12');
+(297, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=34', NULL, '0:0:0:0:0:0:0:1', '2025-11-21 07:39:51'),
+(298, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-21 07:39:52');
 
 -- --------------------------------------------------------
 
@@ -210,9 +164,9 @@ CREATE TABLE `nguoidung` (
 --
 
 INSERT INTO `nguoidung` (`MaND`, `TenND`, `Email`, `Avatar`, `MatKhau`, `RoleID`, `TrangThai`, `NgayTao`) VALUES
-(1, 'Quản trị', 'admin@vuadocau.vn', 'avatar-admin.png', '38FE9AA0297FA5B1DC9EFBB6C0868F8C84FE24BE5C4A534B3E10A94D025029EA', 1, 1, '2025-10-25 13:28:44'),
-(2, 'Khách A', 'user@vuadocau.vn', 'avatar-user.png', '206270D6BD289E17432993D79DA37FF3F28C61924085BFFFA77EC0BC137C1EBD', 2, 1, '2025-10-25 13:28:44'),
-(3, 'SơnTesst', 'thson1602@gmail.com', 'avatar-user.png', 'AB690C343513E3555C510E808D98C14BF65305696502BF7D9888ECFD6A7B4447', 2, 1, '2025-10-25 16:12:42');
+(1, 'Quản trị', 'admin@vuadocau.vn', 'user-1-1763685584247.png', '38FE9AA0297FA5B1DC9EFBB6C0868F8C84FE24BE5C4A534B3E10A94D025029EA', 1, 1, '2025-10-25 13:28:44'),
+(2, 'Khách A', 'user@vuadocau.vn', 'user-2-1763685606987.png', '206270D6BD289E17432993D79DA37FF3F28C61924085BFFFA77EC0BC137C1EBD', 2, 1, '2025-10-25 13:28:44'),
+(3, 'SơnTesst', 'thson1602@gmail.com', 'user-3-1763685535330.png', 'AB690C343513E3555C510E808D98C14BF65305696502BF7D9888ECFD6A7B4447', 2, 1, '2025-10-25 16:12:42');
 
 -- --------------------------------------------------------
 
@@ -333,7 +287,8 @@ INSERT INTO `sanpham` (`MaSP`, `TenSP`, `MaDM`, `MaTH`, `Gia`, `GiaCu`, `Anh`, `
 (30, 'Hộp đồ câu đa năng 3 tầng', 5, NULL, 175000.00, 206000.00, 'phukien1.jpg', 'Chứa phụ kiện, mồi, chì, lưỡi.', 15, 0.0, 0, 1, '2025-10-25 14:27:42'),
 (31, 'Lưỡi câu Mustad số 6 (100 cái)', 5, NULL, 9900000.00, 11524000.00, 'luoi1.jpg', 'Thép carbon cao cấp, chống gỉ.', 99, 0.0, 5, 1, '2025-10-25 14:27:42'),
 (40, 'testnews', 5, 5, 99000.00, 100000.00, 'luoi1.jpg', 'tetestnews', 5, 0.0, 0, 1, '2025-11-20 10:54:54'),
-(41, 'tesstokuma', 1, 3, 990000.00, 99000.00, 'luoi1.jpg', 'tesstokuma', 6, 0.0, 0, 1, '2025-11-20 11:52:59');
+(41, 'tesstokuma', 1, 3, 990000.00, 99000.00, 'luoi1.jpg', 'tesstokuma', 6, 0.0, 0, 1, '2025-11-20 11:52:59'),
+(42, 'testiamge', 1, 5, 1850000.00, 1850000.00, 'can-1.webp', 'testiamge', 6, 0.0, 0, 1, '2025-11-21 06:34:38');
 
 -- --------------------------------------------------------
 
@@ -526,7 +481,7 @@ ALTER TABLE `thuonghieu`
 -- AUTO_INCREMENT cho bảng `activity_log`
 --
 ALTER TABLE `activity_log`
-  MODIFY `Id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=282;
+  MODIFY `Id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=299;
 
 --
 -- AUTO_INCREMENT cho bảng `danhmuc`
@@ -568,7 +523,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT cho bảng `sanpham`
 --
 ALTER TABLE `sanpham`
-  MODIFY `MaSP` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `MaSP` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT cho bảng `thuonghieu`

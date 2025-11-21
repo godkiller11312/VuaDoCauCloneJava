@@ -32,12 +32,39 @@
   <!-- Thông tin tài khoản -->
   <div class="col-lg-4">
     <div class="card card-body text-center">
-      <div class="mb-3">
-        <img src="${avatarSrc}"
-             alt="avatar"
-             class="rounded-circle"
-             style="width:96px;height:96px;object-fit:cover">
-      </div>
+
+      <!-- FORM đổi avatar -->
+      <form id="avatarForm"
+            method="post"
+            action="${cxt}/profile"
+            enctype="multipart/form-data"
+            class="mb-3">
+        <input type="hidden" name="action" value="changeAvatar"/>
+
+        <!-- input file ẩn -->
+        <input type="file"
+               id="avatarFile"
+               name="avatarFile"
+               accept="image/*"
+               class="d-none"
+               onchange="document.getElementById('avatarForm').submit();"/>
+
+        <!-- Avatar có overlay ĐỔI ẢNH -->
+        <button type="button"
+                class="btn p-0 border-0 bg-transparent profile-avatar-btn"
+                onclick="document.getElementById('avatarFile').click();">
+          <div class="profile-avatar-wrapper">
+            <img src="${avatarSrc}"
+                 alt="avatar"
+                 class="rounded-circle"
+                 style="width:96px;height:96px;object-fit:cover">
+            <div class="profile-avatar-overlay">
+              <span>ĐỔI ẢNH</span>
+            </div>
+          </div>
+        </button>
+      </form>
+
       <div class="fs-5 fw-semibold mb-1">${u.name}</div>
       <div class="text-muted mb-3">${u.email}</div>
       <a class="btn btn-outline-secondary w-100" href="${cxt}/logout">Đăng xuất</a>

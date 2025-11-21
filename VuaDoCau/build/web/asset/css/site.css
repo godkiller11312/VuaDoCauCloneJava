@@ -1085,3 +1085,36 @@ body {
     align-items: center;
     padding: 3rem 0;
 }
+
+/* ===== Avatar trong profile: hover hiện chữ ĐỔI ẢNH ===== */
+
+.profile-avatar-wrapper {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.profile-avatar-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(0,0,0,.45);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .85rem;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity .25s ease;
+  text-transform: uppercase;
+}
+
+.profile-avatar-wrapper:hover .profile-avatar-overlay {
+  opacity: 1;
+}
+
+.profile-avatar-btn:focus {
+  outline: none;
+  box-shadow: none;
+}
