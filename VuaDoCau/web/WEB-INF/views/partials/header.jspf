@@ -34,7 +34,12 @@
     <div class="d-flex align-items-center w-100">
 
       <!-- Brand -->
-      <a class="navbar-brand fw-bold me-2" href="${cxt}/home">VuaĐồCâu</a>
+      <a class="navbar-brand d-flex align-items-center fw-bold me-3" href="${cxt}/home">
+  <img src="${cxt}/asset/images/logo.png"
+       alt="Logo"
+       style="height:34px;width:auto;object-fit:contain;margin-right:8px;">
+  VuaĐồCâu
+</a>
 
       <!-- Left nav -->
       <ul class="navbar-nav flex-row gap-3 align-items-center">
