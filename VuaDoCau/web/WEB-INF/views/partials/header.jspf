@@ -36,8 +36,8 @@
       <!-- Brand -->
       <a class="navbar-brand d-flex align-items-center fw-bold me-3" href="${cxt}/home">
   <img src="${cxt}/asset/images/logo.png"
-       alt="Logo"
-       style="height:34px;width:auto;object-fit:contain;margin-right:8px;">
+     alt="Logo VuaĐồCâu"
+     style="height:34px;width:auto;object-fit:contain;margin-right:8px;">
   VuaĐồCâu
 </a>
 
