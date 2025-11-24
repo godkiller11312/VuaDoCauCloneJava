@@ -174,9 +174,16 @@
           <input class="form-control" name="name" required>
         </div>
         <div class="mb-2">
-          <label class="form-label">Email</label>
-          <input class="form-control" name="email" required>
-        </div>
+  <label class="form-label">Email</label>
+  <input class="form-control"
+         id="e-email"
+         name="email"
+         type="email"
+         required
+         pattern="^[\\w.+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
+         title="Vui lòng nhập email hợp lệ, ví dụ: ten@gmail.com">
+</div>
+
         <div class="mb-2">
           <label class="form-label">Mật khẩu</label>
           <input class="form-control" name="password" type="password" required>
