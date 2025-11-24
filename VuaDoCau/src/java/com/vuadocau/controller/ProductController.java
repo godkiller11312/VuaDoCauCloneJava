@@ -20,18 +20,19 @@ public class ProductController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        String q      = req.getParameter("q");     // keyword
-        String g      = req.getParameter("g");     // group: all|can|may|khac
-        String cat    = req.getParameter("cat");   // cat=ID (nếu dùng)
+        String q       = req.getParameter("q");      // keyword
+        String g       = req.getParameter("g");      // all|can|may|khac
+        String cat     = req.getParameter("cat");    // cat=ID (nếu dùng)
         String sortTop = req.getParameter("sortTop");
         String sortNew = req.getParameter("sortNew");
 
         boolean isTopSeller = "1".equals(sortTop);
-        boolean isNewest    = "1".equals(sortNew);
+        // Nếu không phải top thì mặc định là "mới nhất"
+        boolean isNewest = !isTopSeller;
 
         List<Product> products;
 
-        // ================== TOP SELLER MODE ==================
+        // ========= TOP SELLER =========
         if (isTopSeller) {
             if (q != null && !q.isBlank()) {
                 products = dao.searchOrderByPurchasedDesc(q.trim());
@@ -47,13 +48,13 @@ public class ProductController extends HttpServlet {
             } else if ("may".equals(g)) {
                 products = dao.findByCategoryOrderByPurchasedDesc(2); // Máy câu
             } else if ("khac".equals(g)) {
-                products = dao.findByCategoryIdsOrderByPurchasedDesc(3, 4, 5); // Dây / Mồi / Phụ kiện
+                products = dao.findByCategoryIdsOrderByPurchasedDesc(3, 4, 5);
             } else {
-                products = dao.findAllOrderByPurchasedDesc(); // tất cả, sort theo Purchased
+                products = dao.findAllOrderByPurchasedDesc();
                 g = "all";
             }
         }
-        // ================== BÌNH THƯỜNG (mặc định là "mới nhất") ==================
+        // ========= MỚI NHẤT (mặc định) =========
         else {
             if (q != null && !q.isBlank()) {
                 products = dao.search(q.trim());
@@ -71,16 +72,18 @@ public class ProductController extends HttpServlet {
             } else if ("khac".equals(g)) {
                 products = dao.findByCategoryIds(3, 4, 5);
             } else {
-                products = dao.findAll();           // mặc định: mới nhất (ORDER BY MaSP DESC)
+                // findAll() nhớ ORDER BY MaSP DESC để ra "mới nhất"
+                products = dao.findAll();
                 g = "all";
             }
-            // isNewest == 1 thì vẫn dùng các hàm trên (đều ORDER BY MaSP DESC sẵn rồi)
         }
 
         // ===== Đẩy ra view =====
         req.setAttribute("products", products);
         req.setAttribute("q", q);
         req.setAttribute("g", g);
+
+        // Thuộc tính dùng cho JSP để set active nút
         req.setAttribute("sortTop", isTopSeller ? "1" : null);
         req.setAttribute("sortNew", isNewest ? "1" : null);
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 21, 2025 lúc 01:45 AM
+-- Thời gian đã tạo: Th10 24, 2025 lúc 05:43 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -42,8 +42,12 @@ CREATE TABLE `activity_log` (
 --
 
 INSERT INTO `activity_log` (`Id`, `UserId`, `Type`, `Message`, `Meta`, `IP`, `CreatedAt`) VALUES
-(297, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=34', NULL, '0:0:0:0:0:0:0:1', '2025-11-21 07:39:51'),
-(298, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=3', NULL, '0:0:0:0:0:0:0:1', '2025-11-21 07:39:52');
+(305, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=4', NULL, '0:0:0:0:0:0:0:1', '2025-11-23 23:20:29'),
+(306, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=34', NULL, '0:0:0:0:0:0:0:1', '2025-11-23 23:20:37'),
+(307, 1, 'PRODUCT_UPDATE', 'Cập nhật SP: testiamge', NULL, '0:0:0:0:0:0:0:1', '2025-11-23 23:20:49'),
+(308, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=34', NULL, '0:0:0:0:0:0:0:1', '2025-11-23 23:20:49'),
+(309, 1, 'PRODUCT_LIST', 'Lọc sản phẩm: q=\'\', cat=null, sort=\'id\', dir=\'desc\', count=34', NULL, '0:0:0:0:0:0:0:1', '2025-11-23 23:21:39'),
+(310, 1, 'USER_LIST', 'Lọc user: q=\'\', role=null, status=null, sort=\'id\', dir=\'desc\', count=4', NULL, '0:0:0:0:0:0:0:1', '2025-11-23 23:21:41');
 
 -- --------------------------------------------------------
 
@@ -80,7 +84,10 @@ INSERT INTO `chitietdh` (`MaDH`, `MaSP`, `SoLuong`, `Gia`) VALUES
 (33, 31, 1, 9900000.00),
 (34, 31, 1, 9900000.00),
 (35, 31, 1, 9900000.00),
-(36, 18, 1, 1850000.00);
+(36, 18, 1, 1850000.00),
+(37, 18, 1, 1850000.00),
+(38, 18, 1, 1850000.00),
+(39, 18, 1, 1850000.00);
 
 -- --------------------------------------------------------
 
@@ -140,7 +147,10 @@ INSERT INTO `donhang` (`MaDH`, `MaND`, `NgayDH`, `TrangThai`, `GhiChu`) VALUES
 (33, 3, '2025-11-19 11:06:17', 'CANCELED', 'Tên: SơnTesst | SDT: 0886214922 | Email: thson1602@gmail.com | Địa chỉ: sadasfd | Note: àasf'),
 (34, 3, '2025-11-19 11:06:54', 'CANCELED', 'Tên: SơnTesst | SDT: 0886214922 | Email: thson1602@gmail.com | Địa chỉ: Tổ 13 Thị Trấn Na Hang - Tuyên Quang | Note: sadsadasd'),
 (35, 3, '2025-11-19 11:18:34', 'CANCELED', 'Tên: SơnTesst | SDT: 0886214922 | Email: thson1602@gmail.com | Địa chỉ: Tổ 13 Thị Trấn Na Hang - Tuyên Quang | Note: ừaefsdf'),
-(36, 3, '2025-11-20 11:17:05', 'CANCELED', 'Tên: SơnTesst | SDT: 0886214922 | Email: thson1602@gmail.com | Địa chỉ: Tổ 13 Thị Trấn Na Hang - Tuyên Quang | Note: adsadas');
+(36, 3, '2025-11-20 11:17:05', 'CANCELED', 'Tên: SơnTesst | SDT: 0886214922 | Email: thson1602@gmail.com | Địa chỉ: Tổ 13 Thị Trấn Na Hang - Tuyên Quang | Note: adsadas'),
+(37, 3, '2025-11-21 20:56:05', 'DONE', 'Tên: SơnTesst | SDT: 0886214922 | Email: thson1602@gmail.com | Địa chỉ: Tổ 13 Thị Trấn Na Hang - Tuyên Quang | Note: TÂTSTAS'),
+(38, 2, '2025-11-21 20:59:31', 'DONE', 'Tên: Khách A | SDT: 0886214922 | Email: user@vuadocau.vn | Địa chỉ: Tổ 13 Thị Trấn Na Hang - Tuyên Quang | Note: GFHG'),
+(39, 5, '2025-11-21 21:17:05', 'DONE', 'Tên: Khách B | SDT: 0886214922 | Email: thson16021@gmail.com | Địa chỉ: Tổ 13 Thị Trấn Na Hang - Tuyên Quang | Note: sdfsdfdsfsdf');
 
 -- --------------------------------------------------------
 
@@ -164,9 +174,10 @@ CREATE TABLE `nguoidung` (
 --
 
 INSERT INTO `nguoidung` (`MaND`, `TenND`, `Email`, `Avatar`, `MatKhau`, `RoleID`, `TrangThai`, `NgayTao`) VALUES
-(1, 'Quản trị', 'admin@vuadocau.vn', 'user-1-1763685584247.png', '38FE9AA0297FA5B1DC9EFBB6C0868F8C84FE24BE5C4A534B3E10A94D025029EA', 1, 1, '2025-10-25 13:28:44'),
-(2, 'Khách A', 'user@vuadocau.vn', 'user-2-1763685606987.png', '206270D6BD289E17432993D79DA37FF3F28C61924085BFFFA77EC0BC137C1EBD', 2, 1, '2025-10-25 13:28:44'),
-(3, 'SơnTesst', 'thson1602@gmail.com', 'user-3-1763685535330.png', 'AB690C343513E3555C510E808D98C14BF65305696502BF7D9888ECFD6A7B4447', 2, 1, '2025-10-25 16:12:42');
+(1, 'Quản trị', 'admin@vuadocau.vn', 'user-1-1763914870483.png', '38FE9AA0297FA5B1DC9EFBB6C0868F8C84FE24BE5C4A534B3E10A94D025029EA', 1, 1, '2025-10-25 13:28:44'),
+(2, 'Khách A', 'user@vuadocau.vn', 'user-2-1763776924484.png', '206270D6BD289E17432993D79DA37FF3F28C61924085BFFFA77EC0BC137C1EBD', 2, 1, '2025-10-25 13:28:44'),
+(3, 'SơnTesst', 'thson1602@gmail.com', 'user-3-1763776911612.png', 'AB690C343513E3555C510E808D98C14BF65305696502BF7D9888ECFD6A7B4447', 2, 1, '2025-10-25 16:12:42'),
+(5, 'Khách B', 'thson16021@gmail.com', NULL, 'E2718514CBCC0AAF3A8D3EDB87A051403CF7F1513FBC60AA900E23B1623E7901', 2, 1, '2025-11-21 21:16:41');
 
 -- --------------------------------------------------------
 
@@ -205,9 +216,10 @@ CREATE TABLE `review` (
 
 INSERT INTO `review` (`Id`, `MaSP`, `MaND`, `Rating`, `Comment`, `CreatedAt`) VALUES
 (1, 15, 3, 1, 'lỏ', '2025-11-17 23:11:56'),
-(2, 18, 2, 4, 'dung duoc', '2025-11-14 09:45:47'),
+(2, 18, 2, 5, 'OKLA', '2025-11-21 21:02:03'),
 (4, 15, 2, 4, 'ok', '2025-11-17 23:14:17'),
-(5, 17, 3, 5, 'tot', '2025-11-18 12:53:29');
+(5, 17, 3, 5, 'tot', '2025-11-18 12:53:29'),
+(6, 18, 3, 3, 'TEST SDFSDF', '2025-11-21 20:58:37');
 
 -- --------------------------------------------------------
 
@@ -272,7 +284,7 @@ INSERT INTO `sanpham` (`MaSP`, `TenSP`, `MaDM`, `MaTH`, `Gia`, `GiaCu`, `Anh`, `
 (15, 'Cần câu Shimano Scimitar 2m1', 1, NULL, 1750000.00, 2068000.00, 'can4.jpg', 'Cần carbon độ nảy cao, cảm giác tốt.', 0, 2.5, 16, 1, '2025-10-25 14:27:42'),
 (16, 'Cần câu SeaKnight Rapid 2m4', 1, NULL, 1590000.00, 1617000.00, 'can5.jpg', 'Phù hợp cả nước ngọt và nước mặn.', 5, 0.0, 4, 1, '2025-10-25 14:27:42'),
 (17, 'Cần tay Mitchel Travel 2m1', 1, NULL, 950000.00, 989000.00, 'can6.jpg', 'Nhỏ gọn, dễ mang đi du lịch.', 6, 5.0, 2, 1, '2025-10-25 14:27:42'),
-(18, 'Cần Shimano Catana 2m7', 1, NULL, 1850000.00, 2133000.00, 'can7.jpg', 'Độ cứng M–MH, câu lóc/chẽm.', 3, 4.0, 15, 1, '2025-10-25 14:27:42'),
+(18, 'Cần Shimano Catana 2m7', 1, NULL, 1850000.00, 2133000.00, 'can7.jpg', 'Độ cứng M–MH, câu lóc/chẽm.', 0, 4.0, 18, 1, '2025-10-25 14:27:42'),
 (19, 'Máy câu Shimano FX 2500HG', 2, NULL, 890000.00, 1018000.00, 'may1.jpg', 'Trục quay êm, bền, dùng cho cần trung.', 20, 0.0, 0, 1, '2025-10-25 14:27:42'),
 (20, 'Máy Daiwa Crossfire 3000', 2, NULL, 1090000.00, 1098000.00, 'may2.jpg', 'Tỉ số truyền 5.3:1, phù hợp sông hồ.', 14, 0.0, 0, 1, '2025-10-25 14:27:42'),
 (21, 'Máy Penn Battle III 4000', 2, NULL, 2450000.00, 2707000.00, 'may3.jpg', 'Thân kim loại toàn phần, mạnh mẽ.', 5, 0.0, 0, 1, '2025-10-25 14:27:42'),
@@ -288,7 +300,7 @@ INSERT INTO `sanpham` (`MaSP`, `TenSP`, `MaDM`, `MaTH`, `Gia`, `GiaCu`, `Anh`, `
 (31, 'Lưỡi câu Mustad số 6 (100 cái)', 5, NULL, 9900000.00, 11524000.00, 'luoi1.jpg', 'Thép carbon cao cấp, chống gỉ.', 99, 0.0, 5, 1, '2025-10-25 14:27:42'),
 (40, 'testnews', 5, 5, 99000.00, 100000.00, 'luoi1.jpg', 'tetestnews', 5, 0.0, 0, 1, '2025-11-20 10:54:54'),
 (41, 'tesstokuma', 1, 3, 990000.00, 99000.00, 'luoi1.jpg', 'tesstokuma', 6, 0.0, 0, 1, '2025-11-20 11:52:59'),
-(42, 'testiamge', 1, 5, 1850000.00, 1850000.00, 'can-1.webp', 'testiamge', 6, 0.0, 0, 1, '2025-11-21 06:34:38');
+(42, 'testiamge', 1, 5, 18500041.00, 1850000.00, 'can-1.webp', 'testiamge', 6, 0.0, 0, 1, '2025-11-21 06:34:38');
 
 -- --------------------------------------------------------
 
@@ -481,7 +493,7 @@ ALTER TABLE `thuonghieu`
 -- AUTO_INCREMENT cho bảng `activity_log`
 --
 ALTER TABLE `activity_log`
-  MODIFY `Id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=299;
+  MODIFY `Id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=311;
 
 --
 -- AUTO_INCREMENT cho bảng `danhmuc`
@@ -493,13 +505,13 @@ ALTER TABLE `danhmuc`
 -- AUTO_INCREMENT cho bảng `donhang`
 --
 ALTER TABLE `donhang`
-  MODIFY `MaDH` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `MaDH` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT cho bảng `nguoidung`
 --
 ALTER TABLE `nguoidung`
-  MODIFY `MaND` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `MaND` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT cho bảng `product_review`
@@ -511,7 +523,7 @@ ALTER TABLE `product_review`
 -- AUTO_INCREMENT cho bảng `review`
 --
 ALTER TABLE `review`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT cho bảng `roles`
